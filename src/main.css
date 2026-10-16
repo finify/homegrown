@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 6rem; }
+  body { @apply bg-ground text-ink font-sans text-base antialiased; }
+  h1, h2, h3 { @apply font-bold text-forest; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  a { @apply underline-offset-4; }
+  :focus-visible { outline: 3px solid #173A22; outline-offset: 3px; border-radius: 2px; }
+  .on-dark :focus-visible, .on-dark:focus-visible { outline-color: #E9B82B; }
+  ::selection { background: #E9B82B; color: #14231A; }
+}
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-10; }
+  .section { @apply py-24 lg:py-40; }
+
+  /* One button shape: the leaf. Min 48px tall. */
+  .btn {
+    @apply inline-flex min-h-[3rem] items-center justify-center gap-2 rounded-leaf px-6 py-3 text-base font-bold no-underline;
+    transition: transform .18s ease, background-color .18s ease, color .18s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0) scale(.98); }
+  .btn-primary { @apply bg-gold text-forest hover:bg-[#f0c64a]; }
+  .btn-forest { @apply bg-forest text-white hover:bg-forest-700; }
+  .btn-quiet { @apply bg-stone text-forest hover:bg-leaf-pale; }
+  .btn-white { @apply bg-white text-forest hover:bg-gold-pale; }
+
+  /* Standalone text links get a 44px target; inline links in sentences stay inline. */
+  .link-block { @apply inline-flex min-h-[2.75rem] items-center; }
+  .link { @apply font-bold text-forest underline decoration-2 decoration-leaf; transition: text-decoration-color .15s; }
+  .link:hover { @apply decoration-forest; text-decoration-thickness: 3px; }
+
+  /* Placeholder for facts the client must confirm. Text says CONFIRM, colour is a second cue. */
+  .confirm { @apply rounded-sm bg-gold-pale px-1 text-[0.92em] font-bold text-forest; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+  /* Leaf-shaped frames for photographs */
+  .leaf-frame { border-radius: 0 100% 0 100% / 0 100% 0 100%; overflow: hidden; }
+  .leaf-frame-soft { border-radius: 0 42% 0 42% / 0 30% 0 30%; overflow: hidden; }
+  .leaf-frame-r { border-radius: 100% 0 100% 0 / 100% 0 100% 0; overflow: hidden; }
+  .leaf-bullet { @apply inline-block h-3.5 w-3.5 shrink-0 bg-leaf; border-radius: 0 100% 0 100%; }
+
+  .field-label { @apply mb-2 block font-bold text-forest; }
+  .field {
+    @apply block w-full min-h-[3rem] rounded-leaf border-2 border-[#8a948c] bg-white px-4 py-3 text-base text-ink;
+  }
+  .field:focus { @apply border-forest ring-0; outline: 3px solid #E9B82B; outline-offset: 1px; }
+  .field[aria-invalid="true"] { @apply border-berry; }
+  .field-error { @apply mt-2 flex items-start gap-2 font-bold text-berry; }
+  .choice { @apply h-6 w-6 border-2 border-[#8a948c] text-forest focus:ring-gold focus:ring-offset-2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

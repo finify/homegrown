@@ -1,0 +1,32 @@
+<script setup>
+const sections = [
+  ['Who we are', 'Sunderland Home Grown CIC, Thompson Park, Southwick, Sunderland SR5 1SF. Company number <span class="confirm">[CONFIRM]</span>. ICO registration <span class="confirm">[CONFIRM]</span>.'],
+  ['What we collect and why', 'Contact and referral forms: your details, so we can reply. Workshop bookings: what our online shop needs to take your booking. Newsletter: your name and email, only with your consent.'],
+  ['Health and support information', 'Our referral form lets you tell us, if you choose, about support someone needs. This is special category data under UK GDPR. We only use it to plan support, and only with your explicit consent. <span class="confirm">[CONFIRM: retention period and who can see it]</span>'],
+  ['Who we share it with', 'Our email newsletter provider (Mailchimp), our online shop provider (Ecwid) and our website host. We never sell your data. <span class="confirm">[CONFIRM: full list of processors]</span>'],
+  ['Your rights', 'You can ask to see, correct or delete your information, or withdraw consent at any time. Contact us, or complain to the Information Commissioner’s Office (ico.org.uk).'],
+]
+</script>
+
+<template>
+  <section class="section pt-10 lg:pt-16" aria-labelledby="page-title">
+    <div class="wrap grid gap-14 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <h1 id="page-title" class="text-title">Privacy policy</h1>
+        <p class="mt-6 text-soft">Last updated <span class="confirm">[CONFIRM: date]</span></p>
+        <p class="mt-6 rounded-leaf bg-gold-pale p-5">This page shows the structure a rewritten policy could follow. The wording must be reviewed by Sunderland Home Grown before use. It is not legal advice.</p>
+      </div>
+      <div class="space-y-12 lg:col-span-7 lg:col-start-6">
+        <section v-for="[h, b] in sections" :key="h">
+          <h2 class="text-lead font-bold">{{ h }}</h2>
+          <p class="mt-3 max-w-[65ch]" v-html="b"></p>
+        </section>
+        <section id="accessibility" class="scroll-mt-24 rounded-leaf-lg bg-leaf-pale p-8">
+          <h2 class="text-lead font-bold">Accessibility</h2>
+          <p class="mt-3 max-w-[65ch]">We aim to meet WCAG 2.2 AA. Text is set in Atkinson Hyperlegible, designed for readers with low vision. Every page works with a keyboard and a screen reader, colours meet contrast guidelines, and moving effects switch off if your device asks for reduced motion. Our day opportunities page has an Easy Read version.</p>
+          <p class="mt-3">Something not working? Call <a href="tel:+441915499444" class="link">0191 549 9444</a> and we will help.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+</template>
