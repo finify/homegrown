@@ -4,6 +4,10 @@ A clickable, responsive **visual proposal** for redesigning [sunderlandhomegrown
 
 **Live prototype:** https://finify.github.io/homegrown/
 
+![Before and after: the current site next to the redesign prototype for Home, Day opportunities, About and Contact](docs/before-after.jpg)
+
+Full-resolution version: [`docs/before-after.png`](docs/before-after.png).
+
 > This is not the production site. The real site stays on 123-reg Website Builder (Duda), with the Ecwid store. Every section below maps to a standard builder widget, so the design can be rebuilt there without custom code. Forms validate in the browser but **send nothing**.
 >
 > Anything highlighted as **[CONFIRM: …]** is a fact we don't have yet. Nothing has been invented: prices, session days, staff names and capacity all need confirming with Home Grown staff.
