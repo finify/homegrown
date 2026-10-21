@@ -44,6 +44,25 @@ Full-resolution version: [`docs/before-after.png`](docs/before-after.png). Each 
 - Section parts rise in sequence as they enter; photos drift with parallax.
 - **All motion switches off under `prefers-reduced-motion`** (the plant shows fully grown). The 3D only renders while on screen and falls back to a flat SVG if WebGL isn't available.
 
+## Performance
+
+Measured on the live site under simulated slow 4G, a 4× slower CPU and a phone-sized screen (`scripts/perf.mjs`):
+
+| | Before | After |
+|---|---|---|
+| Home, first visit: main content visible (LCP) | 10.2 s | 1.1–1.4 s |
+| Home, first visit: data downloaded | 1,655 KB | 430 KB |
+| Clicking to another page: content visible | 0.7–1.6 s | 0.2–0.4 s |
+| Data downloaded per page change | 150–1,650 KB | 0 KB (already prefetched or cached) |
+
+How:
+- **Prerendered HTML.** Each page's HTML is rendered at build time (Vue SSR), so content shows before any JavaScript runs. Vue then hydrates it.
+- **Responsive AVIF/WebP photos** (400, 800 and 1200px wide) through the `<Pic>` component, instead of 200–350 KB JPEGs. Source photos live in `photos/`; run `npm run images` after adding one.
+- **three.js loads last:** only after the page has loaded, when the browser is idle and the scene is near the screen. It's skipped entirely in data-saver mode.
+- **Self-hosted, preloaded font:** one 34 KB variable file.
+- **Instant page changes:** Speculation Rules prefetch internal pages and prerender a page when its link is hovered (Chrome and Edge). Other browsers prefetch on hover or touch. Pages cross-fade with view transitions.
+- **A service worker** keeps scripts, photos and fonts cached between visits, because GitHub Pages limits browser caching to 10 minutes. Pages are always fetched fresh first, so new deploys show straight away.
+
 ## Accessibility (WCAG 2.2 AA target)
 - Atkinson Hyperlegible Next at an 18px base with line height 1.6. Plain English, UK spelling.
 - Every text and background pair is contrast-checked (figures in `tailwind.config.js`). White text is never set on leaf green or gold.
@@ -96,7 +115,8 @@ All photographs are Sunderland Home Grown's own, from their current website (re-
 ```bash
 npm install
 npm run dev       # http://localhost:5173/homegrown/
-npm run build     # outputs dist/
+npm run build     # builds, then prerenders every page into dist/
+npm run images    # regenerates AVIF/WebP photos from photos/
 ```
 
 Tests: start `npx vite preview --port 4173`, then run `PW=$(npm root -g)/playwright/index.mjs node tests/e2e.mjs` (needs Playwright installed globally).

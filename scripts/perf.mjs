@@ -25,7 +25,8 @@ const measure = async (label, nav) => {
   console.log(`${label.padEnd(34)} FCP ${String(Math.round(m.fcp)).padStart(5)}ms  LCP ${String(Math.round(m.lcp)).padStart(5)}ms  load ${String(tLoad).padStart(5)}ms  ${(bytes / 1024).toFixed(0)} KB`)
 }
 await measure('home (cold)', () => p.goto(BASE))
-await measure('-> day-opportunities (click)', () => p.click('header a[href*="day-opportunities"]:visible >> nth=0').catch(() => p.goto(BASE + 'day-opportunities.html')))
-await measure('-> contact (nav)', () => p.goto(BASE + 'contact.html'))
+const clickTo = (sel) => async () => { const a = p.locator(sel).first(); await a.hover(); await p.waitForTimeout(300); await Promise.all([p.waitForURL(/./, { waitUntil: 'commit' }), a.click()]) }
+await measure('-> day-opportunities (click)', clickTo('#hero a[href*="day-opportunities"]'))
+await measure('-> contact (click)', clickTo('footer a[href$="contact.html"]'))
 await measure('-> home again', () => p.goto(BASE))
 await b.close()
