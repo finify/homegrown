@@ -1,0 +1,206 @@
+{
+ "bedding-trays": {
+  "w": [
+   400,
+   800,
+   1050
+  ],
+  "ratio": 0.75
+ },
+ "beekeepers-hive": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.566
+ },
+ "bird-box-joinery": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3739
+ },
+ "garden-centre-display": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.0
+ },
+ "garden-centre-perennials": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.8494
+ },
+ "garden-centre-yard": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3333
+ },
+ "gardener-portrait": {
+  "w": [
+   300
+  ],
+  "ratio": 1.0
+ },
+ "group-planting-workshop": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 0.9264
+ },
+ "hanging-baskets": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.0
+ },
+ "komatsu-floral-display": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3333
+ },
+ "lobelia-close-up": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3333
+ },
+ "logo-national-lottery": {
+  "w": [
+   400,
+   640
+  ],
+  "ratio": 3.0476
+ },
+ "logo-youth-investment-fund": {
+  "w": [
+   400,
+   640
+  ],
+  "ratio": 3.0918
+ },
+ "onion-beds": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3333
+ },
+ "participant-smiling": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.566
+ },
+ "plug-plant-roots": {
+  "w": [
+   400,
+   800,
+   1050
+  ],
+  "ratio": 0.75
+ },
+ "polytunnel-benches": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3333
+ },
+ "polytunnel-group-potting": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3333
+ },
+ "primroses": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.0021
+ },
+ "salvia-and-bee": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.0
+ },
+ "shop-dog-pansies": {
+  "w": [
+   400,
+   800,
+   1054
+  ],
+  "ratio": 0.8003
+ },
+ "shop-doorway": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3359
+ },
+ "site-clearing-2016": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.7766
+ },
+ "squash-polytunnel": {
+  "w": [
+   400,
+   800,
+   1200
+  ],
+  "ratio": 1.3333
+ },
+ "staff-with-hanging-baskets": {
+  "w": [
+   400,
+   800,
+   1050
+  ],
+  "ratio": 0.75
+ },
+ "veg-harvest": {
+  "w": [
+   400,
+   800,
+   1050
+  ],
+  "ratio": 0.75
+ }
+}

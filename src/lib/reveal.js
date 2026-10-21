@@ -11,6 +11,7 @@ export const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: re
 export const reveal = {
   mounted(el) {
     if (reduceMotion()) return
+    if (el.getBoundingClientRect().top < window.innerHeight) return
     const parts = el.querySelectorAll('[data-r]')
     const targets = parts.length ? parts : [el]
     el._tween = gsap.from(targets, {

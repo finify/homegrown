@@ -85,7 +85,7 @@ const faqs = [
   <PageHero
     title="Day opportunities"
     lead="Supported gardening, training and work experience for young people and adults with learning disabilities or mental health challenges."
-    :image="img('participant-smiling')"
+    image="participant-smiling"
     alt="A smiling woman in a Home Grown fleece in the polytunnel, holding up her fist in celebration."
     tone="gold"
   >
@@ -126,7 +126,7 @@ const faqs = [
         <h2 class="text-title">Come and grow with us</h2>
         <ul class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           <li v-for="e in easyRead" :key="e.text" class="flex items-center gap-6 sm:flex-col sm:items-start">
-            <img :src="img(e.image + '-sm')" :alt="e.alt" loading="lazy" class="leaf-frame-soft aspect-square w-32 shrink-0 object-cover sm:w-full sm:max-w-[16rem]" />
+            <Pic :name="e.image + '-sm'" :alt="e.alt" loading="lazy" class="leaf-frame-soft aspect-square w-32 shrink-0 object-cover sm:w-full sm:max-w-[16rem]" />
             <p class="text-[1.75rem] font-bold leading-tight text-forest">{{ e.text }}</p>
           </li>
           <li class="flex flex-col justify-center gap-5 rounded-leaf-lg bg-gold p-8">
@@ -200,7 +200,7 @@ const faqs = [
       </div>
       <ul class="mt-16 grid gap-x-16 gap-y-10 md:grid-cols-2" v-reveal>
         <li v-for="[t, b, im] in activities" :key="t" class="grid grid-cols-[5rem_1fr] items-center gap-6" data-r>
-          <img :src="img(im + '-sm')" alt="" loading="lazy" class="leaf-frame h-20 w-20 object-cover" />
+          <Pic :name="im + '-sm'" alt="" loading="lazy" class="leaf-frame h-20 w-20 object-cover" />
           <div><h3 class="text-lead font-bold">{{ t }}</h3><p class="mt-1 text-soft">{{ b }}</p></div>
         </li>
       </ul>

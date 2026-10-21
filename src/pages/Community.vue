@@ -37,7 +37,7 @@ const hire = [
   <PageHero
     title="Community"
     lead="Groups to join, places we look after, and ways to get involved, whether you have an hour a week or a whole team for a day."
-    :image="img('veg-harvest')"
+    image="veg-harvest"
     alt="Crates of freshly picked squash, peppers and greens on the path between raised vegetable beds."
   >
     <template #actions>
@@ -57,8 +57,8 @@ const hire = [
           <li v-for="l in learn" :key="l" class="flex gap-3"><span class="leaf-bullet mt-2"></span>{{ l }}</li>
         </ul>
         <div class="mt-10 grid grid-cols-2 gap-3" data-r>
-          <img :src="img('onion-beds-sm')" alt="Rows of onions growing in a raised bed." loading="lazy" class="leaf-frame aspect-square w-full object-cover" />
-          <img :src="img('squash-polytunnel-sm')" alt="Large squash plants growing in the polytunnel." loading="lazy" class="leaf-frame-r aspect-square w-full object-cover" />
+          <Pic :name="'onion-beds-sm'" alt="Rows of onions growing in a raised bed." loading="lazy" class="leaf-frame aspect-square w-full object-cover" />
+          <Pic :name="'squash-polytunnel-sm'" alt="Large squash plants growing in the polytunnel." loading="lazy" class="leaf-frame-r aspect-square w-full object-cover" />
         </div>
       </div>
       <div class="lg:col-span-5 lg:col-start-8">
@@ -77,7 +77,7 @@ const hire = [
       <h2 id="groups-title" class="text-title" v-reveal><span data-r class="block">Interest groups</span></h2>
       <ul class="mt-14 grid gap-x-16 gap-y-10 md:grid-cols-2" v-reveal>
         <li v-for="[t, b, im] in interest" :key="t" class="grid grid-cols-[5rem_1fr] items-center gap-6" data-r>
-          <img :src="img(im + '-sm')" alt="" loading="lazy" class="leaf-frame h-20 w-20 object-cover" />
+          <Pic :name="im + '-sm'" alt="" loading="lazy" class="leaf-frame h-20 w-20 object-cover" />
           <div><h3 class="text-lead font-bold">{{ t }}</h3><p class="mt-1 text-soft">{{ b }}</p></div>
         </li>
       </ul>
@@ -103,7 +103,7 @@ const hire = [
   <section id="volunteer" class="section scroll-mt-24" aria-labelledby="vol-title">
     <div class="wrap grid items-center gap-14 lg:grid-cols-12">
       <div class="aspect-[4/3] overflow-hidden leaf-frame-soft lg:col-span-6">
-        <img :src="img('polytunnel-benches')" alt="Long rows of staging in a polytunnel, filled with young plants." loading="lazy" class="h-full w-full object-cover" v-parallax="0.1" />
+        <div class="h-full w-full" v-parallax="0.1"><Pic name="polytunnel-benches" alt="Long rows of staging in a polytunnel, filled with young plants." class="h-full w-full object-cover" /></div>
       </div>
       <div class="lg:col-span-5 lg:col-start-8" v-reveal>
         <h2 id="vol-title" class="text-title" data-r>Volunteer with us</h2>

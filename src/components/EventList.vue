@@ -29,7 +29,7 @@ const confirmify = (s) => s.replace(/\[CONFIRM:[^\]]+\]/g, (m) => `<span class="
     <ul class="grid gap-x-10 gap-y-14 md:grid-cols-2">
       <li v-for="e in list" :key="e.title + e.date" class="group grid grid-cols-[5.5rem_1fr] gap-5 sm:grid-cols-[7.5rem_1fr]">
         <div class="leaf-frame aspect-square bg-stone">
-          <img :src="img(e.img + '-sm')" alt="" width="800" height="800" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <Pic :name="e.img + '-sm'" alt="" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
         </div>
         <div>
           <h3 class="text-lead font-bold">{{ e.title }}</h3>

@@ -58,7 +58,7 @@ const gettingHere = [
       </div>
       <ul class="mt-12 grid grid-cols-2 gap-x-3 gap-y-8 lg:grid-cols-4" v-reveal>
         <li v-for="([im, alt, cap], i) in arrive" :key="im" data-r>
-          <img :src="img(im + '-sm')" :alt="alt" class="aspect-[4/5] w-full object-cover" :class="i % 2 ? 'leaf-frame-r' : 'leaf-frame-soft'" />
+          <Pic :name="im + '-sm'" :alt="alt" class="aspect-[4/5] w-full object-cover" :class="i % 2 ? 'leaf-frame-r' : 'leaf-frame-soft'" />
           <p class="mt-4 text-lead font-bold text-forest">{{ cap }}</p>
         </li>
       </ul>

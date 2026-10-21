@@ -1,11 +1,9 @@
-import { createApp, h } from 'vue'
 import '../main.css'
-import Layout from '../components/Layout.vue'
-import { reveal, parallax } from './reveal.js'
+import { createPage } from './app.js'
+import { speedUpNavigation } from './nav.js'
 
-export function mountPage(Page, { current } = {}) {
-  const app = createApp({ render: () => h(Layout, { current }, { default: () => h(Page) }) })
-  app.directive('reveal', reveal)
-  app.directive('parallax', parallax)
-  app.mount('#app')
+export function mountPage(Page, opts) {
+  // The HTML is already prerendered; this hydrates it rather than rebuilding the page.
+  createPage(Page, opts).mount('#app')
+  speedUpNavigation()
 }

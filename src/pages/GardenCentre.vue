@@ -31,7 +31,7 @@ const faqs = [
   <PageHero
     title="The garden centre"
     lead="Bedding, hanging baskets and perennials, most of them grown here in Thompson Park. Open seven days a week."
-    :image="img('garden-centre-display')"
+    image="garden-centre-display"
     alt="A garden centre display table crowded with purple and white flowering plants, with shelves of pots behind."
     tone="berry"
   >
@@ -51,7 +51,7 @@ const faqs = [
       <ul class="grid grid-cols-2 gap-x-3 gap-y-10 lg:col-span-9 lg:grid-cols-4" v-reveal>
         <li v-for="([t, b, im], i) in season" :key="t" data-r>
           <div class="aspect-[4/5] p-3" :class="['bg-leaf', 'bg-gold', 'bg-berry', 'bg-leaf-pale'][i]" style="border-radius: 1.5rem 0.25rem">
-            <img :src="img(im + '-sm')" alt="" loading="lazy" class="leaf-frame-soft h-full w-full object-cover" />
+            <Pic :name="im + '-sm'" alt="" loading="lazy" class="leaf-frame-soft h-full w-full object-cover" />
           </div>
           <h3 class="mt-4 text-lead font-bold">{{ t }}</h3>
           <p class="mt-1 text-soft">{{ b }}</p>
@@ -77,7 +77,7 @@ const faqs = [
         <h2 id="trade-title" class="text-title" data-r>Trade and wholesale</h2>
         <p class="mt-6 text-lead text-soft" data-r>We grow bedding and displays in volume for councils, businesses, villages and heritage sites.</p>
         <div class="mt-10 aspect-[4/3] overflow-hidden leaf-frame-soft" data-r>
-          <img :src="img('komatsu-floral-display')" alt="A large floral display bed spelling out a company name in blue and yellow flowers, outside a business site." loading="lazy" class="h-full w-full object-cover" />
+          <Pic :name="'komatsu-floral-display'" alt="A large floral display bed spelling out a company name in blue and yellow flowers, outside a business site." loading="lazy" class="h-full w-full object-cover" />
         </div>
         <p class="mt-3 text-sm text-soft" data-r>A floral display bed planted for a local business. <span class="confirm">[CONFIRM: project and permission to show]</span></p>
       </div>
@@ -105,7 +105,7 @@ const faqs = [
         <h2 id="visit-title" class="text-title" data-r>Plan your visit</h2>
         <OpenNow class="mt-6 text-lead" data-r />
         <div class="mt-10 aspect-square max-w-md overflow-hidden leaf-frame" data-r>
-          <img :src="img('shop-dog-pansies')" alt="A French bulldog sitting among trays of pansies in the garden centre." loading="lazy" class="h-full w-full object-cover" />
+          <Pic :name="'shop-dog-pansies'" alt="A French bulldog sitting among trays of pansies in the garden centre." loading="lazy" class="h-full w-full object-cover" />
         </div>
       </div>
       <div class="lg:col-span-6 lg:col-start-7">

@@ -2,7 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import LeafMark from './LeafMark.vue'
 import { ScrollTrigger, reduceMotion } from '../lib/reveal.js'
-import { webglAvailable } from '../three/support.js'
+import { webglAvailable, saveData, whenIdleAndNear } from '../three/support.js'
 import { url } from '../lib/site.js'
 
 // How to join, in four steps. The pot on the left grows as each step scrolls
@@ -19,15 +19,17 @@ const root = ref(null)
 const canvas = ref(null)
 const fallback = ref(false)
 const still = ref(false)
-let scene, triggers = []
+let scene, cancel, gone = false, progress = 0, triggers = []
 
-onMounted(async () => {
+onMounted(() => {
   still.value = reduceMotion()
-  if (!webglAvailable()) { fallback.value = true }
-  else {
+  if (!webglAvailable() || saveData()) fallback.value = true
+  else cancel = whenIdleAndNear(canvas.value, async () => {
     const { createGrowScene } = await import('../three/growScene.js')
+    if (gone) return
     scene = createGrowScene(canvas.value, { animate: !still.value })
-  }
+    scene.state.progress = progress
+  })
   if (still.value) { active.value = steps.length - 1; return }
 
   const items = root.value.querySelectorAll('[data-step]')
@@ -36,7 +38,7 @@ onMounted(async () => {
     start: 'top 65%',
     end: 'bottom 55%',
     scrub: true,
-    onUpdate: (s) => { if (scene) scene.state.progress = s.progress },
+    onUpdate: (s) => { progress = s.progress; if (scene) scene.state.progress = s.progress },
   }))
   items.forEach((el, i) => {
     triggers.push(ScrollTrigger.create({
@@ -45,7 +47,7 @@ onMounted(async () => {
     }))
   })
 })
-onBeforeUnmount(() => { triggers.forEach((t) => t.kill()); scene?.dispose() })
+onBeforeUnmount(() => { gone = true; cancel?.(); triggers.forEach((t) => t.kill()); scene?.dispose() })
 </script>
 
 <template>

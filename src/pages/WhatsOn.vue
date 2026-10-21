@@ -22,9 +22,9 @@ const parentFaqs = [
         <p class="mt-6 max-w-[44ch] text-lead text-soft" data-r>Workshops for children and adults, and weekly groups anyone can join. Book online, or just turn up to a group.</p>
       </div>
       <div class="flex gap-3 lg:col-span-5 lg:justify-end" aria-hidden="true">
-        <img :src="img('bird-box-joinery-sm')" alt="" class="leaf-frame h-28 w-28 object-cover sm:h-36 sm:w-36" />
-        <img :src="img('primroses-sm')" alt="" class="leaf-frame-r h-28 w-28 object-cover sm:h-36 sm:w-36" />
-        <img :src="img('squash-polytunnel-sm')" alt="" class="leaf-frame h-28 w-28 object-cover sm:h-36 sm:w-36" />
+        <Pic :name="'bird-box-joinery-sm'" alt="" class="leaf-frame h-28 w-28 object-cover sm:h-36 sm:w-36" />
+        <Pic :name="'primroses-sm'" alt="" class="leaf-frame-r h-28 w-28 object-cover sm:h-36 sm:w-36" />
+        <Pic :name="'squash-polytunnel-sm'" alt="" class="leaf-frame h-28 w-28 object-cover sm:h-36 sm:w-36" />
       </div>
     </div>
   </section>
@@ -40,11 +40,11 @@ const parentFaqs = [
   <section class="pb-24 lg:pb-40" aria-label="Photos from our workshops and groups">
     <div class="wrap grid grid-cols-12 items-end gap-3">
       <figure class="col-span-12 sm:col-span-7">
-        <img :src="img('group-planting-workshop')" alt="Four people smiling as they plant up pots together in the workshop." loading="lazy" class="leaf-frame-soft aspect-[4/3] w-full object-cover" />
+        <Pic :name="'group-planting-workshop'" alt="Four people smiling as they plant up pots together in the workshop." loading="lazy" class="leaf-frame-soft aspect-[4/3] w-full object-cover" />
         <figcaption class="mt-3 text-sm text-soft">Planting up in the workshop.</figcaption>
       </figure>
       <figure class="col-span-12 sm:col-span-5">
-        <img :src="img('veg-harvest')" alt="Crates of squash, peppers and greens harvested by the fruit and veg group." loading="lazy" class="leaf-frame-r aspect-[4/5] w-full object-cover" />
+        <Pic :name="'veg-harvest'" alt="Crates of squash, peppers and greens harvested by the fruit and veg group." loading="lazy" class="leaf-frame-r aspect-[4/5] w-full object-cover" />
         <figcaption class="mt-3 text-sm text-soft">A Monday harvest from the fruit and veg group.</figcaption>
       </figure>
     </div>

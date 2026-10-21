@@ -23,7 +23,7 @@ const isConfirm = (s) => s.startsWith('[CONFIRM')
   <PageHero
     title="About us"
     lead="Sunderland Home Grown is a community interest company. Since 2017 we have turned a former council maintenance yard into a nursery, garden centre and training site."
-    :image="img('staff-with-hanging-baskets')"
+    image="staff-with-hanging-baskets"
     alt="Two members of the Home Grown team holding up full hanging baskets in the nursery."
   >
     <template #actions><a href="#story" class="btn btn-primary">Read our story</a></template>
@@ -41,11 +41,11 @@ const isConfirm = (s) => s.startsWith('[CONFIRM')
       </div>
       <div class="grid grid-cols-2 gap-3 lg:col-span-6 lg:col-start-7">
         <figure class="col-span-2">
-          <img :src="img('site-clearing-2016')" alt="A digger clearing a large heap of soil on bare ground, the site before work began." loading="lazy" class="leaf-frame-soft aspect-[16/9] w-full object-cover" />
+          <Pic :name="'site-clearing-2016'" alt="A digger clearing a large heap of soil on bare ground, the site before work began." loading="lazy" class="leaf-frame-soft aspect-[16/9] w-full object-cover" />
           <figcaption class="mt-3 text-sm text-soft">Where it started: clearing the site.</figcaption>
         </figure>
         <figure class="col-span-2">
-          <img :src="img('garden-centre-yard')" alt="The garden centre today, full of shrubs and flowering plants, with the shop building behind." loading="lazy" class="leaf-frame-r aspect-[16/9] w-full object-cover" />
+          <Pic :name="'garden-centre-yard'" alt="The garden centre today, full of shrubs and flowering plants, with the shop building behind." loading="lazy" class="leaf-frame-r aspect-[16/9] w-full object-cover" />
           <figcaption class="mt-3 text-sm text-soft">The same ground today. <span class="confirm">[CONFIRM: photo date]</span></figcaption>
         </figure>
       </div>
@@ -92,7 +92,7 @@ const isConfirm = (s) => s.startsWith('[CONFIRM')
         </ul>
       </div>
       <div class="lg:col-span-6 lg:col-start-7">
-        <img :src="img('polytunnel-benches')" alt="A long polytunnel with metal staging full of young plants." loading="lazy" class="leaf-frame-soft aspect-[4/3] w-full object-cover" />
+        <Pic :name="'polytunnel-benches'" alt="A long polytunnel with metal staging full of young plants." loading="lazy" class="leaf-frame-soft aspect-[4/3] w-full object-cover" />
       </div>
     </div>
   </section>
@@ -103,7 +103,7 @@ const isConfirm = (s) => s.startsWith('[CONFIRM')
       <ul class="mt-12 grid grid-cols-2 gap-x-3 gap-y-8 lg:grid-cols-3">
         <li v-for="([im, cap], i) in gallery" :key="im">
           <figure>
-            <img :src="img(im + '-sm')" alt="" loading="lazy" class="aspect-square w-full object-cover" :class="i % 2 ? 'leaf-frame-r' : 'leaf-frame'" />
+            <Pic :name="im + '-sm'" alt="" loading="lazy" class="aspect-square w-full object-cover" :class="i % 2 ? 'leaf-frame-r' : 'leaf-frame'" />
             <figcaption class="mt-3 text-sm text-soft">{{ cap }}</figcaption>
           </figure>
         </li>
@@ -119,10 +119,10 @@ const isConfirm = (s) => s.startsWith('[CONFIRM')
       </div>
       <ul class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:col-span-8">
         <li class="col-span-2 flex min-h-[8rem] items-center justify-center rounded-leaf bg-white p-6 sm:col-span-1">
-          <img :src="img('logo-national-lottery-sm')" alt="The National Lottery Community Fund" class="max-h-16 w-auto" loading="lazy" />
+          <Pic :name="'logo-national-lottery-sm'" alt="The National Lottery Community Fund" class="max-h-16 w-auto" loading="lazy" />
         </li>
         <li class="flex min-h-[8rem] items-center justify-center rounded-leaf bg-white p-6">
-          <img :src="img('logo-youth-investment-fund-sm')" alt="Youth Investment Fund" class="max-h-16 w-auto" loading="lazy" />
+          <Pic :name="'logo-youth-investment-fund-sm'" alt="Youth Investment Fund" class="max-h-16 w-auto" loading="lazy" />
         </li>
         <li v-for="s in supporters.filter((s) => !s.includes('Lottery') && !s.includes('Youth'))" :key="s" class="flex min-h-[8rem] items-end rounded-leaf bg-white p-5 text-lead font-bold text-forest">{{ s }}</li>
       </ul>

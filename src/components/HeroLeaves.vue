@@ -2,19 +2,24 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import LeafMark from './LeafMark.vue'
 import { gsap, ScrollTrigger, reduceMotion } from '../lib/reveal.js'
-import { webglAvailable } from '../three/support.js'
+import { webglAvailable, saveData, whenIdleAndNear } from '../three/support.js'
 
 // The roundel's three leaves in 3D. They unfurl on load, follow the pointer
 // gently, and turn and lift as the hero scrolls away.
 const props = defineProps({ trigger: { type: String, default: null } })
 const canvas = ref(null)
 const fallback = ref(false)
-let scene, st, onMove
+let scene, st, onMove, cancel, gone = false
 
-onMounted(async () => {
-  if (!webglAvailable()) { fallback.value = true; return }
+onMounted(() => {
+  if (!webglAvailable() || saveData()) { fallback.value = true; return }
+  cancel = whenIdleAndNear(canvas.value, start, '0px')
+})
+
+async function start() {
   const still = reduceMotion()
   const { createHeroLeaves } = await import('../three/heroLeaves.js')
+  if (gone) return
   scene = createHeroLeaves(canvas.value, { animate: !still })
   if (still) return
 
@@ -31,9 +36,11 @@ onMounted(async () => {
     scene.state.py = (e.clientY / window.innerHeight) * 2 - 1
   }
   window.addEventListener('pointermove', onMove, { passive: true })
-})
+}
 
 onBeforeUnmount(() => {
+  gone = true
+  cancel?.()
   st?.kill()
   window.removeEventListener('pointermove', onMove)
   scene?.dispose()

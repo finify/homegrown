@@ -9,9 +9,9 @@ import { img, url, site } from '../lib/site.js'
 import { gsap, reduceMotion } from '../lib/reveal.js'
 
 const heroImages = [
-  { src: img('polytunnel-group-potting'), alt: 'A group potting up bedding plants together on a long bench in the polytunnel.' },
-  { src: img('staff-with-hanging-baskets'), alt: 'Two members of the team holding up hanging baskets full of flowers in the nursery.' },
-  { src: img('hanging-baskets'), alt: 'Hanging baskets of red and purple petunias for sale in the garden centre.' },
+  { name: 'polytunnel-group-potting', alt: 'A group potting up bedding plants together on a long bench in the polytunnel.' },
+  { name: 'staff-with-hanging-baskets', alt: 'Two members of the team holding up hanging baskets full of flowers in the nursery.' },
+  { name: 'hanging-baskets', alt: 'Hanging baskets of red and purple petunias for sale in the garden centre.' },
 ]
 
 const day = [
@@ -76,7 +76,7 @@ onBeforeUnmount(() => mm?.revert())
 
       <div class="relative lg:col-span-6 lg:col-start-7">
         <div class="relative ml-auto aspect-[4/5] w-[88%] sm:aspect-[5/4] lg:aspect-[7/8] lg:max-h-[calc(100svh-8rem)] lg:w-full">
-          <Crossfade :images="heroImages" frame="leaf-frame-soft" eager />
+          <Crossfade :images="heroImages" frame="leaf-frame-soft" eager sizes="(min-width: 1024px) 45vw, 90vw" />
         </div>
         <HeroLeaves trigger="#hero" class="pointer-events-none absolute -bottom-12 -left-6 aspect-square w-[60%] sm:-left-10 lg:bottom-[-2%] lg:-left-[22%] lg:w-[58%]" />
       </div>
@@ -88,9 +88,9 @@ onBeforeUnmount(() => mm?.revert())
     <div class="wrap" v-reveal>
       <p class="max-w-[30ch] text-[1.5rem] font-bold leading-[1.3] text-forest sm:text-[2rem] lg:text-[2.25rem]" data-r>
         We grow plants
-        <img :src="img('lobelia-close-up-sm')" alt="" class="leaf-frame mx-1 inline-block h-[0.95em] w-[1.3em] object-cover align-[-0.1em]" />
+        <Pic name="lobelia-close-up-sm" sizes="64px" alt="" class="leaf-frame mx-1 inline-block h-[0.95em] w-[1.3em] object-cover align-[-0.1em]" />
         and people
-        <img :src="img('participant-smiling-sm')" alt="" class="leaf-frame mx-1 inline-block h-[0.95em] w-[1.3em] object-cover align-[-0.1em]" />
+        <Pic name="participant-smiling-sm" sizes="64px" alt="" class="leaf-frame mx-1 inline-block h-[0.95em] w-[1.3em] object-cover align-[-0.1em]" />
         on a former council yard in Thompson Park.
       </p>
     </div>
@@ -107,7 +107,7 @@ onBeforeUnmount(() => mm?.revert())
         <li class="sm:row-span-2" data-r>
           <a :href="url('day-opportunities.html') + '#for-you'" class="group flex h-full flex-col rounded-leaf-lg bg-leaf p-3 no-underline">
             <span class="leaf-frame-soft block aspect-[4/5] overflow-hidden sm:aspect-auto sm:flex-1">
-              <img :src="img('participant-smiling')" alt="" loading="lazy" class="h-full min-h-[18rem] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+              <Pic :name="'participant-smiling'" alt="" loading="lazy" class="h-full min-h-[18rem] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
             </span>
             <span class="block px-3 pb-3 pt-6">
               <span class="block text-lead font-bold text-forest group-hover:underline">For individuals and families</span>
@@ -121,7 +121,7 @@ onBeforeUnmount(() => mm?.revert())
               <span class="block text-lead font-bold text-forest group-hover:underline">For professionals and referrers</span>
               <span class="mt-2 block text-ink">Who it suits, funding routes, and how to make a referral.</span>
             </span>
-            <span class="leaf-frame block aspect-square"><img :src="img('gardener-portrait')" alt="" loading="lazy" class="h-full w-full object-cover" /></span>
+            <span class="leaf-frame block aspect-square"><Pic :name="'gardener-portrait'" alt="" loading="lazy" class="h-full w-full object-cover" /></span>
           </a>
         </li>
         <li data-r>
@@ -130,7 +130,7 @@ onBeforeUnmount(() => mm?.revert())
               <span class="block text-lead font-bold group-hover:underline">For gardeners and visitors</span>
               <span class="mt-2 block text-white">Bedding, baskets and perennials, grown here. Open seven days.</span>
             </span>
-            <span class="leaf-frame block aspect-square"><img :src="img('primroses-sm')" alt="" loading="lazy" class="h-full w-full object-cover" /></span>
+            <span class="leaf-frame block aspect-square"><Pic :name="'primroses-sm'" alt="" loading="lazy" class="h-full w-full object-cover" /></span>
           </a>
         </li>
       </ul>
@@ -150,7 +150,7 @@ onBeforeUnmount(() => mm?.revert())
       <ul ref="track" class="flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 sm:px-6 lg:snap-none lg:overflow-visible lg:px-10 lg:pb-0" tabindex="0" aria-label="A day at Home Grown, scroll sideways">
         <li v-for="(d, i) in day" :key="d.title" class="w-[80vw] shrink-0 snap-start sm:w-[46vw] lg:w-[30vw]">
           <div class="aspect-[4/3] overflow-hidden bg-forest-700" :class="i % 2 ? 'leaf-frame-r' : 'leaf-frame-soft'">
-            <img :src="img(d.image)" :alt="d.alt" loading="lazy" width="1600" height="1200" class="h-full w-full object-cover" />
+            <Pic :name="d.image" sizes="(min-width: 1024px) 30vw, 80vw" :alt="d.alt" loading="lazy" class="h-full w-full object-cover" />
           </div>
           <h3 class="mt-6 text-lead font-bold text-white">{{ d.title }}</h3>
           <p class="mt-2 max-w-[36ch] text-leaf-pale">{{ d.body }}</p>
@@ -186,7 +186,7 @@ onBeforeUnmount(() => mm?.revert())
     <div class="wrap grid items-center gap-12 lg:grid-cols-12">
       <div class="relative lg:col-span-6">
         <div class="leaf-frame-soft aspect-[5/4] overflow-hidden bg-gold-pale">
-          <img :src="img('garden-centre-perennials')" alt="Benches of flowering perennials and bedding in the outdoor garden centre, with polytunnels behind." loading="lazy" width="1600" height="865" class="h-full w-full object-cover" v-parallax="0.12" />
+          <div class="h-full w-full" v-parallax="0.12"><Pic name="garden-centre-perennials" alt="Benches of flowering perennials and bedding in the outdoor garden centre, with polytunnels behind." class="h-full w-full object-cover" /></div>
         </div>
       </div>
       <div class="lg:col-span-5 lg:col-start-8" v-reveal>
@@ -227,7 +227,7 @@ onBeforeUnmount(() => mm?.revert())
       </div>
       <ul class="mt-16 grid gap-x-16 gap-y-9 md:grid-cols-2" v-reveal>
         <li v-for="g in groups" :key="g.name" class="grid grid-cols-[4rem_1fr] items-center gap-5" data-r>
-          <img :src="img(g.img + '-sm')" alt="" loading="lazy" class="leaf-frame h-16 w-16 object-cover" />
+          <Pic :name="g.img + '-sm'" alt="" loading="lazy" class="leaf-frame h-16 w-16 object-cover" />
           <div>
             <h3 class="text-lead font-bold">{{ g.name }}</h3>
             <p class="text-soft">{{ g.when }}</p>
@@ -250,7 +250,7 @@ onBeforeUnmount(() => mm?.revert())
       </figure>
       <div class="lg:col-span-4 lg:col-start-9">
         <div class="leaf-frame aspect-square overflow-hidden bg-berry-pale">
-          <img :src="img('group-planting-workshop')" alt="Four people smiling as they plant up pots together in the workshop." loading="lazy" class="h-full w-full object-cover" />
+          <Pic :name="'group-planting-workshop'" alt="Four people smiling as they plant up pots together in the workshop." loading="lazy" class="h-full w-full object-cover" />
         </div>
       </div>
     </div>

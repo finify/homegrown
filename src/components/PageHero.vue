@@ -20,7 +20,7 @@ defineProps({ title: String, lead: String, image: String, alt: String, tone: { t
           aria-hidden="true"
         ></div>
         <div class="leaf-frame-soft relative aspect-[4/5] overflow-hidden bg-stone sm:aspect-[5/4] lg:aspect-[4/5]">
-          <img :src="image" :alt="alt" width="1600" height="1200" class="h-full w-full object-cover" fetchpriority="high" v-parallax="0.1" />
+          <div class="h-full w-full" v-parallax="0.1"><Pic :name="image" :alt="alt" eager sizes="(min-width: 1024px) 45vw, 100vw" class="h-full w-full object-cover" /></div>
         </div>
       </div>
     </div>
