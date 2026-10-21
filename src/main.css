@@ -69,6 +69,8 @@
     }
   }
   a:focus-visible :is(.leaf-frame, .leaf-frame-soft, .leaf-frame-r) { border-radius: 1.5rem 0.25rem; }
+  /* Touch screens: opened by src/lib/leafReveal.js as the photo crosses the middle of the screen. */
+  :is(.leaf-frame, .leaf-frame-soft, .leaf-frame-r).leaf-open { border-radius: 1.5rem 0.25rem; }
   .leaf-bullet { @apply inline-block h-3.5 w-3.5 shrink-0 bg-leaf; border-radius: 0 100% 0 100%; }
 
   .field-label { @apply mb-2 block font-bold text-forest; }
