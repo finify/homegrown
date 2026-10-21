@@ -56,6 +56,19 @@
   .leaf-frame { border-radius: 0 100% 0 100% / 0 100% 0 100%; overflow: hidden; }
   .leaf-frame-soft { border-radius: 0 42% 0 42% / 0 30% 0 30%; overflow: hidden; }
   .leaf-frame-r { border-radius: 100% 0 100% 0 / 100% 0 100% 0; overflow: hidden; }
+  .leaf-frame, .leaf-frame-soft, .leaf-frame-r {
+    transition: border-radius 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Hover a leaf-shaped photo (or the card or link around it) and the leaf opens out to
+     show the whole picture. Keyboard focus on a surrounding link does the same. */
+  @media (hover: hover) {
+    :is(.leaf-frame, .leaf-frame-soft, .leaf-frame-r):hover,
+    :is(a, .group, figure, li):hover :is(.leaf-frame, .leaf-frame-soft, .leaf-frame-r) {
+      border-radius: 1.5rem 0.25rem;
+    }
+  }
+  a:focus-visible :is(.leaf-frame, .leaf-frame-soft, .leaf-frame-r) { border-radius: 1.5rem 0.25rem; }
   .leaf-bullet { @apply inline-block h-3.5 w-3.5 shrink-0 bg-leaf; border-radius: 0 100% 0 100%; }
 
   .field-label { @apply mb-2 block font-bold text-forest; }
