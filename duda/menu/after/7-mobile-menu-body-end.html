@@ -121,20 +121,59 @@
     var panel = el('div', { class: 'shg-m-panel', id: 'shg-m-panel' });
     var nav = el('nav', { 'aria-label': 'Main' });
     var list = el('ul');
-    var items = source.querySelectorAll(':scope > li');
-    for (var i = 0; i < items.length; i++) {
-      var a = items[i].querySelector('a');
-      if (!a) continue;
-      var text = (items[i].querySelector('.navItemText') || a).textContent.trim();
-      var li = el('li');
-      li.style.transitionDelay = (0.04 * i + 0.05) + 's';
-      var link = el('a', { href: a.getAttribute('href') || '#' });
-      if (a.getAttribute('target')) link.setAttribute('target', a.getAttribute('target'));
-      if (items[i].classList.contains('dmNavItemSelected')) link.setAttribute('aria-current', 'page');
-      link.textContent = text;
-      li.appendChild(link);
-      list.appendChild(li);
+
+    // The same links as the desktop menu: only real, visible pages. Skips pages hidden
+    // in the Pages panel, Duda's template rows (they contain "${text}" until Duda fills
+    // them in) and empty rows.
+    var isPlaceholder = function (s) { return !s || /\$\{|\{\{/.test(s); };
+    var isHidden = function (node) {
+      return node.classList.contains('dmHideFromNav') || node.hasAttribute('hidden') ||
+        node.getAttribute('aria-hidden') === 'true' || getComputedStyle(node).display === 'none';
+    };
+    function readItems() {
+      var out = [];
+      // Prefer the desktop menu if it's on the page; otherwise Duda's mobile menu.
+      var desk = document.querySelectorAll('nav.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap');
+      var rows = desk.length ? desk : source.querySelectorAll(':scope > li');
+      for (var i = 0; i < rows.length; i++) {
+        var row = rows[i], a = row.querySelector('a');
+        if (!a || isHidden(row) || isHidden(a)) continue;
+        var textNode = row.querySelector('.nav-item-text, .navItemText') || a;
+        var text = textNode.textContent.replace(/\s+/g, ' ').trim();
+        var href = a.getAttribute('href');
+        if (isPlaceholder(text) || isPlaceholder(href)) continue;
+        out.push({
+          text: text,
+          href: href,
+          target: a.getAttribute('target'),
+          current: row.classList.contains('dmNavItemSelected') || a.classList.contains('dmNavItemSelected') || a.getAttribute('aria-current') === 'page',
+        });
+      }
+      return out;
     }
+    var lastKey = '';
+    function fillList() {
+      var items = readItems();
+      var key = JSON.stringify(items);
+      if (key === lastKey) return;
+      lastKey = key;
+      list.innerHTML = '';
+      items.forEach(function (it, i) {
+        var li = el('li');
+        li.style.transitionDelay = (0.04 * i + 0.05) + 's';
+        var link = el('a', { href: it.href });
+        if (it.target) link.setAttribute('target', it.target);
+        if (it.current) link.setAttribute('aria-current', 'page');
+        link.textContent = it.text;
+        li.appendChild(link);
+        list.appendChild(li);
+      });
+    }
+    fillList();
+    // Duda may finish building its menu after this runs: refresh when it changes.
+    new MutationObserver(function () { clearTimeout(fillList.t); fillList.t = setTimeout(fillList, 100); })
+      .observe(source, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'style', 'href'] });
+    window.addEventListener('load', fillList);
     nav.appendChild(list);
     panel.appendChild(nav);
     var actions = el('div', { class: 'shg-m-actions' });
