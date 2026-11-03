@@ -47,6 +47,11 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 | Tablet and small laptops (768–1279px) | Logo and button on top, full menu underneath |
 | Mobile | Logo and a short "Enquire" button, then the menu as one swipeable row (drop-downs hidden; sub-pages are reached from their parent page) |
 
+**Phones use Duda's separate mobile layout.** Duda doesn't show the header file on phones. It uses its own header bar, hamburger button and slide-out menu, which is why the old menu still appeared on mobile.
+- The second half of `menu/after/5-css-mobile.css` restyles those parts: logo in the bar, a dark green leaf-shaped hamburger, and a forest-green slide-out menu with white text and leaf bullets.
+- The slide-out menu lists whatever is in the **Pages** panel. Hide the old pages there (Gallery, Blog, Acknowledgements, Privacy Policy and so on) to get down to the six new items.
+- To add a "Make an enquiry" button on phones, add a button widget at the top of each page in the editor's mobile view. Duda's mobile header doesn't accept extra links from CSS.
+
 **If Duda also shows its own hamburger menu on mobile,** you'll see two menus. Keep one: the last lines of `menu/after/5-css-mobile.css` show how to hide the swipe row.
 
 ## How it was tested

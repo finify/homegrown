@@ -81,3 +81,109 @@ html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .icon 
    Keep the one you prefer. To hide this swipe row instead, uncomment the next line:
 html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav { display: none !important; }
 */
+
+/* =====================================================================
+   PHONES USE DUDA'S SEPARATE MOBILE LAYOUT
+   On phones Duda doesn't show the header file at all. It shows its own header bar,
+   a hamburger button (#toggleMenuTrigger) and a slide-out menu (#leftSidebar).
+   The rules below restyle those in the new design.
+   The menu ITEMS still come from the Pages panel: hide or reorder pages there.
+   ===================================================================== */
+
+/* Header bar */
+html #dm #slideRightNav.d-header-wrapper,
+html #dm #slideRightNav .dmHeader.u_hcontainer {
+  background-color: var(--shg-ground) !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* Logo in the mobile header bar (Duda's mobile layout has none) */
+html #dm #slideRightNav .dmHeader.u_hcontainer {
+  min-height: 72px !important;
+  background-image: url("https://irp-cdn.multiscreensite.com/0432dc74/dms3rep/multi/Sunderland_Homegrown_Lozenge_1000x285_RGB-dee94023-f0dd5d88-c6017153.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: auto 40px !important;
+}
+html #dm #slideRightNav .dmHeader .dm-title { display: none !important; }
+
+/* Hamburger button: big, high-contrast, leaf-shaped */
+html #dm #toggleMenuTrigger.dmNavTriggerButton {
+  top: 12px !important;
+  left: 12px !important;
+  width: 48px !important;
+  height: 48px !important;
+  padding: 15px 13px !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--shg-forest) !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+html #dm #toggleMenuTrigger.dmNavTriggerButton .btnStripe {
+  display: block !important;
+  width: 22px !important;
+  height: 3px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 3px !important;
+  background-color: #fff !important;
+}
+
+/* Slide-out menu panel */
+html #dm #dmSlideRightNavLeft,
+html #dm #dmSlideRightNavLeft .fixedPart {
+  background-color: var(--shg-forest) !important;
+}
+html #dm #dmSlideRightNavLeft .fixedPart { padding: 24px 12px 80px !important; }
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn { background: transparent !important; border: 0 !important; }
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi {
+  background: transparent !important;
+  border: 0 !important;
+  margin: 0 0 4px !important;
+}
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi > a {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 16px !important;
+  border: 0 !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background: transparent !important;
+  text-decoration: none !important;
+}
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi > a .navItemText {
+  color: #fff !important;
+  font-family: var(--shg-font) !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  white-space: normal !important;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+/* Small leaf in front of every item; gold for Day opportunities */
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi > a::before {
+  content: "";
+  flex: none;
+  width: 14px;
+  height: 14px;
+  background: var(--shg-leaf);
+  border-radius: 0 100% 0 100%;
+}
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi > a[href*="day-opportunities"]::before { background: var(--shg-gold); }
+/* The page you're on */
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi.dmNavItemSelected,
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi.dmNavItemSelected > a { background: var(--shg-forest-700) !important; }
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi.dmNavItemSelected > a .navItemText { color: #fff !important; }
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn > li.navListLi > a:focus-visible { outline: 3px solid var(--shg-gold) !important; outline-offset: 2px !important; }
+/* Hide the old icons and arrows */
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn .navItemIconBg,
+html body #dm #dmSlideRightNavLeft #leftSidebar.dmNavWrapper.dmn .navItemArrowBg { display: none !important; }
