@@ -1,0 +1,172 @@
+<!--
+  Sunderland Home Grown redesign: MOBILE HEADER AND MENU (same design as the prototype)
+  Where: Site Settings > Body end HTML (paste at the end, after file 6 if you use it).
+
+  What it does on phones (Duda's mobile layout only):
+    - logo on the left, a "Menu" button on the right
+    - the button's three lines turn into an X and the label changes to "Close"
+    - a full-screen green menu fades and slides in, with the links, "Make an enquiry" and "Call"
+  The links are read from Duda's own menu, so they still come from the Pages panel.
+  If this script doesn't run, Duda's own mobile menu (styled by file 5) shows instead.
+  Accessible: real button with aria-expanded, Escape closes, focus moves into the menu and back.
+-->
+<style>
+  html.shg-m-on #slideRightNav { display: none !important; }
+  html.shg-m-on #dmSlideRightNavRight { padding-top: 72px !important; transform: none !important; }
+  html.shg-m-on #dmSlideRightNavLeft { display: none !important; }
+  html.shg-m-locked, html.shg-m-locked body { overflow: hidden !important; }
+
+  .shg-m-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100000;
+    height: 72px; padding: 0 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: rgba(246, 247, 242, 0.97);
+    font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif;
+  }
+  .shg-m-logo { display: inline-flex; border-radius: 4px; }
+  .shg-m-bar .shg-m-logo img { display: block; height: 40px !important; width: auto !important; max-width: 60vw !important; }
+  .shg-m-toggle {
+    display: inline-flex; align-items: center; gap: 10px;
+    min-height: 48px; padding: 0 18px;
+    border: 0; border-radius: 1.5rem 0.25rem; cursor: pointer;
+    background: #173A22; color: #fff;
+    font: 700 17px/1 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif;
+    transition: transform .18s ease, background-color .18s ease;
+  }
+  .shg-m-toggle:active { transform: scale(.97); }
+  .shg-m-toggle:focus-visible, .shg-m-panel a:focus-visible, .shg-m-logo:focus-visible {
+    outline: 3px solid #E9B82B; outline-offset: 3px;
+  }
+  .shg-m-logo:focus-visible { outline-color: #173A22; }
+  .shg-m-icon { position: relative; display: block; width: 20px; height: 16px; }
+  .shg-m-icon span {
+    position: absolute; left: 0; width: 20px; height: 3px; border-radius: 3px; background: currentColor;
+    transition: transform .3s cubic-bezier(.22, 1, .36, 1), opacity .2s ease, top .3s cubic-bezier(.22, 1, .36, 1);
+  }
+  .shg-m-icon span:nth-child(1) { top: 0; }
+  .shg-m-icon span:nth-child(2) { top: 6.5px; }
+  .shg-m-icon span:nth-child(3) { top: 13px; }
+  .shg-m-toggle[aria-expanded="true"] .shg-m-icon span:nth-child(1) { top: 6.5px; transform: rotate(45deg); }
+  .shg-m-toggle[aria-expanded="true"] .shg-m-icon span:nth-child(2) { opacity: 0; }
+  .shg-m-toggle[aria-expanded="true"] .shg-m-icon span:nth-child(3) { top: 6.5px; transform: rotate(-45deg); }
+
+  .shg-m-panel {
+    position: fixed; top: 72px; left: 0; right: 0; bottom: 0; z-index: 99999;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 24px 16px 40px;
+    background: #173A22; color: #fff;
+    font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif;
+    visibility: hidden; opacity: 0; transform: translateY(-12px);
+    transition: opacity .3s ease, transform .35s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .35s;
+  }
+  .shg-m-panel.is-open {
+    visibility: visible; opacity: 1; transform: none;
+    transition: opacity .3s ease, transform .35s cubic-bezier(.22, 1, .36, 1), visibility 0s;
+  }
+  .shg-m-panel ul { list-style: none; margin: 0; padding: 0; }
+  .shg-m-panel li { margin: 0 0 4px; opacity: 0; transform: translateY(10px); transition: opacity .35s ease, transform .4s cubic-bezier(.22, 1, .36, 1); }
+  .shg-m-panel.is-open li { opacity: 1; transform: none; }
+  .shg-m-panel nav a {
+    display: flex; align-items: center; gap: 12px;
+    min-height: 56px; padding: 0 12px;
+    border-radius: 1.5rem 0.25rem;
+    color: #fff !important; text-decoration: none !important;
+    font-size: 26px; font-weight: 700; line-height: 1.15;
+  }
+  .shg-m-panel nav a::before {
+    content: ""; flex: none; width: 14px; height: 14px; border-radius: 0 100% 0 100%; background: #3DB82A;
+  }
+  .shg-m-panel nav a[href*="day-opportunities"]::before { background: #E9B82B; }
+  .shg-m-panel nav a[aria-current="page"] { background: #1F4D2E; }
+  .shg-m-actions { display: grid; gap: 12px; margin-top: 32px; }
+  .shg-m-btn {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 52px; padding: 0 20px; border-radius: 1.5rem 0.25rem;
+    font-size: 18px; font-weight: 700; text-decoration: none !important;
+  }
+  .shg-m-btn--gold { background: #E9B82B; color: #173A22 !important; }
+  .shg-m-btn--white { background: #fff; color: #173A22 !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shg-m-panel, .shg-m-panel li, .shg-m-icon span, .shg-m-toggle { transition: none !important; }
+  }
+</style>
+<script>
+(function () {
+  // Settings: change these if the page address or phone number changes.
+  var LOGO = 'https://irp-cdn.multiscreensite.com/0432dc74/dms3rep/multi/Sunderland_Homegrown_Lozenge_1000x285_RGB-dee94023-f0dd5d88-c6017153.png';
+  var ENQUIRY = '/day-opportunities#register';
+  var PHONE = { href: 'tel:+441915499444', label: 'Call 0191 549 9444' };
+
+  function build() {
+    var source = document.getElementById('leftSidebar');
+    // Only on Duda's mobile layout, and only once.
+    if (!source || !document.body.classList.contains('dmMobileBody') || document.querySelector('.shg-m-bar')) return;
+
+    var el = function (tag, attrs, html) {
+      var n = document.createElement(tag);
+      for (var k in attrs) n.setAttribute(k, attrs[k]);
+      if (html != null) n.innerHTML = html;
+      return n;
+    };
+
+    var bar = el('div', { class: 'shg-m-bar', role: 'banner' });
+    var logo = el('a', { class: 'shg-m-logo', href: '/' });
+    logo.appendChild(el('img', { src: LOGO, alt: 'Sunderland Home Grown, home page', width: '148', height: '42' }));
+    var toggle = el('button', { class: 'shg-m-toggle', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'shg-m-panel' },
+      '<span class="shg-m-icon" aria-hidden="true"><span></span><span></span><span></span></span><span class="shg-m-label">Menu</span>');
+    bar.appendChild(logo);
+    bar.appendChild(toggle);
+
+    var panel = el('div', { class: 'shg-m-panel', id: 'shg-m-panel' });
+    var nav = el('nav', { 'aria-label': 'Main' });
+    var list = el('ul');
+    var items = source.querySelectorAll(':scope > li');
+    for (var i = 0; i < items.length; i++) {
+      var a = items[i].querySelector('a');
+      if (!a) continue;
+      var text = (items[i].querySelector('.navItemText') || a).textContent.trim();
+      var li = el('li');
+      li.style.transitionDelay = (0.04 * i + 0.05) + 's';
+      var link = el('a', { href: a.getAttribute('href') || '#' });
+      if (a.getAttribute('target')) link.setAttribute('target', a.getAttribute('target'));
+      if (items[i].classList.contains('dmNavItemSelected')) link.setAttribute('aria-current', 'page');
+      link.textContent = text;
+      li.appendChild(link);
+      list.appendChild(li);
+    }
+    nav.appendChild(list);
+    panel.appendChild(nav);
+    var actions = el('div', { class: 'shg-m-actions' });
+    actions.appendChild(el('a', { class: 'shg-m-btn shg-m-btn--gold', href: ENQUIRY }, 'Make an enquiry'));
+    actions.appendChild(el('a', { class: 'shg-m-btn shg-m-btn--white', href: PHONE.href }, PHONE.label));
+    panel.appendChild(actions);
+
+    document.body.insertBefore(panel, document.body.firstChild);
+    document.body.insertBefore(bar, document.body.firstChild);
+    document.documentElement.classList.add('shg-m-on');
+
+    var label = toggle.querySelector('.shg-m-label');
+    function setOpen(open, returnFocus) {
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      label.textContent = open ? 'Close' : 'Menu';
+      panel.classList.toggle('is-open', open);
+      document.documentElement.classList.toggle('shg-m-locked', open);
+      if (open) {
+        var first = panel.querySelector('a');
+        if (first) setTimeout(function () { first.focus(); }, 50);
+      } else if (returnFocus) {
+        toggle.focus();
+      }
+    }
+    toggle.addEventListener('click', function () { setOpen(toggle.getAttribute('aria-expanded') !== 'true'); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && panel.classList.contains('is-open')) setOpen(false, true);
+    });
+    panel.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);
+  else build();
+})();
+</script>
