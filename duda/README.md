@@ -1,16 +1,18 @@
 # Redesign for 123-reg Website Builder (Duda Developer Mode)
 
 Paste-in files that bring the prototype's header, colours, type, buttons, leaf photos and footer colours to the live 123-reg site.
+**Folders:** `menu/before/` holds the original header and CSS exactly as copied from the editor (your backup). `menu/after/` holds the new files to paste in.
+
 The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered and hidden in the **Pages** panel.
 
 | File | Where it goes in the editor | What to do |
 |---|---|---|
-| `1-head-html.html` | Site Settings > Head HTML | Paste at the end |
-| `2-header.html` | Developer Mode > HTML > the **header** file | **Replace** everything |
-| `3-css-all-devices.css` | Developer Mode > CSS > "…AFFECTS ALL DEVICES" | Paste at the **end** |
-| `4-css-desktop-and-tablet.css` | Developer Mode > CSS > "…AFFECTS DESKTOP AND TABLET DEVICES" | Delete one old line (below), then paste at the **end** |
-| `5-css-mobile.css` | Developer Mode > CSS > "…AFFECTS MOBILE DEVICES" | Paste at the **end** |
-| `6-body-end-html.html` *(optional)* | Site Settings > Body end HTML | Paste at the end (opens leaf photos as you scroll on phones) |
+| `menu/after/1-head-html.html` | Site Settings > Head HTML | Paste at the end |
+| `menu/after/2-header.html` | Developer Mode > HTML > the **header** file | **Replace** everything |
+| `menu/after/3-css-all-devices.css` | Developer Mode > CSS > "…AFFECTS ALL DEVICES" | Paste at the **end** |
+| `menu/after/4-css-desktop-and-tablet.css` | Developer Mode > CSS > "…AFFECTS DESKTOP AND TABLET DEVICES" | Delete one old line (below), then paste at the **end** |
+| `menu/after/5-css-mobile.css` | Developer Mode > CSS > "…AFFECTS MOBILE DEVICES" | Paste at the **end** |
+| `menu/after/6-body-end-html.html` *(optional)* | Site Settings > Body end HTML | Paste at the end (opens leaf photos as you scroll on phones) |
 
 ## Before you start
 1. **Back up.** Copy the current header HTML and all three CSS panels into a text file, so you can paste them back if anything goes wrong.
@@ -23,14 +25,14 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 4. **Name the new page's address `/day-opportunities`.** The header button and the leaf marker next to "Day opportunities" in the menu rely on that address.
 
 ## Install
-1. Head HTML: paste `1-head-html.html`.
-2. Header file: select all, delete, paste `2-header.html`.
-3. CSS **all devices**: paste `3-css-all-devices.css` at the end.
+1. Head HTML: paste `menu/after/1-head-html.html`.
+2. Header file: select all, delete, paste `menu/after/2-header.html`.
+3. CSS **all devices**: paste `menu/after/3-css-all-devices.css` at the end.
 4. CSS **desktop and tablet**:
    - delete this old line: `*.stickyHeaderSpacer { height:292.8999938964844px !important; }`
-   - then paste `4-css-desktop-and-tablet.css` at the end.
-5. CSS **mobile**: paste `5-css-mobile.css` at the end.
-6. Optional: Body end HTML: paste `6-body-end-html.html`.
+   - then paste `menu/after/4-css-desktop-and-tablet.css` at the end.
+5. CSS **mobile**: paste `menu/after/5-css-mobile.css` at the end.
+6. Optional: Body end HTML: paste `menu/after/6-body-end-html.html`.
 7. **Preview** on desktop, tablet and mobile in the editor before you press **Publish**.
 
 ## Using the design on other parts of the site
@@ -45,7 +47,7 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 | Tablet and small laptops (768–1279px) | Logo and button on top, full menu underneath |
 | Mobile | Logo and a short "Enquire" button, then the menu as one swipeable row (drop-downs hidden; sub-pages are reached from their parent page) |
 
-**If Duda also shows its own hamburger menu on mobile,** you'll see two menus. Keep one: the last lines of `5-css-mobile.css` show how to hide the swipe row.
+**If Duda also shows its own hamburger menu on mobile,** you'll see two menus. Keep one: the last lines of `menu/after/5-css-mobile.css` show how to hide the swipe row.
 
 ## How it was tested
 Before handing over, the CSS was checked in a mock-up that loads the live site's own Duda stylesheets, plus the old custom CSS from the panels, with the menu rendered the way Duda outputs it. It was tested at 1440, 1300, 1100, 820, 390 and 360px wide:
