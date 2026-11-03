@@ -1,0 +1,22 @@
+<!--
+  Sunderland Home Grown redesign: BODY END HTML (optional)
+  Where: Site Settings > Body end HTML (or "Custom code" > end of body).
+  What:  phones and tablets can't hover, so this opens each leaf-shaped photo
+         (shg-leaf, shg-leaf-soft, shg-leaf-r) while it is in the middle of the screen,
+         and folds it back into a leaf as it scrolls away. Desktop uses hover instead.
+-->
+<script>
+(function () {
+  if (!window.matchMedia('(hover: none)').matches || !('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { e.target.classList.toggle('shg-open', e.isIntersecting); });
+  }, { rootMargin: '-30% 0px -30% 0px' });
+  function watch() {
+    document.querySelectorAll('.shg-leaf, .shg-leaf-soft, .shg-leaf-r').forEach(function (el) {
+      if (!el.dataset.shgWatched) { el.dataset.shgWatched = '1'; io.observe(el); }
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch); else watch();
+  window.addEventListener('load', watch);
+})();
+</script>

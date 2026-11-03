@@ -1,0 +1,75 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: DESKTOP AND TABLET
+   Where: Developer Mode > CSS > "ADD CUSTOM CSS TO THE PAGE - THIS AFFECTS DESKTOP AND TABLET DEVICES"
+   How:   1. DELETE this old line from that panel (the header is now much shorter):
+             *.stickyHeaderSpacer { height:292.8999938964844px !important; }
+          2. Paste everything below at the very END of the panel.
+   ===================================================================== */
+
+/* ---------- Desktop: one row, logo | menu | button ---------- */
+html #dm .shg-header.shg-header.shg-header .dmRespRow {
+  padding: 12px 40px !important;
+}
+html #dm .shg-header.shg-header.shg-header .shg-header__brand img {
+  height: 56px !important;
+}
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) {
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+
+/* ---------- Laptops (1280px to 1439px): slightly tighter so everything fits on one row ---------- */
+@media screen and (min-width: 1280px) and (max-width: 1439px) {
+  html #dm .shg-header.shg-header.shg-header .dmRespRow {
+    padding: 12px 24px !important;
+  }
+  html #dm .shg-header.shg-header.shg-header .shg-header__brand img {
+    height: 48px !important;
+  }
+  html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap > .unifiednav__item {
+    padding: 0 10px !important;
+    font-size: 16px !important;
+  }
+  html #dm .shg-header.shg-header.shg-header a.shg-enquire {
+    padding: 0 18px;
+    font-size: 16px;
+  }
+}
+
+/* ---------- Tablet and small laptops (under 1280px wide) ----------
+   Two rows: logo and button on top, the full menu underneath, so nothing gets squashed. */
+@media screen and (max-width: 1279px) {
+  html #dm .shg-header.shg-header.shg-header .dmRespRow {
+    padding: 12px 24px 8px !important;
+  }
+  html #dm .shg-header.shg-header.shg-header .dmRespColsWrapper {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  html #dm .shg-header.shg-header.shg-header .shg-header__brand {
+    flex: 1 1 auto;
+  }
+  /* Let the menu and the button sit directly in the header row so they can be re-ordered */
+  html #dm .shg-header.shg-header.shg-header .shg-header__nav {
+    display: contents !important;
+  }
+  html #dm .shg-header.shg-header.shg-header a.shg-enquire {
+    order: 2;
+  }
+  html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav {
+    order: 3;
+    flex: 1 1 100%;
+    justify-content: flex-start !important;
+    margin: 0 -10px !important;
+  }
+  html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) {
+    flex-wrap: wrap;
+  }
+  html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap > .unifiednav__item {
+    padding: 0 10px !important;
+    font-size: 16px !important;
+  }
+  html #dm .shg-header.shg-header.shg-header .shg-header__brand img {
+    height: 48px !important;
+  }
+}

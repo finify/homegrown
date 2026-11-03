@@ -1,0 +1,83 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: MOBILE
+   Where: Developer Mode > CSS > "ADD CUSTOM CSS TO THE PAGE - THIS AFFECTS MOBILE DEVICES"
+   How:   paste at the very END of that panel.
+
+   Layout: logo and a short "Enquire" button on top; the menu underneath as one row
+   you can swipe sideways. Every link stays a real, tappable link (44px or taller).
+   ===================================================================== */
+
+html #dm .shg-header.shg-header.shg-header .dmRespRow {
+  padding: 10px 16px 6px !important;
+}
+html #dm .shg-header.shg-header.shg-header .dmRespColsWrapper {
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+html #dm .shg-header.shg-header.shg-header .shg-header__brand {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+html #dm .shg-header.shg-header.shg-header .shg-header__brand img {
+  height: 38px !important;
+  max-width: 100% !important;
+}
+html #dm .shg-header.shg-header.shg-header .shg-header__nav {
+  display: contents !important;
+}
+
+/* Short button label on small screens; screen readers still hear "Make an enquiry" */
+html #dm .shg-header.shg-header.shg-header a.shg-enquire {
+  order: 2;
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 16px;
+}
+html #dm .shg-header.shg-header.shg-header .shg-enquire__short { display: inline !important; }
+html #dm .shg-header.shg-header.shg-header .shg-enquire__long {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* The menu: one swipeable row under the logo */
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav {
+  order: 3;
+  flex: 1 1 100%;
+  margin: 0 -16px !important;
+  max-width: none !important;
+  width: calc(100% + 32px) !important;
+  justify-content: flex-start !important;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav::-webkit-scrollbar { display: none; }
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) {
+  flex-wrap: nowrap !important;
+  gap: 4px;
+  padding: 0 12px;
+}
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap {
+  scroll-snap-align: start;
+  flex: none;
+}
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap > .unifiednav__item {
+  min-height: 44px;
+  padding: 0 12px !important;
+  font-size: 16px !important;
+  white-space: nowrap;
+}
+/* Drop-downs don't work well in a swipe row; sub-pages are reached from their parent page */
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container[data-depth] {
+  display: none !important;
+}
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .icon { display: none !important; }
+
+/* If Duda also shows its own hamburger menu on mobile, you'll have two menus.
+   Keep the one you prefer. To hide this swipe row instead, uncomment the next line:
+html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav { display: none !important; }
+*/

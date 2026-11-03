@@ -1,0 +1,292 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: ALL DEVICES
+   Where: Developer Mode > CSS > "ADD CUSTOM CSS TO THE PAGE - THIS AFFECTS ALL DEVICES"
+   How:   paste at the very END of that panel. Don't delete what's above it:
+          these rules are written to win over the old ones.
+   ===================================================================== */
+
+/* ---------- 1. Brand tokens (sampled from the Home Grown roundel) ---------- */
+:root {
+  --shg-forest: #173A22;      /* main text, headings, dark sections */
+  --shg-forest-700: #1F4D2E;
+  --shg-leaf: #3DB82A;        /* fills only, never white text on it */
+  --shg-leaf-pale: #E3F2DC;
+  --shg-gold: #E9B82B;        /* main buttons, with forest text */
+  --shg-gold-hover: #F0C64A;
+  --shg-berry: #934F4E;
+  --shg-ground: #F6F7F2;      /* page background */
+  --shg-stone: #ECEEE6;       /* one step darker, for panels */
+  --shg-ink: #14231A;
+  --shg-soft: #3F4A42;
+  --shg-leaf-corner: 1.5rem 0.25rem;
+  --shg-font: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* ---------- 2. Page, type and links ---------- */
+html #dm .dmInner,
+html #dm .dmBody {
+  background-color: var(--shg-ground) !important;
+  color: var(--shg-ink);
+  font-family: var(--shg-font) !important;
+  font-size: 18px;
+  line-height: 1.6;
+}
+html #dm .dmBody :is(h1, h2, h3, h4, h5, h6),
+html #dm .dmBody .dmNewParagraph :is(p, div, span, li, a, b, strong, h1, h2, h3, h4, h5, h6) {
+  font-family: var(--shg-font) !important;
+}
+html #dm .dmBody :is(h1, h2, h3) {
+  color: var(--shg-forest);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+html #dm .dmBody a { text-underline-offset: 4px; }
+
+/* Visible keyboard focus everywhere (WCAG 2.2) */
+html #dm a:focus-visible,
+html #dm button:focus-visible,
+html #dm input:focus-visible,
+html #dm select:focus-visible,
+html #dm textarea:focus-visible {
+  outline: 3px solid var(--shg-forest) !important;
+  outline-offset: 3px !important;
+}
+html #dm .dmFooter :is(a, button):focus-visible { outline-color: var(--shg-gold) !important; }
+
+/* ---------- 3. Buttons: one shape, the leaf ---------- */
+html #dm .dmBody a.dmButtonLink {
+  min-height: 48px;
+  border-radius: var(--shg-leaf-corner) !important;
+  background-color: var(--shg-gold) !important;
+  color: var(--shg-forest) !important;
+  border: 0 !important;
+  font-family: var(--shg-font) !important;
+  font-weight: 700 !important;
+  transition: transform .18s ease, background-color .18s ease;
+}
+html #dm .dmBody a.dmButtonLink :is(span, .text) { color: var(--shg-forest) !important; }
+html #dm .dmBody a.dmButtonLink:hover { background-color: var(--shg-gold-hover) !important; transform: translateY(-2px); }
+/* Optional: add the class "shg-btn-forest" to a button in Developer Mode for the dark version */
+html #dm .dmBody a.dmButtonLink.shg-btn-forest { background-color: var(--shg-forest) !important; }
+html #dm .dmBody a.dmButtonLink.shg-btn-forest :is(span, .text) { color: #fff !important; }
+
+/* ---------- 4. Header: shared by every device ---------- */
+/* The header bar itself */
+html #dm .dmInner div.dmHeader.u_hcontainer,
+html #dm .dmInner div.u_hcontainer {
+  background-color: rgba(246, 247, 242, 0.97) !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  border-width: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+html #dm .shg-header.shg-header { max-width: 88rem; margin: 0 auto; }
+/* Duda gives header rows a fixed width; let ours use the full width instead */
+html #dm .shg-header.shg-header .dmRespRow {
+  width: auto !important;
+  max-width: none !important;
+}
+html #dm .shg-header.shg-header .dmRespColsWrapper {
+  display: flex !important;
+  align-items: center;
+  gap: 24px;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+html #dm .shg-header.shg-header .dmRespCol {
+  float: none !important;
+  width: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+html #dm .shg-header.shg-header .shg-header__brand { flex: 0 0 auto; }
+html #dm .shg-header.shg-header .shg-header__nav {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Logo */
+html #dm .shg-header.shg-header .shg-header__brand .imageWidget {
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+html #dm .shg-header.shg-header .shg-header__brand .imageWidget a { display: inline-block; border-radius: 4px; }
+html #dm .shg-header.shg-header .shg-header__brand img {
+  display: block;
+  width: auto !important;
+  max-width: none !important;
+  border-radius: 0 !important;
+}
+
+/* The dynamic menu */
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav {
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-content: flex-end !important;
+  font-family: var(--shg-font) !important;
+}
+/* Remove the old pipes and underline effects */
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap::before,
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap::after,
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .nav-item-text::before,
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .nav-item-text::after {
+  display: none !important;
+  content: none !important;
+}
+/* Top-level menu items */
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap > .unifiednav__item {
+  min-height: 48px;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-radius: var(--shg-leaf-corner);
+  color: var(--shg-forest) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  background-color: transparent;
+  transition: background-color .15s ease;
+}
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap > .unifiednav__item:hover {
+  background-color: var(--shg-stone) !important;
+  color: var(--shg-forest) !important;
+}
+/* The page you are on */
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap > .unifiednav__item.dmNavItemSelected {
+  background-color: var(--shg-leaf-pale) !important;
+  color: var(--shg-forest) !important;
+}
+/* Day opportunities (the main business goal) gets a small leaf in front of it.
+   Works on the page address, so keep the page URL as /day-opportunities. */
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav a.unifiednav__item[href*="day-opportunities"]::before {
+  content: "";
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  background: var(--shg-leaf);
+  border-radius: 0 100% 0 100%;
+}
+/* Drop-down menus (sub-pages): hidden until you hover the parent or tab into it */
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav { min-width: 0; }
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap {
+  position: relative;
+}
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap > .unifiednav__container[data-depth] {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+}
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap:is(:hover, :focus-within) > .unifiednav__container[data-depth] {
+  display: flex;
+}
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container[data-depth] {
+  background-color: #fff !important;
+  border-radius: var(--shg-leaf-corner);
+  box-shadow: 0 14px 34px rgba(20, 35, 26, 0.16) !important;
+  padding: 8px !important;
+  min-width: 220px;
+}
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container[data-depth] .unifiednav__item {
+  min-height: 44px;
+  border-radius: 0.75rem 0.25rem;
+  color: var(--shg-forest) !important;
+  background-color: transparent !important;
+  font-family: var(--shg-font) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container[data-depth] .unifiednav__item:hover,
+html #dm .shg-header.shg-header nav.main-navigation.unifiednav .unifiednav__container[data-depth] .unifiednav__item.dmNavItemSelected {
+  background-color: var(--shg-leaf-pale) !important;
+  color: var(--shg-forest) !important;
+}
+
+/* "Make an enquiry" button */
+html #dm .shg-header.shg-header a.shg-enquire {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: var(--shg-leaf-corner);
+  background-color: var(--shg-gold);
+  color: var(--shg-forest) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: transform .18s ease, background-color .18s ease;
+}
+html #dm .shg-header.shg-header a.shg-enquire:hover { background-color: var(--shg-gold-hover); transform: translateY(-2px); }
+html #dm .shg-header.shg-header a.shg-enquire:active { transform: scale(.98); }
+html #dm .shg-header.shg-header .shg-enquire__short { display: none; }
+
+/* ---------- 5. Leaf-shaped photos ----------
+   In Developer Mode, add ONE of these classes to an image widget's outer <div>:
+     shg-leaf       two opposite corners fully rounded (thumbnails, square photos)
+     shg-leaf-soft  a gentler leaf (big photos)
+     shg-leaf-r     the leaf the other way round
+   On hover, the leaf opens out to show the whole photo. */
+html #dm .shg-leaf.shg-leaf img,
+html #dm .shg-leaf-soft.shg-leaf-soft img,
+html #dm .shg-leaf-r.shg-leaf-r img {
+  transition: border-radius .7s cubic-bezier(.22, 1, .36, 1) !important;
+}
+html #dm .shg-leaf.shg-leaf img      { border-radius: 0 100% 0 100% / 0 100% 0 100% !important; }
+html #dm .shg-leaf-soft.shg-leaf-soft img { border-radius: 0 42% 0 42% / 0 30% 0 30% !important; }
+html #dm .shg-leaf-r.shg-leaf-r img  { border-radius: 100% 0 100% 0 / 100% 0 100% 0 !important; }
+@media (hover: hover) {
+  html #dm :is(.shg-leaf.shg-leaf, .shg-leaf-soft.shg-leaf-soft, .shg-leaf-r.shg-leaf-r):hover img {
+    border-radius: var(--shg-leaf-corner) !important;
+  }
+}
+/* Phones and tablets: opened by the optional script in 6-body-end-html.html */
+html #dm :is(.shg-leaf.shg-leaf, .shg-leaf-soft.shg-leaf-soft, .shg-leaf-r.shg-leaf-r).shg-open img {
+  border-radius: var(--shg-leaf-corner) !important;
+}
+
+/* ---------- 6. Footer ---------- */
+html #dm .dmInner div.dmFooter {
+  background-color: var(--shg-forest) !important;
+  background-image: none !important;
+  color: #fff;
+}
+html #dm .dmInner div.dmFooter::before {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
+html #dm .dmInner div.dmFooter :is(p, div, span, li, h1, h2, h3, h4, h5, h6, b, strong) { color: #fff !important; font-family: var(--shg-font) !important; }
+html #dm .dmInner div.dmFooter a {
+  color: #fff !important;
+  text-decoration: underline !important;
+  text-decoration-color: var(--shg-gold) !important;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* ---------- 7. Respect "reduce motion" settings ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html #dm *, html #dm *::before, html #dm *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
+}
