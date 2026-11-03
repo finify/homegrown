@@ -14,6 +14,7 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 | `menu/after/5-css-mobile.css` | Developer Mode > CSS > "…AFFECTS MOBILE DEVICES" | Paste at the **end** |
 | `menu/after/6-body-end-html.html` *(optional)* | Site Settings > Body end HTML | Paste at the end (opens leaf photos as you scroll on phones) |
 | `menu/after/7-mobile-menu-body-end.html` *(recommended)* | Site Settings > Body end HTML | Paste at the end. Gives phones the prototype's header: logo left, Menu button right, full-screen green menu with the X animation. Links still come from the Pages panel. |
+| `menu/after/8-css-shop.css` | Developer Mode > CSS > "…AFFECTS ALL DEVICES" | Paste at the **end**, after file 3. Styles the shop (/store) to match: leaf photos that open on hover, forest titles and prices, gold buttons, berry "Sold out" label, matching fields. |
 
 ## Before you start
 1. **Back up.** Copy the current header HTML and all three CSS panels into a text file, so you can paste them back if anything goes wrong.
