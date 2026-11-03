@@ -98,6 +98,19 @@
   var ENQUIRY = '/day-opportunities#register';
   var PHONE = { href: 'tel:+441915499444', label: 'Call 0191 549 9444' };
 
+  // MENU LINKS: copy these from the desktop menu's custom links (same text, same addresses).
+  // Duda's mobile layout doesn't include the desktop custom-link menu, so phones read it from here.
+  // Add, remove or reorder lines to change the phone menu. Leave the list empty ([]) to use
+  // Duda's own page list instead.
+  var LINKS = [
+    { text: 'Day opportunities', href: '/day-opportunities' },
+    { text: 'Garden centre', href: '/garden-centre' },
+    { text: "What's on", href: '/whats-on' },
+    { text: 'Community', href: '/community' },
+    { text: 'About', href: '/about' },
+    { text: 'Contact & find us', href: '/contact' },
+  ];
+
   function build() {
     var source = document.getElementById('leftSidebar');
     // Only on Duda's mobile layout, and only once.
@@ -130,9 +143,21 @@
       return node.classList.contains('dmHideFromNav') || node.hasAttribute('hidden') ||
         node.getAttribute('aria-hidden') === 'true' || getComputedStyle(node).display === 'none';
     };
+    // Normalise an address so "/about", "/about/" and "https://site/about" all match.
+    var pathOf = function (href) {
+      try { return new URL(href, location.href).pathname.replace(/\/+$/, '') || '/'; } catch (e) { return href; }
+    };
+    var here = pathOf(location.href);
+
     function readItems() {
+      // 1. The custom links set above (matches the desktop menu).
+      if (LINKS.length) {
+        return LINKS.map(function (l) {
+          return { text: l.text, href: l.href, target: l.newTab ? '_blank' : null, current: pathOf(l.href) === here };
+        });
+      }
       var out = [];
-      // Prefer the desktop menu if it's on the page; otherwise Duda's mobile menu.
+      // 2. Otherwise the desktop menu if it's on the page, then Duda's mobile menu.
       var desk = document.querySelectorAll('nav.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap');
       var rows = desk.length ? desk : source.querySelectorAll(':scope > li');
       for (var i = 0; i < rows.length; i++) {
