@@ -13,8 +13,8 @@ html #dm .shg-footer.shg-footer.shg-footer .shg-footer__brand .dmRespColsWrapper
   grid-template-columns: 1fr;
   gap: 32px;
 }
-html #dm .shg-footer.shg-footer.shg-footer .shg-footer__name { font-size: 44px !important; }
-html #dm .shg-footer.shg-footer.shg-footer .shg-footer__tagline { font-size: 20px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .dmNewParagraph.shg-footer__name { font-size: 44px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .dmNewParagraph.shg-footer__tagline { font-size: 20px !important; }
 html #dm .shg-footer.shg-footer.shg-footer .shg-footer__mark .imageWidget {
   max-width: 200px !important;
   margin: 0 !important;
@@ -40,11 +40,11 @@ html #dm .shg-footer.shg-footer.shg-footer .shg-footer__support-tiles .dmRespCol
 }
 html #dm .shg-footer.shg-footer.shg-footer .shg-footer__tile { min-height: 96px !important; padding: 14px !important; }
 html #dm .shg-footer.shg-footer.shg-footer .shg-footer__tile img { max-height: 48px !important; }
-html #dm .shg-footer.shg-footer.shg-footer .shg-footer__tile-text p { font-size: 16px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .dmNewParagraph.shg-footer__tile-text { font-size: 16px !important; }
 
 /* Bottom line stacked */
 html #dm .shg-footer.shg-footer.shg-footer .shg-footer__base .dmRespColsWrapper {
   grid-template-columns: 1fr;
   gap: 4px;
 }
-html #dm .shg-footer.shg-footer.shg-footer .shg-footer__legal p { text-align: left; }
+html #dm .shg-footer.shg-footer.shg-footer .dmNewParagraph.shg-footer__legal { text-align: left !important; }

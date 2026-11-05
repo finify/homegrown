@@ -14,8 +14,27 @@ Unlike the header, **this footer file is used on every device**, phones included
 
 You don't need to delete the old footer CSS. It targets the old footer's elements, which are gone.
 
+## Why the old version lost its styling when edited
+Duda's text editor rewrites the HTML inside a text widget as soon as you click into it:
+- it removes inner class names;
+- it turns headings and lists into its own markup;
+- it wraps text in `<span>` and `<font>` tags with inline styles.
+
+The first version styled those inner elements, so editing wiped the design. This version is **editor-safe**:
+- each editable block is a single Duda widget, with its class on the widget itself (Duda keeps that);
+- the content inside is plain text, bold, links and line breaks;
+- the CSS styles whatever ends up inside each widget.
+
+Tested by simulating the editor's rewrite (inner classes stripped, text wrapped in Arial/14px/black spans): the design didn't change.
+
+## How to edit in the editor
+- **Text:** click the block and type. Font, size and colour come from the design, so ignore the toolbar's font and colour options.
+- **Links:** select the words and use the toolbar's link button. In a link list, put each link on its own line.
+- **Pictures:** click the image and choose **Replace**.
+- **Don't** open the widget's own HTML view and paste markup into it. If something does go wrong, paste `after/footer.html` into the footer file again.
+
 ## Everything is editable in the editor
-- **Text:** all 13 text blocks are normal Duda text widgets. Click to change words, links, opening times or contact details.
+- **Text:** all 20 text blocks are normal Duda text widgets. Click to change words, links, opening times or contact details.
 - **Pictures:** the leaves graphic and both funder logos are normal Duda image widgets. Click to replace them from the media library.
   - The leaves graphic starts from `https://finify.github.io/homegrown/duda/footer-leaves.svg`. Swap it for a copy in the site's own media library so the site doesn't depend on the GitHub repo. The file is `public/duda/footer-leaves.svg` in this repo.
   - The two logos (National Lottery Community Fund, Youth Investment Fund) already come from the site's own media library.

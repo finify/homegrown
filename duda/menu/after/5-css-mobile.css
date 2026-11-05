@@ -26,20 +26,13 @@ html #dm .shg-header.shg-header.shg-header .shg-header__nav {
   display: contents !important;
 }
 
-/* Short button label on small screens; screen readers still hear "Make an enquiry" */
-html #dm .shg-header.shg-header.shg-header a.shg-enquire {
+/* Enquiry button: a little smaller on phones */
+html #dm .shg-header.shg-header.shg-header .shg-enquire {
   order: 2;
-  min-height: 44px;
-  padding: 0 16px;
-  font-size: 16px;
+  --shg-enquire-pad: 16px;
+  --shg-enquire-size: 16px;
 }
-html #dm .shg-header.shg-header.shg-header .shg-enquire__short { display: inline !important; }
-html #dm .shg-header.shg-header.shg-header .shg-enquire__long {
-  position: absolute !important;
-  width: 1px; height: 1px;
-  margin: -1px; padding: 0; overflow: hidden;
-  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-}
+html #dm .shg-header.shg-header.shg-header .shg-enquire a { min-height: 44px; }
 
 /* The menu: one swipeable row under the logo */
 html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav {
