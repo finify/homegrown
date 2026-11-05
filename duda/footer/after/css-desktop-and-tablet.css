@@ -1,0 +1,36 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: FOOTER, DESKTOP AND TABLET
+   Where: Developer Mode > CSS > "…AFFECTS DESKTOP AND TABLET DEVICES"
+   How:   paste at the very END of that panel.
+   Desktop uses the all-devices layout. This file only adjusts tablets
+   and small laptops (under 1280px wide).
+   ===================================================================== */
+
+/* Small laptops: tighter side padding */
+@media screen and (max-width: 1279px) {
+  html #dm .shg-footer.shg-footer.shg-footer { padding: 96px 32px 0; }
+  html #dm .shg-footer.shg-footer.shg-footer .shg-footer__nav .dmRespColsWrapper {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) repeat(2, minmax(0, 1.3fr));
+    gap: 32px;
+  }
+}
+
+/* Tablets (768px to 1023px): three link columns on one row,
+   opening times and "Find us" side by side underneath; logos three across */
+@media screen and (max-width: 1023px) {
+  html #dm .shg-footer.shg-footer.shg-footer { padding: 80px 32px 0; }
+  html #dm .shg-footer.shg-footer.shg-footer .shg-footer__brand .dmRespColsWrapper {
+    grid-template-columns: 1fr 220px;
+    gap: 32px;
+  }
+  html #dm .shg-footer.shg-footer.shg-footer .shg-footer__nav { margin-top: 72px !important; }
+  html #dm .shg-footer.shg-footer.shg-footer .shg-footer__nav .dmRespColsWrapper {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 40px 32px;
+  }
+  html #dm .shg-footer.shg-footer.shg-footer .shg-footer__nav .dmRespCol:nth-child(-n + 3) { grid-column: span 2; }
+  html #dm .shg-footer.shg-footer.shg-footer .shg-footer__nav .dmRespCol:nth-child(n + 4) { grid-column: span 3; }
+  html #dm .shg-footer.shg-footer.shg-footer .shg-footer__support-tiles .dmRespColsWrapper {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

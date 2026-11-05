@@ -1,0 +1,50 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: FOOTER, MOBILE
+   Where: Developer Mode > CSS > "…AFFECTS MOBILE DEVICES"
+   How:   paste at the very END of that panel.
+   Layout on phones: name and leaves stacked, link lists two across,
+   opening times and "Find us" full width, logos two across.
+   ===================================================================== */
+
+html #dm .shg-footer.shg-footer.shg-footer { padding: 64px 16px 0; }
+
+/* Brand: name, tagline, then a smaller leaves graphic */
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__brand .dmRespColsWrapper {
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__name { font-size: 44px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__tagline { font-size: 20px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__mark .imageWidget {
+  max-width: 200px !important;
+  margin: 0 !important;
+}
+
+/* Links two across; opening times and "Find us" full width */
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__nav { margin-top: 56px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__nav .dmRespColsWrapper {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 24px;
+}
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__nav .dmRespCol:nth-child(n + 4) { grid-column: 1 / -1; }
+
+/* Supported by: tighter box, logos two across */
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__support {
+  margin-top: 56px !important;
+  padding: 24px 20px 0 !important;
+}
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__support-tiles { padding: 16px 20px 24px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__support-tiles .dmRespColsWrapper {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__tile { min-height: 96px !important; padding: 14px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__tile img { max-height: 48px !important; }
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__tile-text p { font-size: 16px !important; }
+
+/* Bottom line stacked */
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__base .dmRespColsWrapper {
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+html #dm .shg-footer.shg-footer.shg-footer .shg-footer__legal p { text-align: left; }
