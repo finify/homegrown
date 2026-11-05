@@ -16,6 +16,18 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 | `menu/after/7-mobile-menu-body-end.html` *(recommended)* | Site Settings > Body end HTML | Paste at the end. Gives phones the prototype's header: logo left, Menu button right, full-screen green menu with the X animation. Links still come from the Pages panel. |
 | `menu/after/8-css-shop.css` | Developer Mode > CSS > "…AFFECTS ALL DEVICES" | Paste at the **end**, after file 3. Styles the shop (/store) to match: leaf photos that open on hover, forest titles and prices, gold buttons, berry "Sold out" label, matching fields. |
 
+## Recommended: link the CSS instead of pasting it
+
+Paste the two snippets in `LINK-SETUP.html` once:
+- the **Head HTML** links: font, plus `base.css`, `header.css`, `footer.css` and `shop.css`;
+- the **Body end HTML** script: `site.js`.
+
+From then on, edit the files in `duda/`, commit and push. GitHub Pages rebuilds them (`scripts/build-duda.mjs`), and the live site picks up the change within about 10 minutes. You still paste the header and footer HTML once each.
+
+The per-device panels aren't needed with this setup. The build scopes phone rules to Duda's `body.dmMobileBody`, and desktop/tablet rules to everything else. If you switch to linking, remove the CSS you pasted earlier from the three panels so nothing loads twice.
+
+The steps below are the manual (paste-in) alternative.
+
 ## Before you start
 1. **Back up.** Copy the current header HTML and all three CSS panels into a text file, so you can paste them back if anything goes wrong.
 2. **Switch the site from the left sidebar to a top header.**

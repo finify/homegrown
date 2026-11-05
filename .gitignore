@@ -3,3 +3,5 @@ node_modules/
 dist/
 .taste-skill/
 .ssr/
+public/duda/*.css
+public/duda/site.js
