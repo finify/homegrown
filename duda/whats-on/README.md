@@ -7,6 +7,19 @@
 - **Your template:** `template-original.csv` is the template you sent. Its test row's `uuid` is reused for the first row, so the import **updates** that row instead of leaving a stray "1" behind. Its empty `New field` column isn't included.
 - **Regenerating:** `scripts/duda-whats-on-csv.py` rebuilds the CSV.
 
+## Test first: things not yet confirmed in the Duda CMS
+The CSV keeps the columns from your Duda export (`uuid`, `item`). These import details couldn't be checked without access to the editor:
+- **Field creation:** whether the import creates fields or needs them to exist first. If it needs them, create each field below (exact name, matching type) before importing.
+- **Formats:**
+  - date fields: `2026-11-25` was used;
+  - Yes/No fields: `true`/`false` was used;
+  - Link fields: a plain URL was used.
+- **Images:** whether image URLs are copied into Duda's media library or linked.
+
+**Import `whats-on-collection-TEST.csv` (3 rows) first.**
+- **If it all imports cleanly,** import the full file.
+- **If something won't import,** export that collection from Duda with one sample row filled in by hand. That shows the exact formats Duda uses, and the CSV can be regenerated to match. A field that refuses a format can also be switched to Text.
+
 ## Fields (set these types when Duda asks during import)
 
 | Field | Duda type | What it's for |
@@ -34,7 +47,7 @@
 | `description` | Rich text | Longer text for a detail page or expanded card |
 | `what_to_bring` | Text | e.g. "Stout footwear and gloves" |
 | `accessibility_notes` | Text | Blank for now; worth filling in for families |
-| `image` | Image | Photo URL. Duda copies it into the media library on import |
+| `image` | Image | Photo URL (not yet confirmed whether Duda copies it into the media library or links to it) |
 | `image_alt` | Text | Description of the photo for screen readers |
 | `featured` | Yes/No (Boolean) | Pin to the top or show on the home page |
 | `show_on_site` | Yes/No (Boolean) | Untick to hide a row without deleting it |
