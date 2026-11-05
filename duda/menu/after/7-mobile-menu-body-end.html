@@ -8,7 +8,8 @@
     - logo on the left, a "Menu" button on the right
     - the button's three lines turn into an X and the label changes to "Close"
     - a full-screen green menu fades and slides in, with the links, "Make an enquiry" and "Call"
-  The links are read from Duda's own menu, so they still come from the Pages panel.
+  The links are read from Duda's own menu, so the Pages panel controls them, including each
+  page's "show on desktop / tablet / mobile" setting.
   If this script doesn't run, phones show Duda's own mobile menu (styled by file 5) and
   tablets show the two-row header (styled by file 4) instead.
   Accessible: real button with aria-expanded, Escape closes, focus moves into the menu and back.
@@ -123,18 +124,13 @@
   var ENQUIRY = '/day-opportunities#register';
   var PHONE = { href: 'tel:+441915499444', label: 'Call 0191 549 9444' };
 
-  // MENU LINKS: copy these from the desktop menu's custom links (same text, same addresses).
-  // Duda's mobile layout doesn't include the desktop custom-link menu, so phones read it from here.
-  // Add, remove or reorder lines to change the phone menu. Leave the list empty ([]) to use
-  // Duda's own page list instead.
-  var LINKS = [
-    { text: 'Day opportunities', href: '/day-opportunities' },
-    { text: 'Garden centre', href: '/garden-centre' },
-    { text: "What's on", href: '/whats-on' },
-    { text: 'Community', href: '/community' },
-    { text: 'About', href: '/about' },
-    { text: 'Contact & find us', href: '/contact' },
-  ];
+  // MENU LINKS come from Duda itself: the Pages panel decides which pages appear, in which
+  // order, and on which devices ("show on desktop / tablet / mobile"). Nothing to edit here.
+  //   Phones read Duda's mobile menu; tablets read the header menu.
+  //   Pages Duda marks as hidden on the current device are left out.
+  // Optional override: only if you ever need a fixed list instead, fill this in, e.g.
+  //   [{ text: 'Garden centre', href: '/garden-centre' }]. Leave it empty to follow Duda.
+  var LINKS = [];
 
   function build() {
     var source = document.getElementById('leftSidebar');
@@ -167,9 +163,20 @@
     // in the Pages panel, Duda's template rows (they contain "${text}" until Duda fills
     // them in) and empty rows.
     var isPlaceholder = function (s) { return !s || /\$\{|\{\{/.test(s); };
+    // Which device we're on, in Duda's terms: phone = "mobile", tablet = "tablet".
+    var device = function () {
+      return dudaMobile || window.innerWidth < 768 ? 'mobile' : 'tablet';
+    };
+    // Duda's markers for "hide this page on ...": attributes and classes it puts on menu items.
+    var HIDDEN_MARKERS = {
+      mobile: { attr: 'data-hidden-on-mobile', cls: /(^|\s)(hide-for-small|dmHideFromNav-mobile)(\s|$)/ },
+      tablet: { attr: 'data-hidden-on-tablet', cls: /(^|\s)(hide-for-medium|dmHideFromNav-tablet)(\s|$)/ },
+    };
     var isHidden = function (node) {
+      var m = HIDDEN_MARKERS[device()];
       return node.classList.contains('dmHideFromNav') || node.hasAttribute('hidden') ||
-        node.getAttribute('aria-hidden') === 'true' || getComputedStyle(node).display === 'none';
+        node.getAttribute('aria-hidden') === 'true' || node.hasAttribute(m.attr) || m.cls.test(node.className || '') ||
+        getComputedStyle(node).display === 'none';
     };
     // Normalise an address so "/about", "/about/" and "https://site/about" all match.
     var pathOf = function (href) {
@@ -185,9 +192,11 @@
         });
       }
       var out = [];
-      // 2. Otherwise the desktop menu if it's on the page, then Duda's mobile menu.
-      var desk = document.querySelectorAll('nav.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap');
-      var rows = desk.length ? desk : (source ? source.querySelectorAll(':scope > li') : []);
+      // 2. Duda's own menu for this device: phones use the mobile menu, tablets the header menu.
+      var headerRows = document.querySelectorAll('.shg-header nav.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap');
+      if (!headerRows.length) headerRows = document.querySelectorAll('nav.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap');
+      var mobileRows = source ? source.querySelectorAll(':scope > li') : [];
+      var rows = device() === 'mobile' && mobileRows.length ? mobileRows : (headerRows.length ? headerRows : mobileRows);
       for (var i = 0; i < rows.length; i++) {
         var row = rows[i], a = row.querySelector('a');
         if (!a || isHidden(row) || isHidden(a)) continue;
@@ -226,7 +235,8 @@
     // Duda may finish building its menu after this runs: refresh when it changes.
     var watched = source || document.querySelector('.shg-header');
     new MutationObserver(function () { clearTimeout(fillList.t); fillList.t = setTimeout(fillList, 100); })
-      .observe(watched, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'style', 'href'] });
+      .observe(watched, { childList: true, subtree: true, characterData: true, attributes: true,
+        attributeFilter: ['class', 'style', 'href', 'hidden', 'data-hidden-on-mobile', 'data-hidden-on-tablet', 'data-hidden-on-desktop'] });
     window.addEventListener('load', fillList);
     nav.appendChild(list);
     panel.appendChild(nav);
@@ -263,6 +273,7 @@
       if (!on && panel.classList.contains('is-open')) setOpen(false);
       root.classList.toggle('shg-m-on', on);
       root.classList.toggle('shg-m-tablet', on && !dudaMobile);
+      fillList(); // the device may have changed, and so may the pages Duda shows on it
     }
     apply();
     if (tabletQuery.addEventListener) tabletQuery.addEventListener('change', apply);

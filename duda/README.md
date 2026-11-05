@@ -13,7 +13,7 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 | `menu/after/4-css-desktop-and-tablet.css` | Developer Mode > CSS > "…AFFECTS DESKTOP AND TABLET DEVICES" | Delete one old line (below), then paste at the **end** |
 | `menu/after/5-css-mobile.css` | Developer Mode > CSS > "…AFFECTS MOBILE DEVICES" | Paste at the **end** |
 | `menu/after/6-body-end-html.html` *(optional)* | Site Settings > Body end HTML | Paste at the end (opens leaf photos as you scroll on phones) |
-| `menu/after/7-mobile-menu-body-end.html` *(recommended)* | Site Settings > Body end HTML | Paste at the end. Gives phones **and tablets (1024px wide or less)** the prototype's header: logo left, Menu button right, full-screen green menu with the X animation. Switches automatically when a tablet is rotated or a window is resized. Links still come from the Pages panel. |
+| `menu/after/7-mobile-menu-body-end.html` *(recommended)* | Site Settings > Body end HTML | Paste at the end. Gives phones **and tablets (1024px wide or less)** the prototype's header: logo left, Menu button right, full-screen green menu with the X animation. Switches automatically when a tablet is rotated or a window is resized. Links come straight from Duda: the **Pages** panel decides which pages show, their order, and each page's *show on desktop / tablet / mobile* setting. Nothing is hard-coded. |
 | `menu/after/8-css-shop.css` | Developer Mode > CSS > "…AFFECTS ALL DEVICES" | Paste at the **end**, after file 3. Styles the shop (/store) to match: leaf photos that open on hover, forest titles and prices, gold buttons, berry "Sold out" label, matching fields. |
 
 ## Recommended: link the CSS instead of pasting it
