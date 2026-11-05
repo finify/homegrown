@@ -13,7 +13,7 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 | `menu/after/4-css-desktop-and-tablet.css` | Developer Mode > CSS > "…AFFECTS DESKTOP AND TABLET DEVICES" | Delete one old line (below), then paste at the **end** |
 | `menu/after/5-css-mobile.css` | Developer Mode > CSS > "…AFFECTS MOBILE DEVICES" | Paste at the **end** |
 | `menu/after/6-body-end-html.html` *(optional)* | Site Settings > Body end HTML | Paste at the end (opens leaf photos as you scroll on phones) |
-| `menu/after/7-mobile-menu-body-end.html` *(recommended)* | Site Settings > Body end HTML | Paste at the end. Gives phones the prototype's header: logo left, Menu button right, full-screen green menu with the X animation. Links still come from the Pages panel. |
+| `menu/after/7-mobile-menu-body-end.html` *(recommended)* | Site Settings > Body end HTML | Paste at the end. Gives phones **and tablets (1024px wide or less)** the prototype's header: logo left, Menu button right, full-screen green menu with the X animation. Switches automatically when a tablet is rotated or a window is resized. Links still come from the Pages panel. |
 | `menu/after/8-css-shop.css` | Developer Mode > CSS > "…AFFECTS ALL DEVICES" | Paste at the **end**, after file 3. Styles the shop (/store) to match: leaf photos that open on hover, forest titles and prices, gold buttons, berry "Sold out" label, matching fields. |
 
 ## Recommended: link the CSS instead of pasting it
@@ -58,7 +58,8 @@ The steps below are the manual (paste-in) alternative.
 | Screen | Header |
 |---|---|
 | Desktop, 1280px and wider | One row: logo, menu, gold "Make an enquiry" button |
-| Tablet and small laptops (768–1279px) | Logo and button on top, full menu underneath |
+| Tablet (up to 1024px) | Phone-style bar: logo, Menu button, full-screen menu (from site.js / file 7). Falls back to the two-row header if the script doesn't run |
+| Small laptops (1025–1279px) | Logo and button on top, full menu underneath |
 | Mobile | Logo and a short "Enquire" button, then the menu as one swipeable row (drop-downs hidden; sub-pages are reached from their parent page) |
 
 **Phones use Duda's separate mobile layout.** Duda doesn't show the header file on phones. It uses its own header bar, hamburger button and slide-out menu, which is why the old menu still appeared on mobile.

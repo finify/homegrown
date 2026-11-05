@@ -1,13 +1,16 @@
 <!--
-  Sunderland Home Grown redesign: MOBILE HEADER AND MENU (same design as the prototype)
+  Sunderland Home Grown redesign: PHONE AND TABLET HEADER AND MENU (same design as the prototype)
   Where: Site Settings > Body end HTML (paste at the end, after file 6 if you use it).
 
-  What it does on phones (Duda's mobile layout only):
+  Where it shows: phones (Duda's mobile layout) and tablets (screens 1024px wide or less).
+  Rotating a tablet or resizing a window across 1024px switches it on and off automatically.
+  What it does:
     - logo on the left, a "Menu" button on the right
     - the button's three lines turn into an X and the label changes to "Close"
     - a full-screen green menu fades and slides in, with the links, "Make an enquiry" and "Call"
   The links are read from Duda's own menu, so they still come from the Pages panel.
-  If this script doesn't run, Duda's own mobile menu (styled by file 5) shows instead.
+  If this script doesn't run, phones show Duda's own mobile menu (styled by file 5) and
+  tablets show the two-row header (styled by file 4) instead.
   Accessible: real button with aria-expanded, Escape closes, focus moves into the menu and back.
 -->
 <style>
@@ -15,6 +18,18 @@
   html.shg-m-on #dmSlideRightNavRight { padding-top: 72px !important; transform: none !important; }
   html.shg-m-on #dmSlideRightNavLeft { display: none !important; }
   html.shg-m-locked, html.shg-m-locked body { overflow: hidden !important; }
+
+  /* Tablets: hide the regular header (and the old sidebar layout, if still used); make room for the bar */
+  html.shg-m-tablet #dm .dmInner div.dmHeader,
+  html.shg-m-tablet .stickyHeaderSpacer,
+  html.shg-m-tablet #siteSidebar,
+  html.shg-m-tablet #siteSidebarSpacer { display: none !important; }
+  html.shg-m-tablet body { padding-top: 80px !important; }
+
+  /* The bar and panel only exist on screen while the phone/tablet menu is switched on */
+  .shg-m-bar, .shg-m-panel { display: none !important; }
+  html.shg-m-on .shg-m-bar { display: flex !important; }
+  html.shg-m-on .shg-m-panel { display: block !important; }
 
   .shg-m-bar {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100000;
@@ -87,6 +102,16 @@
   .shg-m-btn--gold { background: #E9B82B; color: #173A22 !important; }
   .shg-m-btn--white { background: #fff; color: #173A22 !important; }
 
+  /* Tablet sizing: a taller bar, bigger logo, and the menu contents kept to a readable width */
+  html.shg-m-tablet .shg-m-bar { height: 80px; padding: 0 32px; }
+  html.shg-m-tablet .shg-m-bar .shg-m-logo img { height: 48px !important; }
+  html.shg-m-tablet .shg-m-toggle { min-height: 52px; padding: 0 22px; font-size: 18px; }
+  html.shg-m-tablet .shg-m-panel { top: 80px; padding: 48px 32px 56px; }
+  html.shg-m-tablet .shg-m-panel nav,
+  html.shg-m-tablet .shg-m-actions { max-width: 640px; margin-left: auto; margin-right: auto; }
+  html.shg-m-tablet .shg-m-panel nav a { min-height: 64px; font-size: 32px; }
+  html.shg-m-tablet .shg-m-actions { grid-template-columns: 1fr 1fr; margin-top: 40px; }
+
   @media (prefers-reduced-motion: reduce) {
     .shg-m-panel, .shg-m-panel li, .shg-m-icon span, .shg-m-toggle { transition: none !important; }
   }
@@ -113,8 +138,11 @@
 
   function build() {
     var source = document.getElementById('leftSidebar');
-    // Only on Duda's mobile layout, and only once.
-    if (!source || !document.body.classList.contains('dmMobileBody') || document.querySelector('.shg-m-bar')) return;
+    // Phones: Duda's mobile layout. Tablets: the desktop page with our header, 1024px wide or less.
+    var dudaMobile = !!source && document.body.classList.contains('dmMobileBody');
+    var hasHeader = !!document.querySelector('.shg-header');
+    if ((!dudaMobile && !hasHeader) || document.querySelector('.shg-m-bar')) return;
+    var tabletQuery = window.matchMedia('(max-width: 1024px)');
 
     var el = function (tag, attrs, html) {
       var n = document.createElement(tag);
@@ -159,7 +187,7 @@
       var out = [];
       // 2. Otherwise the desktop menu if it's on the page, then Duda's mobile menu.
       var desk = document.querySelectorAll('nav.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap');
-      var rows = desk.length ? desk : source.querySelectorAll(':scope > li');
+      var rows = desk.length ? desk : (source ? source.querySelectorAll(':scope > li') : []);
       for (var i = 0; i < rows.length; i++) {
         var row = rows[i], a = row.querySelector('a');
         if (!a || isHidden(row) || isHidden(a)) continue;
@@ -196,8 +224,9 @@
     }
     fillList();
     // Duda may finish building its menu after this runs: refresh when it changes.
+    var watched = source || document.querySelector('.shg-header');
     new MutationObserver(function () { clearTimeout(fillList.t); fillList.t = setTimeout(fillList, 100); })
-      .observe(source, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'style', 'href'] });
+      .observe(watched, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'style', 'href'] });
     window.addEventListener('load', fillList);
     nav.appendChild(list);
     panel.appendChild(nav);
@@ -208,8 +237,6 @@
 
     document.body.insertBefore(panel, document.body.firstChild);
     document.body.insertBefore(bar, document.body.firstChild);
-    document.documentElement.classList.add('shg-m-on');
-
     var label = toggle.querySelector('.shg-m-label');
     function setOpen(open, returnFocus) {
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -228,6 +255,18 @@
       if (e.key === 'Escape' && panel.classList.contains('is-open')) setOpen(false, true);
     });
     panel.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+
+    // Switch the phone/tablet menu on or off for the current screen width.
+    function apply() {
+      var on = dudaMobile || tabletQuery.matches;
+      var root = document.documentElement;
+      if (!on && panel.classList.contains('is-open')) setOpen(false);
+      root.classList.toggle('shg-m-on', on);
+      root.classList.toggle('shg-m-tablet', on && !dudaMobile);
+    }
+    apply();
+    if (tabletQuery.addEventListener) tabletQuery.addEventListener('change', apply);
+    else if (tabletQuery.addListener) tabletQuery.addListener(apply);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);

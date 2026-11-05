@@ -36,8 +36,10 @@ html #dm .shg-header.shg-header.shg-header nav.main-navigation.unifiednav .unifi
   }
 }
 
-/* ---------- Tablet and small laptops (under 1280px wide) ----------
-   Two rows: logo and button on top, the full menu underneath, so nothing gets squashed. */
+/* ---------- Small laptops (1025px to 1279px) ----------
+   Two rows: logo and button on top, the full menu underneath, so nothing gets squashed.
+   Tablets (1024px and narrower) get the phone-style bar and full-screen menu from site.js
+   (file 7) instead; these two-row rules stay as the fallback if that script doesn't run. */
 @media screen and (max-width: 1279px) {
   html #dm .shg-header.shg-header.shg-header .dmRespRow {
     padding: 12px 24px 8px !important;
