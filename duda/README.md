@@ -15,6 +15,17 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 | `menu/after/6-body-end-html.html` *(optional)* | Site Settings > Body end HTML | Paste at the end (opens leaf photos as you scroll on phones) |
 | `menu/after/7-mobile-menu-body-end.html` *(recommended)* | Site Settings > Body end HTML | Paste at the end. Gives phones **and tablets (1024px wide or less)** the prototype's header: logo left, Menu button right, full-screen green menu with the X animation. Switches automatically when a tablet is rotated or a window is resized. Links come straight from Duda: the **Pages** panel decides which pages show, their order, and each page's *show on desktop / tablet / mobile* setting. Nothing is hard-coded. |
 | `menu/after/8-css-shop.css` | Developer Mode > CSS > "…AFFECTS ALL DEVICES" | Paste at the **end**, after file 3. Styles the shop (/store) to match: leaf photos that open on hover, forest titles and prices, gold buttons, berry "Sold out" label, matching fields. |
+| `menu/after/9-shop-bar-body-end.html` *(already in site.js)* | Site Settings > Body end HTML | Only if you paste instead of linking. On the shop pages it adds an **Account** link next to the basket, hides the count badge while the basket is empty, and makes the basket usable with the keyboard and screen readers. |
+
+## Shop: basket, account and full width
+- **Basket:** the shop pages already have Duda's own store **cart widget**, which keeps a live count of items. `shop.css` turns it into a dark green leaf button with a gold count badge. The badge only shows once something is in the basket.
+- **Account:** `site.js` adds an **Account** link next to the basket on any page with that cart widget, so it only appears on the shop pages. It opens the customer's Ecwid account (sign in, orders).
+- **Search:** the store search box becomes a full-height rounded field with "Search the shop".
+- **Full width:** the store fills the page width, with 56px side margins on desktop, about 32px on tablet and 16px on phones.
+  - The product and category grids fit as many columns as there's room for, 2 on phones.
+  - A short list, such as only 2 products, is centred.
+- **To show the basket on more shop pages** (categories, products): Ecwid's own pages already include it. For another Duda page, add the **Cart** widget from the Store widgets in the editor, and the same styling and Account link apply.
+- **Worth fixing in the store:** the Workshops category has no photo, so Ecwid shows a pink gradient. Add a category image in the store's catalogue.
 
 ## Recommended: link the CSS instead of pasting it
 

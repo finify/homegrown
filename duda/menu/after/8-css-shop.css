@@ -155,3 +155,186 @@ html body #dm .ec-store .product-details__description :is(p, li, span, div) {
   font-size: 18px !important;
   line-height: 1.6 !important;
 }
+
+/* ---------- Full width ----------
+   Duda gives the store widget a fixed width; let it fill the page, with a comfortable gutter. */
+html body #dm .dmRespRow:has(> .dmRespColsWrapper .dmStore),
+html body #dm .dmRespRow:has(> .dmRespColsWrapper .dmStoreCart) {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-left: clamp(16px, 4vw, 56px) !important;
+  padding-right: clamp(16px, 4vw, 56px) !important;
+}
+html body #dm .dmBody .dmRespRow:has(> .dmRespColsWrapper .dmStore) :is(.dmRespColsWrapper, .dmRespCol),
+html body #dm .dmBody div.dmStore.dmStore,
+html body #dm .dmBody div.dmStore.dmStore > .ecwid,
+html body #dm .ec-store .ec-store__content-wrapper {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Product and category grids: as many columns as fit across the page (2 on phones).
+   A short list (2 or 3 items) sits in the middle instead of leaving a gap on the right. */
+html body #dm .ec-store :is(.grid__products, .grid__categories) {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 320px)) !important;
+  justify-content: center !important;
+  gap: 40px 24px !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+html body #dm .ec-store :is(.grid__products, .grid__categories) > :is(.grid-product, .grid-category) {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html body #dm .ec-store :is(.grid-product__wrap, .grid-category__wrap, .grid-product__wrap-inner, .grid-product__image, .grid-product__image-wrap, .grid-category__card, .grid-category__image) {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+@media (max-width: 600px) {
+  html body #dm .ec-store :is(.grid__products, .grid__categories) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    justify-content: stretch !important;
+    gap: 28px 12px !important;
+  }
+  html body #dm .ec-store .grid-product__title,
+  html body #dm .ec-store .grid-product__title-inner { font-size: 16px !important; }
+}
+
+/* ---------- Shop bar: search, cart and account (Duda's own store widgets) ---------- */
+html body #dm .dmRespRow:has(> .dmRespColsWrapper .dmStoreCart) { padding-top: 24px !important; padding-bottom: 8px !important; }
+html body #dm .dmRespRow:has(> .dmRespColsWrapper .dmStoreCart) > .dmRespColsWrapper {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  width: 100% !important;
+  max-width: none !important;
+}
+html body #dm .dmRespRow:has(> .dmRespColsWrapper .dmStoreCart) .dmRespCol {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  float: none !important;
+  padding: 0 !important;
+}
+html body #dm .dmRespRow:has(> .dmRespColsWrapper .dmStoreCart) .dmRespCol:has(.dmStoreSearch) { flex: 1 1 auto; }
+
+/* Search: a pill with the leaf corner */
+html body #dm .dmStoreSearch.dmStoreSearch {
+  width: min(100%, 360px) !important;
+  max-width: none !important;
+  height: auto !important;
+  margin: 0 !important;
+}
+html body #dm .dmStoreSearch .dmStoreSearchWrapper {
+  position: relative;
+  display: flex !important;
+  align-items: center;
+  height: 48px !important;
+  border: 2px solid #8a948c !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background: #fff !important;
+}
+html body #dm .dmStoreSearch .dmStoreSearchWrapper:focus-within { border-color: var(--shg-forest) !important; outline: 3px solid var(--shg-gold); outline-offset: 1px; }
+html body #dm .dmStoreSearch.dmStoreSearch .dmStoreSearchInput.dmStoreSearchInput {
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+  padding: 0 16px 0 44px !important;
+  background: transparent !important;
+  font-family: var(--shg-font) !important;
+  font-size: 17px !important;
+  color: var(--shg-ink) !important;
+  outline: 0 !important;
+}
+html body #dm .dmStoreSearch .dmStoreSearchInput::placeholder { color: var(--shg-soft); }
+html body #dm .dmStoreSearch .dmStoreSearchIcon {
+  position: absolute !important;
+  left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--shg-forest) !important;
+  font-size: 18px !important;
+  pointer-events: none;
+}
+
+/* Cart: forest leaf button with a gold count badge */
+html body #dm .dmStoreCart.dmStoreCart {
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+}
+html body #dm .dmStoreCart .cartIcon {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 48px;
+  border-radius: var(--shg-leaf-corner);
+  background: var(--shg-forest);
+  color: #fff !important;
+  font-size: 20px !important;
+  cursor: pointer;
+  transition: transform .18s ease, background-color .18s ease;
+}
+html body #dm .dmStoreCart .cartIcon::before { color: #fff !important; }
+html body #dm .dmStoreCart .cartIcon:hover { transform: translateY(-2px); }
+html body #dm .dmStoreCart .cartItems {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px !important;
+  border-radius: 12px;
+  background: var(--shg-gold);
+  color: var(--shg-forest) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 13px !important;
+  font-weight: 800;
+  line-height: 24px;
+  text-align: center;
+}
+/* site.js marks an empty cart, so the badge only shows when there's something in it */
+html body #dm .dmStoreCart.shg-cart--empty .cartItems { display: none !important; }
+
+/* Account link, added next to the cart by site.js */
+html body #dm .shg-account {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: var(--shg-leaf-corner);
+  background: var(--shg-stone);
+  color: var(--shg-forest) !important;
+  font-family: var(--shg-font);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: transform .18s ease, background-color .18s ease;
+}
+html body #dm .shg-account:hover { background: var(--shg-leaf-pale); transform: translateY(-2px); }
+html body #dm .shg-account svg { width: 20px; height: 20px; flex: none; }
+html body #dm :is(.shg-account, .dmStoreCart .cartIcon):focus-visible { outline: 3px solid var(--shg-forest); outline-offset: 3px; }
+@media (max-width: 600px) {
+  html body #dm .dmRespRow:has(> .dmRespColsWrapper .dmStoreCart) { padding-top: 12px !important; }
+  html body #dm .shg-account { padding: 0 14px; }
+  html body #dm .shg-account span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+}

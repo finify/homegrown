@@ -1,0 +1,54 @@
+<!--
+  SUNDERLAND HOME GROWN REDESIGN: SHOP BAR (cart and account)
+  Where: already included in site.js (linked setup). If you paste instead, add this to
+         Site Settings > Body end HTML, after files 6 and 7.
+  What:  only runs on pages that have Duda's store cart widget (the shop pages).
+         - adds an "Account" link next to the cart (opens the customer's Ecwid account);
+         - hides the count badge while the basket is empty, and gives the cart a spoken label
+           ("Basket, 2 items") and keyboard access.
+  The cart widget itself stays Duda's own: it keeps its live count and opens the basket.
+-->
+<script>
+(function () {
+  var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>';
+  function setup() {
+    var cart = document.querySelector('.dmStoreCart');
+    if (!cart || cart.getAttribute('data-shg-bar')) return;
+    cart.setAttribute('data-shg-bar', '1');
+    var icon = cart.querySelector('.cartIcon');
+    var count = cart.querySelector('.cartItems');
+    if (icon) {
+      icon.setAttribute('role', 'button');
+      icon.setAttribute('tabindex', '0');
+      icon.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); icon.click(); }
+      });
+    }
+    function sync() {
+      var n = parseInt((count && count.textContent) || '0', 10) || 0;
+      cart.classList.toggle('shg-cart--empty', n === 0);
+      if (icon) icon.setAttribute('aria-label', n ? 'Basket, ' + n + (n === 1 ? ' item' : ' items') : 'Basket, empty');
+    }
+    sync();
+    if (count) new MutationObserver(sync).observe(count, { childList: true, characterData: true, subtree: true });
+
+    var search = document.querySelector('.dmStoreSearchInput');
+    if (search) {
+      if (!search.placeholder) search.placeholder = 'Search the shop';
+      if (!search.getAttribute('aria-label')) search.setAttribute('aria-label', 'Search the shop');
+    }
+
+    var a = document.createElement('a');
+    a.className = 'shg-account';
+    a.href = '/store/account';
+    a.innerHTML = ICON + '<span>Account</span>';
+    a.setAttribute('aria-label', 'Your account');
+    a.addEventListener('click', function (e) {
+      if (window.Ecwid && typeof window.Ecwid.openPage === 'function') { e.preventDefault(); window.Ecwid.openPage('account'); }
+    });
+    cart.parentNode.insertBefore(a, cart);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup); else setup();
+  window.addEventListener('load', setup);
+})();
+</script>
