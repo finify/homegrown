@@ -4,7 +4,7 @@
    How:   paste at the very END of that panel, after file 3 (it uses file 3's colours).
 
    Styles the store on /store and its product pages to match the redesign:
-   leaf-shaped photos that open on hover, forest-green titles and prices,
+   plain photos with rounded corners, forest-green titles and prices,
    gold buttons, a berry "Sold out" label and matching form fields.
    Also worth setting in the store's own Design settings (no code): font
    "Atkinson Hyperlegible" if listed, and button colour #E9B82B.
@@ -33,21 +33,13 @@ html body #dm .ec-store .ec-link--muted,
 html body #dm .ec-store .ec-text-muted { color: var(--shg-soft) !important; }
 
 /* ---------- Product and category cards ---------- */
-/* The leaf runs top-left to bottom-right here, so the top-right corner stays square
-   and the "Sold out" label isn't clipped. */
+/* Plain photos with softly rounded corners (no leaf shape in the shop) */
 html body #dm .ec-store :is(.grid-product__image, .grid-category__image) {
   overflow: hidden !important;
-  border-radius: 42% 0 42% 0 / 30% 0 30% 0 !important;
-  transition: border-radius .7s cubic-bezier(.22, 1, .36, 1) !important;
+  border-radius: 8px !important;
 }
 html body #dm .ec-store :is(.grid-product__bg, .grid-product__picture, .grid-category__bg, .grid-category__picture-img) {
   border-radius: inherit !important;
-}
-@media (hover: hover) {
-  html body #dm .ec-store .grid-product:hover .grid-product__image,
-  html body #dm .ec-store .grid-category:hover .grid-category__image {
-    border-radius: var(--shg-leaf-corner) !important;
-  }
 }
 /* No grey frames or drop shadows behind cards */
 html body #dm .ec-store :is(.grid-category__card, .grid-category__wrap-inner, .grid-category__shadow, .grid-category__image-wrap, .grid-product__wrap-inner) {
@@ -139,14 +131,9 @@ html body #dm .ec-store :is(.form-control__text, .form-control__textarea, .form-
 html body #dm .ec-store .form-control--select-inline .form-control__select-text { color: var(--shg-forest) !important; font-weight: 700 !important; }
 
 /* ---------- Product page ---------- */
-html body #dm .ec-store :is(.details-gallery__picture, .details-gallery__image, .product-details__gallery img) {
-  border-radius: 0 42% 0 42% / 0 30% 0 30% !important;
-  transition: border-radius .7s cubic-bezier(.22, 1, .36, 1) !important;
-}
-@media (hover: hover) {
-  html body #dm .ec-store :is(.details-gallery__picture, .details-gallery__image, .product-details__gallery img):hover {
-    border-radius: var(--shg-leaf-corner) !important;
-  }
+/* Plain photos with softly rounded corners, like the product list */
+html body #dm .ec-store :is(.details-gallery__picture, .details-gallery__image, .details-gallery__thumb-img, .product-details__gallery img) {
+  border-radius: 8px !important;
 }
 html body #dm .ec-store .product-details__description,
 html body #dm .ec-store .product-details__description :is(p, li, span, div) {
