@@ -1,0 +1,313 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: ABOUT US page
+   One file for desktop, tablet and mobile (tablet and phone are media queries below).
+   Linked from the About page's own Head HTML; uses the colours and leaf photo shapes
+   from base.css.
+
+   Editor-safe: rules target the class on each widget (Duda keeps those) and style whatever
+   is inside it, so editing text, links or photos in the editor keeps the design.
+   ===================================================================== */
+
+/* ---------- Page frame ---------- */
+html #dm .shg-about.shg-about {
+  --shg-about-pad: 40px;
+  background-color: var(--shg-ground) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--shg-ink);
+  font-family: var(--shg-font) !important;
+  text-align: left !important;
+  padding-bottom: 112px !important;
+}
+/* Each section: centred, up to 88rem wide. Coloured bands run full width. */
+html #dm .shg-about.shg-about > .dmRespRow {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 max(var(--shg-about-pad), calc((100% - 88rem) / 2 + var(--shg-about-pad))) !important;
+  text-align: left !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+html #dm .shg-about.shg-about > .dmRespRow::before { display: none !important; }
+html #dm .shg-about.shg-about .dmRespColsWrapper {
+  display: grid !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+html #dm .shg-about.shg-about .dmRespCol {
+  float: none !important;
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ---------- Every text widget, and whatever the editor puts inside it ---------- */
+html #dm .shg-about.shg-about .dmNewParagraph {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  text-align: left !important;
+  color: var(--shg-ink) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  background: transparent !important;
+}
+html #dm .shg-about.shg-about .dmNewParagraph * {
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: none !important;
+  text-align: inherit !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html #dm .shg-about.shg-about .dmNewParagraph :is(b, strong) { font-weight: 700 !important; }
+html #dm .shg-about.shg-about .dmNewParagraph a {
+  color: var(--shg-forest) !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+  text-decoration-color: var(--shg-leaf) !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 4px !important;
+}
+html #dm .shg-about.shg-about a:focus-visible {
+  outline: 3px solid var(--shg-forest) !important;
+  outline-offset: 3px !important;
+  border-radius: 2px;
+}
+html #dm .shg-about.shg-about .dmRespCol > .dmNewParagraph + .dmNewParagraph { margin-top: 24px !important; }
+
+/* Shared type */
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__title {
+  color: var(--shg-forest) !important;
+  font-size: clamp(2.75rem, 6.6vw, 6.25rem) !important;
+  font-weight: 700 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.035em !important;
+}
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__h2 {
+  color: var(--shg-forest) !important;
+  font-size: clamp(2rem, 3.8vw, 3.5rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.025em !important;
+}
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__lead {
+  max-width: 44ch !important;
+  color: var(--shg-soft) !important;
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem) !important;
+  line-height: 1.45 !important;
+}
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__caption {
+  margin-top: 12px !important;
+  color: var(--shg-soft) !important;
+  font-size: 15px !important;
+}
+
+/* Buttons (a text widget holding one link) */
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__button a {
+  display: inline-flex !important;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 28px !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background-color: var(--shg-gold) !important;
+  color: var(--shg-forest) !important;
+  text-decoration: none !important;
+  transition: transform .18s ease, background-color .18s ease;
+}
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__button a:hover { background-color: var(--shg-gold-hover) !important; transform: translateY(-2px); }
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__button--quiet a { background-color: var(--shg-stone) !important; }
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__button--quiet a:hover { background-color: var(--shg-leaf-pale) !important; }
+
+/* Photos inside the page */
+html #dm .shg-about.shg-about .imageWidget {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html #dm .shg-about.shg-about .imageWidget img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: cover;
+}
+
+/* ---------- Hero ---------- */
+html #dm .shg-about.shg-about > .shg-about__hero { padding-top: 48px !important; }
+html #dm .shg-about.shg-about .shg-about__hero .dmRespColsWrapper {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: center;
+}
+html #dm .shg-about.shg-about .shg-about__hero-img img { aspect-ratio: 4 / 5; }
+
+/* ---------- Story ---------- */
+html #dm .shg-about.shg-about > .shg-about__story { margin-top: 112px !important; }
+html #dm .shg-about.shg-about .shg-about__story .dmRespColsWrapper {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 64px;
+}
+html #dm .shg-about.shg-about .shg-about__story-media .imageWidget + .dmNewParagraph + .imageWidget { margin-top: 32px !important; }
+html #dm .shg-about.shg-about .shg-about__wide img { aspect-ratio: 16 / 9; }
+
+/* ---------- What we do (forest band) ---------- */
+html #dm .shg-about.shg-about > .shg-about__what {
+  margin-top: 112px !important;
+  padding-top: 112px !important;
+  padding-bottom: 112px !important;
+  background-color: var(--shg-forest) !important;
+}
+html #dm .shg-about.shg-about .shg-about__what .dmRespColsWrapper {
+  grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+html #dm .shg-about.shg-about .shg-about__what .dmNewParagraph.shg-about__h2 { color: #fff !important; padding-right: 24px !important; }
+html #dm .shg-about.shg-about .shg-about__tile {
+  padding: 28px !important;
+  border-radius: 3rem 0.375rem !important;
+}
+html #dm .shg-about.shg-about .shg-about__tile--leaf { background-color: var(--shg-leaf) !important; }
+html #dm .shg-about.shg-about .shg-about__tile--gold { background-color: var(--shg-gold) !important; }
+html #dm .shg-about.shg-about .shg-about__tile--berry { background-color: var(--shg-berry) !important; }
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__tile-title {
+  color: var(--shg-forest) !important;
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+}
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__tile-text { color: var(--shg-ink) !important; }
+html #dm .shg-about.shg-about .shg-about__tile .dmNewParagraph.shg-about__tile-text { margin-top: 12px !important; }
+/* White text on berry (contrast 6:1); never white on leaf green or gold */
+html #dm .shg-about.shg-about .shg-about__tile--berry .dmNewParagraph { color: #fff !important; }
+
+/* ---------- Quote (berry band) ---------- */
+html #dm .shg-about.shg-about > .shg-about__quote {
+  padding-top: 96px !important;
+  padding-bottom: 96px !important;
+  background-color: var(--shg-berry) !important;
+}
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__quote-text {
+  max-width: 30ch !important;
+  color: #fff !important;
+  font-size: clamp(1.6rem, 3vw, 2.4rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+}
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__quote-cite { color: #fff !important; font-size: 20px !important; }
+
+/* ---------- Team ---------- */
+html #dm .shg-about.shg-about > .shg-about__team-head { margin-top: 112px !important; }
+html #dm .shg-about.shg-about > .shg-about__team { margin-top: 48px !important; }
+html #dm .shg-about.shg-about .shg-about__team .dmRespColsWrapper {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 40px 16px;
+}
+html #dm .shg-about.shg-about .shg-about__portrait img { aspect-ratio: 1; }
+html #dm .shg-about.shg-about .shg-about__person .dmNewParagraph.shg-about__person-name {
+  margin-top: 16px !important;
+  color: var(--shg-forest) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+html #dm .shg-about.shg-about .shg-about__person .dmNewParagraph.shg-about__person-role { margin-top: 2px !important; color: var(--shg-soft) !important; }
+
+/* ---------- Our site ---------- */
+html #dm .shg-about.shg-about > .shg-about__site {
+  margin-top: 112px !important;
+  padding-top: 96px !important;
+  padding-bottom: 96px !important;
+  background-color: var(--shg-leaf-pale) !important;
+}
+html #dm .shg-about.shg-about .shg-about__site .dmRespColsWrapper {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 64px;
+  align-items: center;
+}
+html #dm .shg-about.shg-about .shg-about__site-text .dmNewParagraph.shg-about__point { margin-top: 12px !important; padding-left: 26px !important; position: relative; }
+html #dm .shg-about.shg-about .dmNewParagraph.shg-about__point::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 14px;
+  height: 14px;
+  background: var(--shg-leaf);
+  border-radius: 0 100% 0 100%;
+}
+html #dm .shg-about.shg-about .shg-about__site-media img { aspect-ratio: 4 / 3; }
+
+/* ---------- Gallery ---------- */
+html #dm .shg-about.shg-about > .shg-about__gallery-head { margin-top: 112px !important; }
+html #dm .shg-about.shg-about > .shg-about__gallery { margin-top: 40px !important; }
+html #dm .shg-about.shg-about .shg-about__gallery .dmRespColsWrapper {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px 12px;
+}
+html #dm .shg-about.shg-about .shg-about__shot img { aspect-ratio: 1; }
+
+/* ---------- Call to action ---------- */
+html #dm .shg-about.shg-about > .shg-about__cta { margin-top: 112px !important; }
+html #dm .shg-about.shg-about .shg-about__cta .dmRespColsWrapper {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 32px;
+  align-items: end;
+}
+html #dm .shg-about.shg-about .shg-about__cta-actions {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
+html #dm .shg-about.shg-about .shg-about__cta-actions > .dmNewParagraph + .dmNewParagraph { margin-top: 0 !important; }
+
+/* =====================================================================
+   TABLET (1024px and narrower)
+   ===================================================================== */
+@media screen and (max-width: 1024px) {
+  html #dm .shg-about.shg-about { --shg-about-pad: 32px; padding-bottom: 96px !important; }
+  html #dm .shg-about.shg-about :is(.shg-about__hero, .shg-about__story, .shg-about__site, .shg-about__cta) .dmRespColsWrapper {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  html #dm .shg-about.shg-about .shg-about__hero-img img { aspect-ratio: 5 / 4; }
+  html #dm .shg-about.shg-about .shg-about__what .dmRespColsWrapper { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  html #dm .shg-about.shg-about .shg-about__what-head { grid-column: 1 / -1; margin-bottom: 24px !important; }
+  html #dm .shg-about.shg-about .shg-about__team .dmRespColsWrapper { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  html #dm .shg-about.shg-about .shg-about__gallery .dmRespColsWrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  html #dm .shg-about.shg-about .shg-about__cta-actions { justify-content: flex-start; }
+  html #dm .shg-about.shg-about > :is(.shg-about__story, .shg-about__what, .shg-about__team-head, .shg-about__site, .shg-about__gallery-head, .shg-about__cta) { margin-top: 88px !important; }
+  html #dm .shg-about.shg-about > :is(.shg-about__what, .shg-about__site) { padding-top: 80px !important; padding-bottom: 80px !important; }
+}
+
+/* =====================================================================
+   MOBILE (767px and narrower, and Duda's phone pages)
+   ===================================================================== */
+@media screen and (max-width: 767px) {
+  html #dm .shg-about.shg-about { --shg-about-pad: 16px; padding-bottom: 72px !important; }
+  html #dm .shg-about.shg-about > .shg-about__hero { padding-top: 24px !important; }
+  html #dm .shg-about.shg-about .dmNewParagraph.shg-about__title { font-size: 44px !important; }
+  html #dm .shg-about.shg-about .shg-about__what .dmRespColsWrapper { grid-template-columns: minmax(0, 1fr); }
+  html #dm .shg-about.shg-about .shg-about__team .dmRespColsWrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
+  html #dm .shg-about.shg-about .shg-about__gallery .dmRespColsWrapper { gap: 24px 8px; }
+  html #dm .shg-about.shg-about > :is(.shg-about__story, .shg-about__what, .shg-about__team-head, .shg-about__site, .shg-about__gallery-head, .shg-about__cta) { margin-top: 64px !important; }
+  html #dm .shg-about.shg-about > :is(.shg-about__what, .shg-about__site, .shg-about__quote) { padding-top: 56px !important; padding-bottom: 56px !important; }
+  html #dm .shg-about.shg-about .shg-about__tile { padding: 24px !important; border-radius: 2rem 0.375rem !important; }
+  html #dm .shg-about.shg-about .dmNewParagraph.shg-about__caption { font-size: 14px !important; }
+}
+html body.dmMobileBody #dm .shg-about.shg-about { --shg-about-pad: 16px; }
