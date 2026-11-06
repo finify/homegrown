@@ -3,9 +3,15 @@
   Where: already included in site.js (linked setup). If you paste instead, add this to
          Site Settings > Body end HTML, after files 6 and 7.
   What:  only runs on pages that have Duda's store cart widget (the shop pages).
+         Desktop and tablet:
          - adds an "Account" link next to the cart (opens the customer's Ecwid account);
          - hides the count badge while the basket is empty, and gives the cart a spoken label
            ("Basket, 2 items") and keyboard access.
+         Phones (767px wide or less, or Duda's phone layout): search, account and basket move
+         into an app-style bar fixed to the bottom of the screen.
+         - Search slides a search box down from the top over a blurred page.
+         - Account reads "Sign in" until the customer is signed in, then "Account".
+         - Basket keeps the live item count (from Ecwid and from Duda's cart widget).
   The cart widget itself stays Duda's own: it keeps its live count and opens the basket.
 -->
 <script>
@@ -48,7 +54,150 @@
     });
     cart.parentNode.insertBefore(a, cart);
   }
+
+  /* ---------- Phones: app-style bottom bar ---------- */
+  var SVG = {
+    search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+    user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+    bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12.1a1 1 0 0 1-1 .9H7.2a1 1 0 0 1-1-.9z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+  };
+  var phone = window.matchMedia('(max-width: 767px)');
+  function isPhone() { return phone.matches || document.body.classList.contains('dmMobileBody'); }
+  function ecwid(fn) {
+    var tries = 0;
+    (function wait() {
+      if (window.Ecwid && window.Ecwid.OnAPILoaded) window.Ecwid.OnAPILoaded.add(fn);
+      else if (tries++ < 120) setTimeout(wait, 250);
+    })();
+  }
+  function go(page, params) {
+    if (window.Ecwid && typeof window.Ecwid.openPage === 'function') { window.Ecwid.openPage(page, params); return true; }
+    return false;
+  }
+
+  function bottomNav() {
+    var cart = document.querySelector('.dmStoreCart');
+    if (!cart || document.querySelector('.shg-bnav')) return;
+    var root = document.documentElement;
+
+    var nav = document.createElement('nav');
+    nav.className = 'shg-bnav';
+    nav.setAttribute('aria-label', 'Shop');
+    nav.innerHTML =
+      '<button type="button" class="shg-bnav__item" data-k="search" aria-haspopup="dialog">' + SVG.search + '<span class="shg-bnav__label">Search</span></button>' +
+      '<a class="shg-bnav__item" data-k="account" href="/store/signin">' + SVG.user + '<span class="shg-bnav__label">Sign in</span></a>' +
+      '<a class="shg-bnav__item" data-k="cart" href="/store/cart"><span class="shg-bnav__icon">' + SVG.bag + '<span class="shg-bnav__badge" aria-hidden="true"></span></span><span class="shg-bnav__label">Basket</span></a>';
+    document.body.appendChild(nav);
+
+    var sheet = document.createElement('div');
+    sheet.className = 'shg-search';
+    sheet.setAttribute('hidden', '');
+    sheet.innerHTML =
+      '<div class="shg-search__backdrop" data-close></div>' +
+      '<form class="shg-search__panel" role="dialog" aria-modal="true" aria-label="Search the shop">' +
+        '<label class="shg-search__field">' + SVG.search +
+          '<input type="search" name="q" placeholder="Search the shop" aria-label="Search the shop" enterkeyhint="search" autocomplete="off"></label>' +
+        '<button type="button" class="shg-search__close" data-close aria-label="Close search">' + SVG.close + '</button>' +
+      '</form>';
+    document.body.appendChild(sheet);
+
+    var item = function (k) { return nav.querySelector('[data-k="' + k + '"]'); };
+    var searchBtn = item('search'), account = item('account'), basket = item('cart');
+    var badge = nav.querySelector('.shg-bnav__badge');
+    var input = sheet.querySelector('input');
+    var lastCount = -1;
+
+    // Basket count: from Ecwid when it's loaded, and from Duda's own cart widget
+    function setCount(n) {
+      n = Math.max(0, parseInt(n, 10) || 0);
+      badge.textContent = n > 99 ? '99+' : String(n);
+      basket.classList.toggle('has-items', n > 0);
+      basket.setAttribute('aria-label', n ? 'Basket, ' + n + (n === 1 ? ' item' : ' items') : 'Basket, empty');
+      if (lastCount >= 0 && n !== lastCount) {
+        basket.classList.remove('is-bump'); void basket.offsetWidth; basket.classList.add('is-bump');
+      }
+      lastCount = n;
+    }
+    var duda = cart.querySelector('.cartItems');
+    setCount(duda ? duda.textContent : 0);
+    if (duda) new MutationObserver(function () { setCount(duda.textContent); }).observe(duda, { childList: true, characterData: true, subtree: true });
+
+    // Account: "Sign in" or "Account"
+    function setAccount(signedIn) {
+      account.querySelector('.shg-bnav__label').textContent = signedIn ? 'Account' : 'Sign in';
+      account.setAttribute('href', signedIn ? '/store/account' : '/store/signin');
+      account.setAttribute('data-signed-in', signedIn ? 'yes' : 'no');
+    }
+    function checkCustomer() { if (window.Ecwid && window.Ecwid.Customer) window.Ecwid.Customer.get(function (c) { setAccount(!!c); }); }
+
+    // Highlight the tab for the page being shown
+    function setCurrent(type) {
+      type = String(type || '').toUpperCase();
+      var k = /CART|CHECKOUT/.test(type) ? 'cart' : /ACCOUNT|SIGN_IN|ORDERS|FAVORITES/.test(type) ? 'account' : /SEARCH/.test(type) ? 'search' : '';
+      ['search', 'account', 'cart'].forEach(function (x) {
+        if (x === k) item(x).setAttribute('aria-current', 'page'); else item(x).removeAttribute('aria-current');
+      });
+    }
+
+    ecwid(function () {
+      if (window.Ecwid.Cart) window.Ecwid.Cart.get(function (c) { setCount(c && c.productsQuantity); });
+      if (window.Ecwid.OnCartChanged) window.Ecwid.OnCartChanged.add(function (c) { setCount(c && c.productsQuantity); });
+      checkCustomer();
+      if (window.Ecwid.OnPageLoaded) window.Ecwid.OnPageLoaded.add(function (page) { checkCustomer(); setCurrent(page && page.type); });
+    });
+
+    account.addEventListener('click', function (e) {
+      if (go(account.getAttribute('data-signed-in') === 'yes' ? 'account' : 'signin')) e.preventDefault();
+    });
+    basket.addEventListener('click', function (e) {
+      if (go('cart')) { e.preventDefault(); return; }
+      var icon = cart.querySelector('.cartIcon');
+      if (icon) { e.preventDefault(); icon.click(); }
+    });
+
+    // Search sheet
+    function openSearch() {
+      sheet.removeAttribute('hidden');
+      void sheet.offsetWidth;
+      root.classList.add('shg-search-open');
+      searchBtn.setAttribute('aria-expanded', 'true');
+      setTimeout(function () { input.focus(); }, 60);
+    }
+    function closeSearch() {
+      root.classList.remove('shg-search-open');
+      searchBtn.setAttribute('aria-expanded', 'false');
+      setTimeout(function () { if (!root.classList.contains('shg-search-open')) sheet.setAttribute('hidden', ''); }, 320);
+      searchBtn.focus();
+    }
+    searchBtn.addEventListener('click', openSearch);
+    sheet.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) closeSearch(); });
+    sheet.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); closeSearch(); }
+      if (e.key === 'Tab') {
+        var f = sheet.querySelectorAll('input, button');
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    sheet.querySelector('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var q = input.value.trim();
+      if (!q) { input.focus(); return; }
+      closeSearch();
+      input.blur();
+      if (!go('search', { keyword: q })) location.href = '/store/search?keyword=' + encodeURIComponent(q);
+    });
+
+    function sync() { root.classList.toggle('shg-bnav-on', isPhone()); }
+    sync();
+    if (phone.addEventListener) phone.addEventListener('change', sync); else if (phone.addListener) phone.addListener(sync);
+  }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup); else setup();
   window.addEventListener('load', setup);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bottomNav); else bottomNav();
+  window.addEventListener('load', bottomNav);
 })();
 </script>

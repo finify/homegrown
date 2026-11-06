@@ -338,3 +338,184 @@ html body #dm :is(.shg-account, .dmStoreCart .cartIcon):focus-visible { outline:
   html body #dm .shg-account { padding: 0 14px; }
   html body #dm .shg-account span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 }
+
+/* =====================================================================
+   PHONES: app-style bottom bar (built by site.js on the shop pages)
+   ===================================================================== */
+.shg-bnav, .shg-search { display: none; }
+html.shg-bnav-on .shg-bnav {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  z-index: 99990;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 6px;
+  border-radius: 1.75rem 0.5rem;
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: saturate(1.6) blur(18px);
+  backdrop-filter: saturate(1.6) blur(18px);
+  box-shadow: 0 10px 30px -8px rgba(20, 35, 26, 0.35), 0 0 0 1px rgba(23, 58, 34, 0.08);
+  font-family: var(--shg-font);
+  animation: shg-bnav-in .5s cubic-bezier(.22, 1, .36, 1) both;
+}
+/* Room at the bottom of the page so the bar never covers the last of the content.
+   Duda's phone layout scrolls inside #iscrollBody, so the space goes there when it exists. */
+html.shg-bnav-on body:not(:has(#iscrollBody)) { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important; }
+html.shg-bnav-on #iscrollBody::after {
+  content: "";
+  display: block;
+  clear: both;
+  height: calc(96px + env(safe-area-inset-bottom, 0px));
+  background: var(--shg-forest); /* carries the footer's green down behind the bar */
+}
+/* Duda's "back to top" button sits just above the bar */
+html.shg-bnav-on #dmBackToTop.dmBackToTop { bottom: calc(92px + env(safe-area-inset-bottom, 0px)) !important; }
+/* Duda's own search / account / cart row is replaced by the bar on phones */
+html.shg-bnav-on body #dm .dmRespRow:has(> .dmRespColsWrapper .dmStoreCart) { display: none !important; }
+
+html.shg-bnav-on .shg-bnav__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 56px;
+  padding: 6px 4px;
+  border: 0;
+  border-radius: 1.25rem 0.375rem;
+  background: transparent;
+  color: var(--shg-forest) !important;
+  font: inherit;
+  text-decoration: none !important;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .25s ease, transform .15s ease;
+}
+html.shg-bnav-on .shg-bnav__item svg { width: 24px; height: 24px; display: block; }
+html.shg-bnav-on .shg-bnav__icon { position: relative; display: block; line-height: 0; }
+html.shg-bnav-on .shg-bnav__label { font-size: 12px; font-weight: 700; line-height: 1.1; letter-spacing: 0.01em; }
+html.shg-bnav-on .shg-bnav__item:active { transform: scale(0.92); }
+html.shg-bnav-on .shg-bnav__item[aria-current="page"] { background: var(--shg-leaf-pale); }
+html.shg-bnav-on .shg-bnav__item:focus-visible { outline: 3px solid var(--shg-forest); outline-offset: -3px; }
+
+/* Signed in: a small leaf-green dot on the person icon */
+html.shg-bnav-on .shg-bnav__item[data-signed-in="yes"]::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: calc(50% + 7px);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--shg-leaf);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+/* Basket count */
+html.shg-bnav-on .shg-bnav__badge {
+  position: absolute;
+  top: -7px;
+  left: 14px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: var(--shg-gold);
+  color: var(--shg-forest);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 20px;
+  text-align: center;
+  box-shadow: 0 0 0 2px #fff;
+  transform: scale(0);
+  transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+}
+html.shg-bnav-on .shg-bnav__item.has-items .shg-bnav__badge { transform: scale(1); }
+html.shg-bnav-on .shg-bnav__item.is-bump .shg-bnav__icon { animation: shg-bump .45s cubic-bezier(.34, 1.56, .64, 1); }
+
+/* Search: slides down from the top over a blurred page */
+html.shg-bnav-on .shg-search:not([hidden]) {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 100005;
+}
+html.shg-bnav-on .shg-search__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 35, 26, 0.32);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+html.shg-bnav-on .shg-search__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 16px;
+  border-radius: 0 0 2rem 0.5rem;
+  background: var(--shg-ground);
+  box-shadow: 0 16px 40px -12px rgba(20, 35, 26, 0.4);
+  transform: translateY(-105%);
+  transition: transform .38s cubic-bezier(.22, 1, .36, 1);
+}
+html.shg-search-open .shg-search__backdrop { opacity: 1; }
+html.shg-search-open .shg-search__panel { transform: translateY(0); }
+html.shg-bnav-on .shg-search__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 16px;
+  border: 2px solid var(--shg-forest);
+  border-radius: var(--shg-leaf-corner);
+  background: #fff;
+  color: var(--shg-forest);
+}
+html.shg-bnav-on .shg-search__field:focus-within { outline: 3px solid var(--shg-gold); outline-offset: 1px; }
+html.shg-bnav-on .shg-search__field svg { width: 20px; height: 20px; flex: none; }
+html.shg-bnav-on .shg-search__field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: var(--shg-ink);
+  font-family: var(--shg-font);
+  font-size: 17px; /* 16px or more stops iPhones zooming in */
+  -webkit-appearance: none;
+  appearance: none;
+}
+html.shg-bnav-on .shg-search__close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--shg-stone);
+  color: var(--shg-forest);
+  cursor: pointer;
+}
+html.shg-bnav-on .shg-search__close svg { width: 20px; height: 20px; }
+html.shg-bnav-on .shg-search__close:focus-visible { outline: 3px solid var(--shg-forest); outline-offset: 2px; }
+html.shg-search-open .shg-bnav { opacity: 0; pointer-events: none; }
+
+@keyframes shg-bnav-in { from { transform: translateY(120%); } to { transform: none; } }
+@keyframes shg-bump { 0% { transform: scale(1); } 40% { transform: scale(1.25) rotate(-8deg); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  html.shg-bnav-on .shg-bnav, html.shg-bnav-on .shg-bnav__item.is-bump .shg-bnav__icon { animation: none; }
+  html.shg-bnav-on :is(.shg-search__panel, .shg-search__backdrop, .shg-bnav__badge) { transition: none; }
+}

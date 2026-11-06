@@ -20,6 +20,11 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 ## Shop: basket, account and full width
 - **Basket:** the shop pages already have Duda's own store **cart widget**, which keeps a live count of items. `shop.css` turns it into a dark green leaf button with a gold count badge. The badge only shows once something is in the basket.
 - **Account:** `site.js` adds an **Account** link next to the basket on any page with that cart widget, so it only appears on the shop pages. It opens the customer's Ecwid account (sign in, orders).
+- **Phones: app-style bottom bar.** On phones, the search, account and basket row is replaced by a bar fixed to the bottom of the screen. Desktop and tablet keep the row above.
+  - **Search** slides a search box down from the top and blurs the page behind it. Esc, the X, or tapping the blurred page closes it.
+  - **Sign in / Account:** shows "Sign in" until the customer signs in, then "Account" with a small green dot.
+  - **Basket** keeps the live count. The gold badge pops in when something is added and hides when the basket is empty.
+  - The tab for the current shop page is highlighted. Duda's "back to top" button moves up above the bar, and the page gets room at the bottom so the bar never covers the footer.
 - **Search:** the store search box becomes a full-height rounded field with "Search the shop".
 - **Full width:** the store fills the page width, with 56px side margins on desktop, about 32px on tablet and 16px on phones.
   - The product and category grids fit as many columns as there's room for, 2 on phones.
