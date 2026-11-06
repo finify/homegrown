@@ -1,0 +1,414 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: CONTACT & FIND US page
+   One file for desktop, tablet and mobile (tablet and phone are media queries below).
+   Linked from the Contact page's own Head HTML; uses the colours from base.css.
+
+   Editor-safe: rules target the class on each widget (Duda keeps those) and style whatever
+   is inside it, so editing text, links, photos, the form or the map keeps the design.
+   ===================================================================== */
+
+/* ---------- Page frame ---------- */
+html #dm .shg-contact.shg-contact {
+  background-color: var(--shg-ground) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--shg-ink);
+  font-family: var(--shg-font) !important;
+  text-align: left !important;
+}
+html #dm .shg-contact.shg-contact .innerPageTmplBox {
+  max-width: 88rem !important;
+  margin: 0 auto !important;
+  padding: 0 40px 112px !important;
+  background: transparent !important;
+}
+html #dm .shg-contact.shg-contact .dmRespRow {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  background: transparent !important;
+}
+html #dm .shg-contact.shg-contact .dmRespColsWrapper {
+  display: grid !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+html #dm .shg-contact.shg-contact .dmRespCol {
+  float: none !important;
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ---------- Every text widget, and whatever the editor puts inside it ---------- */
+html #dm .shg-contact.shg-contact .dmNewParagraph {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  text-align: left !important;
+  color: var(--shg-ink) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  background: transparent !important;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph * {
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: none !important;
+  text-align: inherit !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph :is(b, strong) { font-weight: 700 !important; }
+html #dm .shg-contact.shg-contact .dmNewParagraph a {
+  color: var(--shg-forest) !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+  text-decoration-color: var(--shg-leaf) !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 4px !important;
+  overflow-wrap: anywhere;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph a:hover { text-decoration-color: var(--shg-forest) !important; }
+html #dm .shg-contact.shg-contact a:focus-visible {
+  outline: 3px solid var(--shg-forest) !important;
+  outline-offset: 3px !important;
+  border-radius: 2px;
+}
+
+/* ---------- Hero: introduction and contact details | form ---------- */
+html #dm .shg-contact.shg-contact .shg-contact__hero { padding-top: 48px !important; }
+html #dm .shg-contact.shg-contact .shg-contact__hero .dmRespColsWrapper {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 64px;
+  align-items: start;
+}
+html #dm .shg-contact.shg-contact .shg-contact__intro .dmNewParagraph + .dmNewParagraph { margin-top: 24px !important; }
+
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__title {
+  color: var(--shg-forest) !important;
+  font-size: clamp(2.75rem, 5.6vw, 5rem) !important;
+  font-weight: 700 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.035em !important;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__lead {
+  color: var(--shg-soft) !important;
+  font-size: clamp(1.25rem, 1.9vw, 1.6rem) !important;
+  line-height: 1.4 !important;
+  max-width: 36ch !important;
+}
+/* "Call us" link shown as a big dark green button */
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__call a {
+  display: inline-flex !important;
+  align-items: center;
+  min-height: 56px;
+  padding: 0 28px !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background-color: var(--shg-forest) !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  text-decoration: none !important;
+  transition: transform .18s ease, background-color .18s ease;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__call a:hover { background-color: var(--shg-forest-700) !important; transform: translateY(-2px); }
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__call a:focus-visible { outline-color: var(--shg-gold) !important; }
+
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__label {
+  color: var(--shg-forest) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+html #dm .shg-contact.shg-contact .shg-contact__intro .dmNewParagraph.shg-contact__label + .dmNewParagraph { margin-top: 4px !important; }
+/* Link lists: one per line, tall enough to tap */
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__links a {
+  display: flex !important;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 44px;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__links br { display: none !important; }
+
+/* Opening times panel */
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__hours {
+  padding: 24px !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background-color: var(--shg-stone) !important;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__hours b:first-child { color: var(--shg-forest) !important; }
+
+/* Form card */
+html #dm .shg-contact.shg-contact .shg-contact__form-col {
+  padding: 40px !important;
+  border-radius: 3rem 0.375rem !important;
+  background-color: #fff !important;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__form-title {
+  margin-bottom: 24px !important;
+  color: var(--shg-forest) !important;
+  font-size: clamp(1.5rem, 2.2vw, 2rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+/* ---------- Duda's form widget ---------- */
+html #dm .shg-contact.shg-contact .dmform {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-family: var(--shg-font) !important;
+  text-align: left !important;
+}
+html #dm .shg-contact.shg-contact .dmform .dmform-wrapper,
+html #dm .shg-contact.shg-contact .dmform form { margin: 0 !important; padding: 0 !important; background: transparent !important; }
+html #dm .shg-contact.shg-contact .dmform .dmforminput {
+  padding: 0 8px 20px !important;
+  margin: 0 !important;
+  float: left;
+}
+html #dm .shg-contact.shg-contact .dmform form { margin: 0 -8px !important; }
+html #dm .shg-contact.shg-contact .dmform .dmforminput label {
+  display: block !important;
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+  color: var(--shg-forest) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+html #dm .shg-contact.shg-contact .dmform .dmforminput :is(input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], input[type="url"], textarea, select) {
+  display: block !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  border: 2px solid #8a948c !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background-color: #fff !important;
+  color: var(--shg-ink) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 18px !important;
+  line-height: 1.4 !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+html #dm .shg-contact.shg-contact .dmform .dmforminput textarea { min-height: 168px !important; resize: vertical; }
+html #dm .shg-contact.shg-contact .dmform .dmforminput select {
+  background-image: linear-gradient(45deg, transparent 50%, var(--shg-forest) 50%), linear-gradient(135deg, var(--shg-forest) 50%, transparent 50%) !important;
+  background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50% !important;
+  background-size: 6px 6px !important;
+  background-repeat: no-repeat !important;
+  padding-right: 44px !important;
+}
+html #dm .shg-contact.shg-contact .dmform .dmforminput :is(input, textarea, select):focus {
+  border-color: var(--shg-forest) !important;
+  outline: 3px solid var(--shg-gold) !important;
+  outline-offset: 1px !important;
+}
+html #dm .shg-contact.shg-contact .dmform .dmforminput :is(input[type="checkbox"], input[type="radio"]) {
+  width: 24px !important;
+  height: 24px !important;
+  min-height: 0 !important;
+  margin: 0 12px 0 0 !important;
+  accent-color: var(--shg-forest);
+  vertical-align: middle;
+}
+/* Fields Duda marks as invalid */
+html #dm .shg-contact.shg-contact .dmform :is(.invalid, .error) :is(input, textarea, select),
+html #dm .shg-contact.shg-contact .dmform :is(input, textarea, select):is(.invalid, .error) { border-color: var(--shg-berry) !important; }
+
+/* Send button */
+html #dm .shg-contact.shg-contact .dmform .dmformsubmit {
+  float: none !important;
+  clear: both;
+  width: auto !important;
+  margin: 4px 0 0 !important;
+  padding: 0 8px !important;
+  text-align: left !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+/* Duda's theme paints the button's container as a coloured bar; remove it */
+html #dm .shg-contact.shg-contact .dmform .dmformsubmit::before,
+html #dm .shg-contact.shg-contact .dmform .dmformsubmit::after { display: none !important; content: none !important; }
+html #dm .shg-contact.shg-contact .dmform .dmformsubmit :is(input[type="submit"], button) {
+  width: auto !important;
+  min-height: 52px !important;
+  padding: 0 32px !important;
+  border: 0 !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background: var(--shg-gold) !important;
+  color: var(--shg-forest) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  transition: transform .18s ease, background-color .18s ease;
+}
+html #dm .shg-contact.shg-contact .dmform .dmformsubmit :is(input[type="submit"], button):hover { background: var(--shg-gold-hover) !important; transform: translateY(-2px); }
+html #dm .shg-contact.shg-contact .dmform .dmformsubmit :is(input[type="submit"], button):focus-visible {
+  outline: 3px solid var(--shg-forest) !important;
+  outline-offset: 3px !important;
+}
+/* Messages after sending */
+html #dm .shg-contact.shg-contact .dmform :is(.dmform-success, .dmform-error) {
+  padding: 24px !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 18px !important;
+  line-height: 1.5 !important;
+}
+html #dm .shg-contact.shg-contact .dmform .dmform-success { background: var(--shg-leaf-pale) !important; color: var(--shg-forest) !important; }
+html #dm .shg-contact.shg-contact .dmform .dmform-error { background: var(--shg-berry-pale, #F3E4E2) !important; color: var(--shg-berry) !important; }
+
+/* ---------- "What you'll see when you arrive" ---------- */
+html #dm .shg-contact.shg-contact .shg-contact__arrive { margin-top: 112px !important; }
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__section-title {
+  color: var(--shg-forest) !important;
+  font-size: clamp(2rem, 3.8vw, 3.5rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.025em !important;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__section-lead {
+  margin-top: 16px !important;
+  max-width: 46ch !important;
+  color: var(--shg-soft) !important;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem) !important;
+  line-height: 1.4 !important;
+}
+html #dm .shg-contact.shg-contact .shg-contact__photos { margin-top: 40px !important; }
+html #dm .shg-contact.shg-contact .shg-contact__photos .dmRespColsWrapper {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+html #dm .shg-contact.shg-contact .shg-contact__photo .imageWidget {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html #dm .shg-contact.shg-contact .shg-contact__photo img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__caption {
+  margin-top: 14px !important;
+  color: var(--shg-forest) !important;
+  font-weight: 700 !important;
+}
+
+/* ---------- "Getting here" panel with the map ---------- */
+html #dm .shg-contact.shg-contact .shg-contact__find {
+  margin-top: 112px !important;
+  padding: 48px !important;
+  border-radius: 3rem 0.375rem !important;
+  background-color: var(--shg-leaf-pale) !important;
+}
+html #dm .shg-contact.shg-contact .shg-contact__find .dmRespColsWrapper {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 48px;
+  align-items: start;
+}
+html #dm .shg-contact.shg-contact .shg-contact__getting-here .dmNewParagraph + .dmNewParagraph { margin-top: 20px !important; }
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__directions a {
+  display: inline-flex !important;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 24px !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background-color: var(--shg-forest) !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__directions a:hover { background-color: var(--shg-forest-700) !important; }
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__directions a:focus-visible { outline-color: var(--shg-gold) !important; }
+/* Duda's map widget */
+html #dm .shg-contact.shg-contact .shg-contact__map-col :is(.inlineMap, .u_1791714273, [data-type="inlineMap"]) {
+  width: 100% !important;
+  height: 440px !important;
+  min-height: 440px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 42% 0 42% / 0 22% 0 22% !important;
+  background-color: var(--shg-stone);
+}
+
+/* =====================================================================
+   TABLET (1024px and narrower): one column, photos two across
+   ===================================================================== */
+@media screen and (max-width: 1024px) {
+  html #dm .shg-contact.shg-contact .innerPageTmplBox { padding: 0 32px 96px !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__hero .dmRespColsWrapper,
+  html #dm .shg-contact.shg-contact .shg-contact__find .dmRespColsWrapper {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  html #dm .shg-contact.shg-contact .shg-contact__photos .dmRespColsWrapper {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 12px;
+  }
+  html #dm .shg-contact.shg-contact .shg-contact__arrive,
+  html #dm .shg-contact.shg-contact .shg-contact__find { margin-top: 88px !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__find { padding: 40px !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__map-col :is(.inlineMap, .u_1791714273, [data-type="inlineMap"]) {
+    height: 380px !important;
+    min-height: 380px !important;
+  }
+}
+
+/* =====================================================================
+   MOBILE (767px and narrower, and Duda's phone pages)
+   ===================================================================== */
+@media screen and (max-width: 767px) {
+  html #dm .shg-contact.shg-contact .innerPageTmplBox { padding: 0 16px 72px !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__hero { padding-top: 24px !important; }
+  html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__title { font-size: 42px !important; }
+  html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__lead { font-size: 20px !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__form-col { padding: 24px 20px !important; border-radius: 2rem 0.375rem !important; }
+  html #dm .shg-contact.shg-contact .dmform .dmforminput { width: 100% !important; float: none !important; }
+  html #dm .shg-contact.shg-contact .dmform .dmformsubmit :is(input[type="submit"], button) { width: 100% !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__arrive,
+  html #dm .shg-contact.shg-contact .shg-contact__find { margin-top: 64px !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__photos { margin-top: 24px !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__photos .dmRespColsWrapper { gap: 20px 8px; }
+  html #dm .shg-contact.shg-contact .dmNewParagraph.shg-contact__caption { font-size: 16px !important; margin-top: 10px !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__find { padding: 24px 20px !important; border-radius: 2rem 0.375rem !important; }
+  html #dm .shg-contact.shg-contact .shg-contact__map-col :is(.inlineMap, .u_1791714273, [data-type="inlineMap"]) {
+    height: 300px !important;
+    min-height: 300px !important;
+  }
+}
+/* Duda's phone pages, whatever the reported width */
+html body.dmMobileBody #dm .shg-contact.shg-contact .innerPageTmplBox { padding: 0 16px 72px !important; }
+html body.dmMobileBody #dm .shg-contact.shg-contact .dmform .dmforminput { width: 100% !important; float: none !important; }
