@@ -20,12 +20,15 @@
   html.shg-m-on #dmSlideRightNavLeft { display: none !important; }
   html.shg-m-locked, html.shg-m-locked body { overflow: hidden !important; }
 
-  /* Tablets: hide the regular header (and the old sidebar layout, if still used); make room for the bar */
-  html.shg-m-tablet #dm .dmInner div.dmHeader,
-  html.shg-m-tablet .stickyHeaderSpacer,
-  html.shg-m-tablet #siteSidebar,
-  html.shg-m-tablet #siteSidebarSpacer { display: none !important; }
-  html.shg-m-tablet body { padding-top: 80px !important; }
+  /* Desktop page on a tablet-sized screen: hide the regular header (and the old sidebar layout,
+     if still used); make room for the bar */
+  html.shg-m-desk #dm .dmInner div.dmHeader,
+  html.shg-m-desk .stickyHeaderSpacer,
+  html.shg-m-desk #siteSidebar,
+  html.shg-m-desk #siteSidebarSpacer { display: none !important; }
+  html.shg-m-desk body { padding-top: 80px !important; }
+  /* Duda's own tablet layout (built like the phone layout): room for the taller tablet bar */
+  html.shg-m-on.shg-m-tablet:not(.shg-m-desk) #dmSlideRightNavRight { padding-top: 80px !important; }
 
   /* The bar and panel only exist on screen while the phone/tablet menu is switched on */
   .shg-m-bar, .shg-m-panel { display: none !important; }
@@ -134,10 +137,13 @@
 
   function build() {
     var source = document.getElementById('leftSidebar');
-    // Phones: Duda's mobile layout. Tablets: the desktop page with our header, 1024px wide or less.
+    // Phones: Duda's mobile layout. Tablets: Duda's tablet layout (built the same way as the
+    // phone one), or the desktop page with our header on a screen 1024px wide or less.
     var dudaMobile = !!source && document.body.classList.contains('dmMobileBody');
+    var dudaTablet = !!source && document.body.classList.contains('dmTabletBody');
+    var dudaLayout = dudaMobile || dudaTablet;
     var hasHeader = !!document.querySelector('.shg-header');
-    if ((!dudaMobile && !hasHeader) || document.querySelector('.shg-m-bar')) return;
+    if ((!dudaLayout && !hasHeader) || document.querySelector('.shg-m-bar')) return;
     var tabletQuery = window.matchMedia('(max-width: 1024px)');
 
     var el = function (tag, attrs, html) {
@@ -196,7 +202,7 @@
       var headerRows = document.querySelectorAll('.shg-header nav.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap');
       if (!headerRows.length) headerRows = document.querySelectorAll('nav.unifiednav .unifiednav__container:not([data-depth]) > .unifiednav__item-wrap');
       var mobileRows = source ? source.querySelectorAll(':scope > li') : [];
-      var rows = device() === 'mobile' && mobileRows.length ? mobileRows : (headerRows.length ? headerRows : mobileRows);
+      var rows = (device() === 'mobile' || dudaTablet) && mobileRows.length ? mobileRows : (headerRows.length ? headerRows : mobileRows);
       for (var i = 0; i < rows.length; i++) {
         var row = rows[i], a = row.querySelector('a');
         if (!a || isHidden(row) || isHidden(a)) continue;
@@ -268,11 +274,12 @@
 
     // Switch the phone/tablet menu on or off for the current screen width.
     function apply() {
-      var on = dudaMobile || tabletQuery.matches;
+      var on = dudaLayout || tabletQuery.matches;
       var root = document.documentElement;
       if (!on && panel.classList.contains('is-open')) setOpen(false);
       root.classList.toggle('shg-m-on', on);
       root.classList.toggle('shg-m-tablet', on && !dudaMobile);
+      root.classList.toggle('shg-m-desk', on && !dudaLayout);
       fillList(); // the device may have changed, and so may the pages Duda shows on it
     }
     apply();
