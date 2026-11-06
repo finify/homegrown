@@ -15,6 +15,7 @@ The menu stays Duda's **dynamic menu**: pages are still added, renamed, ordered 
 | `menu/after/6-body-end-html.html` *(optional)* | Site Settings > Body end HTML | Paste at the end (opens leaf photos as you scroll on phones) |
 | `menu/after/7-mobile-menu-body-end.html` *(recommended)* | Site Settings > Body end HTML | Paste at the end. Gives phones **and tablets (1024px wide or less)** the prototype's header: logo left, Menu button right, full-screen green menu with the X animation. Switches automatically when a tablet is rotated or a window is resized. Links come straight from Duda: the **Pages** panel decides which pages show, their order, and each page's *show on desktop / tablet / mobile* setting. Nothing is hard-coded. |
 | `menu/after/8-css-shop.css` | Developer Mode > CSS > "…AFFECTS ALL DEVICES" | Paste at the **end**, after file 3. Styles the shop (/store) to match: leaf photos that open on hover, forest titles and prices, gold buttons, berry "Sold out" label, matching fields. |
+| `menu/after/10-lightbox-body-end.html` *(already in base.css and site.js)* | Site Settings > Body end HTML | Only if you paste instead of linking. Photo lightbox for galleries. |
 | `menu/after/9-shop-bar-body-end.html` *(already in site.js)* | Site Settings > Body end HTML | Only if you paste instead of linking. On the shop pages it adds an **Account** link next to the basket, hides the count badge while the basket is empty, and makes the basket usable with the keyboard and screen readers. |
 
 ## Shop: basket, account and full width
@@ -66,6 +67,7 @@ The steps below are the manual (paste-in) alternative.
 7. **Preview** on desktop, tablet and mobile in the editor before you press **Publish**.
 
 ## Using the design on other parts of the site
+- **Photo lightbox:** to make photos open full size when clicked, add the class `shg-lightbox` to the row (the outer `<div class="dmRespRow …">`) in Developer Mode. Every photo in that row becomes one gallery, with captions, arrows, swipe and keyboard. The About us gallery already has it. A photo that links to another page keeps its link.
 - **Leaf-shaped photos:** in Developer Mode, add `shg-leaf`, `shg-leaf-soft` or `shg-leaf-r` to an image widget's outer `<div class="… imageWidget …">`. On a computer the leaf opens to the full photo on hover; on phones it opens as you scroll past (needs file 6).
 - **Buttons** turn gold with dark green text automatically. Add `shg-btn-forest` to a button for the dark green version.
 - **Colours** are available as CSS variables, for example `var(--shg-forest)`, `var(--shg-gold)`, `var(--shg-leaf-pale)`.

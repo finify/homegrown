@@ -1,0 +1,223 @@
+<!--
+  SUNDERLAND HOME GROWN REDESIGN: PHOTO LIGHTBOX
+  Where: already included in the linked files (CSS in base.css, script in site.js).
+         If you paste instead of linking, add this to Site Settings > Body end HTML.
+  What:  clicking or tapping a photo in a gallery opens it full size over a dark, blurred page:
+         caption, "2 of 6", next / previous arrows, swipe on phones, arrow keys and Esc.
+  Which photos:
+         - the About us gallery (the row with class shg-about__gallery), automatically;
+         - any other row or section: in Developer Mode add the class  shg-lightbox  to the row
+           (the outer <div class="dmRespRow ...">). Every photo inside it becomes one gallery.
+  Captions come from the text widget under each photo (any class with "caption" in it),
+  otherwise from the photo's alt text. The full-size photo is used, not the thumbnail.
+-->
+<style>
+.shg-lb { position: fixed; inset: 0; z-index: 100010; display: none; font-family: var(--shg-font, system-ui, sans-serif); }
+.shg-lb.is-on { display: block; }
+.shg-lb__backdrop {
+  position: absolute; inset: 0;
+  background: rgba(12, 24, 16, 0.86);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  opacity: 0; transition: opacity .3s ease;
+}
+.shg-lb.is-open .shg-lb__backdrop { opacity: 1; }
+.shg-lb__stage {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: max(64px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+.shg-lb__figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 100%; pointer-events: auto; }
+.shg-lb__img {
+  display: block;
+  max-width: min(92vw, 1400px); max-height: calc(100vh - 190px); max-height: calc(100dvh - 190px);
+  width: auto; height: auto; object-fit: contain;
+  border-radius: 2.5rem 0.5rem;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+  opacity: 0; transform: scale(0.94);
+  transition: opacity .35s ease, transform .45s cubic-bezier(.22, 1, .36, 1);
+  touch-action: pan-y;
+  user-select: none; -webkit-user-drag: none;
+}
+.shg-lb.is-open .shg-lb__img.is-loaded { opacity: 1; transform: none; }
+.shg-lb__caption { margin: 0; max-width: 60ch; color: #fff; font-size: 17px; line-height: 1.45; text-align: center; }
+.shg-lb__count { color: rgba(255, 255, 255, 0.75); font-size: 14px; font-weight: 700; letter-spacing: 0.04em; }
+.shg-lb__btn {
+  position: absolute; z-index: 1;
+  display: grid; place-items: center;
+  width: 52px; height: 52px; padding: 0;
+  border: 0; border-radius: 1.25rem 0.375rem;
+  background: rgba(255, 255, 255, 0.14); color: #fff;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background-color .2s ease, transform .15s ease;
+}
+.shg-lb__btn:hover { background: rgba(255, 255, 255, 0.26); }
+.shg-lb__btn:active { transform: scale(0.92); }
+.shg-lb__btn:focus-visible { outline: 3px solid var(--shg-gold, #E9B82B); outline-offset: 2px; }
+.shg-lb__btn svg { width: 24px; height: 24px; }
+.shg-lb__close { top: max(14px, env(safe-area-inset-top)); right: 14px; }
+.shg-lb__prev { left: 16px; top: 50%; margin-top: -26px; }
+.shg-lb__next { right: 16px; top: 50%; margin-top: -26px; }
+.shg-lb[data-single] :is(.shg-lb__prev, .shg-lb__next, .shg-lb__count) { display: none; }
+@media (max-width: 767px) {
+  .shg-lb__img { max-width: 100%; max-height: calc(100vh - 230px); max-height: calc(100dvh - 230px); border-radius: 1.75rem 0.375rem; }
+  .shg-lb__prev, .shg-lb__next { top: auto; bottom: max(18px, env(safe-area-inset-bottom)); margin-top: 0; }
+  .shg-lb__stage { padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }
+  .shg-lb__caption { font-size: 16px; }
+}
+/* Photos that open in the lightbox */
+.shg-lb-thumb { cursor: zoom-in; }
+.shg-lb-thumb:focus-visible { outline: 3px solid var(--shg-forest, #173A22); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .shg-lb__backdrop, .shg-lb__img, .shg-lb__btn { transition: none; }
+  .shg-lb__img { transform: none; }
+}
+</style>
+<script>
+(function () {
+  var GALLERIES = '.shg-lightbox, .shg-about__gallery';
+  var ICON = {
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    prev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+    next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>'
+  };
+  var box, imgEl, capEl, countEl, items = [], index = 0, opener = null, locked = [];
+
+  function fullSize(img) {
+    return img.getAttribute('data-dm-image-path') || img.currentSrc || img.src;
+  }
+  function captionFor(img) {
+    var col = img.closest('.dmRespCol') || img.parentNode;
+    var cap = col && col.querySelector('[class*="caption"]');
+    var text = cap ? cap.textContent.replace(/\s+/g, ' ').trim() : '';
+    return text || img.getAttribute('alt') || '';
+  }
+
+  function build() {
+    box = document.createElement('div');
+    box.className = 'shg-lb';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', 'Photo viewer');
+    box.innerHTML =
+      '<div class="shg-lb__backdrop" data-close></div>' +
+      '<div class="shg-lb__stage"><figure class="shg-lb__figure">' +
+        '<img class="shg-lb__img" alt="">' +
+        '<figcaption><p class="shg-lb__caption"></p></figcaption>' +
+        '<span class="shg-lb__count" aria-live="polite"></span>' +
+      '</figure></div>' +
+      '<button type="button" class="shg-lb__btn shg-lb__close" data-close aria-label="Close photo">' + ICON.close + '</button>' +
+      '<button type="button" class="shg-lb__btn shg-lb__prev" aria-label="Previous photo">' + ICON.prev + '</button>' +
+      '<button type="button" class="shg-lb__btn shg-lb__next" aria-label="Next photo">' + ICON.next + '</button>';
+    document.body.appendChild(box);
+    imgEl = box.querySelector('.shg-lb__img');
+    capEl = box.querySelector('.shg-lb__caption');
+    countEl = box.querySelector('.shg-lb__count');
+
+    box.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]') || e.target === box.querySelector('.shg-lb__stage')) close();
+    });
+    box.querySelector('.shg-lb__prev').addEventListener('click', function () { show(index - 1); });
+    box.querySelector('.shg-lb__next').addEventListener('click', function () { show(index + 1); });
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1); }
+      else if (e.key === 'Tab') {
+        var f = [].filter.call(box.querySelectorAll('button'), function (b) { return b.offsetParent !== null; });
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    // Swipe left / right on phones
+    var x0 = null, y0 = null;
+    box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) show(index + (dx < 0 ? 1 : -1));
+      x0 = null;
+    }, { passive: true });
+  }
+
+  function show(i) {
+    if (!items.length) return;
+    index = (i + items.length) % items.length;
+    var it = items[index];
+    imgEl.classList.remove('is-loaded');
+    imgEl.onload = function () { imgEl.classList.add('is-loaded'); };
+    imgEl.onerror = function () { if (imgEl.src !== it.fallback) imgEl.src = it.fallback; };
+    imgEl.src = it.src;
+    imgEl.alt = it.alt;
+    if (imgEl.complete && imgEl.naturalWidth) imgEl.classList.add('is-loaded');
+    capEl.textContent = it.caption;
+    capEl.style.display = it.caption ? '' : 'none';
+    countEl.textContent = (index + 1) + ' of ' + items.length;
+    // Load the neighbours so swiping feels instant
+    [index + 1, index - 1].forEach(function (n) {
+      var nb = items[(n + items.length) % items.length];
+      if (nb) { var pre = new Image(); pre.src = nb.src; }
+    });
+  }
+
+  function lockScroll(on) {
+    var els = [document.documentElement, document.body, document.getElementById('iscrollBody')];
+    if (on) {
+      locked = els.filter(Boolean).map(function (el) { var v = el.style.overflow; el.style.overflow = 'hidden'; return [el, v]; });
+    } else {
+      locked.forEach(function (p) { p[0].style.overflow = p[1]; });
+      locked = [];
+    }
+  }
+
+  function open(gallery, img) {
+    if (!box) build();
+    var imgs = [].slice.call(gallery.querySelectorAll('.imageWidget img, img'))
+      .filter(function (im, k, all) { return all.indexOf(im) === k && im.offsetParent !== null; });
+    items = imgs.map(function (im) {
+      return { src: fullSize(im), fallback: im.currentSrc || im.src, alt: im.getAttribute('alt') || '', caption: captionFor(im) };
+    });
+    if (items.length < 2) box.setAttribute('data-single', ''); else box.removeAttribute('data-single');
+    opener = document.activeElement;
+    lockScroll(true);
+    box.classList.add('is-on');
+    show(Math.max(0, imgs.indexOf(img)));
+    void box.offsetWidth;
+    box.classList.add('is-open');
+    box.querySelector('.shg-lb__close').focus();
+  }
+
+  function close() {
+    if (!box || !box.classList.contains('is-on')) return;
+    box.classList.remove('is-open');
+    lockScroll(false);
+    setTimeout(function () { box.classList.remove('is-on'); imgEl.removeAttribute('src'); }, 300);
+    if (opener && opener.focus) opener.focus();
+  }
+
+  function setup() {
+    document.querySelectorAll(GALLERIES).forEach(function (g) {
+      g.querySelectorAll('.imageWidget').forEach(function (w) {
+        if (w.getAttribute('data-shg-lb')) return;
+        var img = w.querySelector('img');
+        if (!img) return;
+        w.setAttribute('data-shg-lb', '1');
+        var target = w.querySelector('a') || w;
+        // A photo linked to another page keeps its link
+        if (target.getAttribute('href')) return;
+        target.classList.add('shg-lb-thumb');
+        target.setAttribute('role', 'button');
+        target.setAttribute('tabindex', '0');
+        target.setAttribute('aria-label', 'Open photo: ' + (captionFor(img) || 'photo'));
+        target.addEventListener('click', function (e) { e.preventDefault(); open(g, img); });
+        target.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(g, img); }
+        });
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup); else setup();
+  window.addEventListener('load', setup);
+})();
+</script>

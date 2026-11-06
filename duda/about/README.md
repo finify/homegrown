@@ -17,6 +17,9 @@
 - **Gary's photo:** the logo is a placeholder. Replace it with a portrait.
 - **Add a team member:** in the team row, duplicate Gary's column, then change the photo, name and role.
 - **Gallery:** duplicate or delete a column to add or remove photos.
+  - Clicking or tapping a gallery photo opens it full size in a **lightbox**. It shows the caption and "2 of 6", with arrows to step through, swipe on phones, arrow keys and Esc.
+  - New photos join the lightbox automatically, and the caption is the text under each photo.
+  - It comes from `site.js` and `base.css`, which are already linked, so there's nothing to paste.
 
 ## Sections
 Hero, our story, what we do (three tiles), quote, the team, our site (Youth Investment Fund), gallery, and a closing call to action.
