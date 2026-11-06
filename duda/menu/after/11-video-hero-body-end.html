@@ -1,0 +1,159 @@
+<!--
+  SUNDERLAND HOME GROWN REDESIGN: VIDEO BACKGROUND HERO
+  Where: already included in the linked files (CSS in base.css, script in site.js).
+         If you paste instead of linking, add this to Site Settings > Body end HTML.
+  What:  a row with the class  shg-video-hero  plays a YouTube video, muted and looping,
+         behind its content. The video is the first YouTube link inside the row (on the Home page,
+         the "Watch our film" link), so changing that link in the editor changes the video.
+         - The photo in the row shows first, and stays if the video can't play.
+         - A Pause / Play button sits in the corner (people must be able to stop moving video).
+         - No autoplay for people who have asked their device to reduce motion, or who are on
+           data saver: they get the photo and can press Play.
+         - The video pauses while the hero is scrolled out of view, to save battery and data.
+-->
+<style>
+.shg-video-hero { position: relative !important; overflow: hidden !important; isolation: isolate; }
+.shg-vh {
+  position: absolute; inset: 0; z-index: 1;
+  overflow: hidden; pointer-events: none;
+  container-type: size;
+}
+.shg-vh iframe {
+  position: absolute; top: 50%; left: 50%;
+  /* Cover the hero at any shape: 16:9 video, scaled up a little to hide YouTube's edges */
+  width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.78vh;
+  width: max(100cqw, 177.78cqh); height: max(100cqh, 56.25cqw); min-width: 0; min-height: 0;
+  transform: translate(-50%, -50%) scale(1.18);
+  border: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.shg-video-hero.is-playing .shg-vh iframe { opacity: 1; }
+.shg-vh__toggle {
+  position: absolute; z-index: 5;
+  right: clamp(16px, 3vw, 40px); bottom: clamp(16px, 3vw, 40px);
+  display: inline-flex; align-items: center; gap: 8px;
+  min-width: 48px; height: 48px; padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 999px;
+  background: rgba(12, 30, 18, 0.45); color: #fff;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  font: 700 15px/1 var(--shg-font, system-ui, sans-serif);
+  cursor: pointer;
+  transition: background-color .2s ease, transform .15s ease;
+}
+.shg-vh__toggle:hover { background: rgba(12, 30, 18, 0.7); }
+.shg-vh__toggle:active { transform: scale(0.94); }
+.shg-vh__toggle:focus-visible { outline: 3px solid var(--shg-gold, #E9B82B); outline-offset: 3px; }
+.shg-vh__toggle svg { width: 18px; height: 18px; flex: none; }
+@media (max-width: 767px) {
+  .shg-vh__toggle { padding: 0; width: 48px; justify-content: center; }
+  .shg-vh__toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) { .shg-vh iframe { transition: none; } }
+</style>
+<script>
+(function () {
+  var ICON = {
+    pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
+    play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>'
+  };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function youtubeId(url) {
+    var m = /(?:youtu\.be\/|[?&]v=|embed\/|shorts\/)([\w-]{11})/.exec(url || '');
+    return m ? m[1] : null;
+  }
+  function lowData() {
+    var c = navigator.connection;
+    return !!(c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || '')));
+  }
+
+  function hero(row) {
+    if (row.getAttribute('data-shg-video')) return;
+    var link = row.querySelector('.shg-video-link a[href*="youtu"], a[href*="youtube.com"], a[href*="youtu.be"]');
+    var id = link && youtubeId(link.getAttribute('href'));
+    if (!id) return;
+    row.setAttribute('data-shg-video', id);
+
+    var layer = document.createElement('div');
+    layer.className = 'shg-vh';
+    layer.setAttribute('aria-hidden', 'true');
+    row.insertBefore(layer, row.firstChild);
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'shg-vh__toggle';
+    row.appendChild(btn);
+
+    var frame = null, playing = false, wanted = true, inView = true;
+
+    function render() {
+      btn.innerHTML = (wanted ? ICON.pause : ICON.play) + '<span>' + (wanted ? 'Pause video' : 'Play video') + '</span>';
+      btn.setAttribute('aria-label', wanted ? 'Pause background video' : 'Play background video');
+    }
+    function send(func) {
+      if (frame && frame.contentWindow) frame.contentWindow.postMessage(JSON.stringify({ event: 'command', func: func, args: [] }), '*');
+    }
+    function load() {
+      if (frame) return;
+      frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + id +
+        '?autoplay=1&mute=1&loop=1&playlist=' + id +
+        '&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1' +
+        (location.origin && location.origin !== 'null' ? '&origin=' + encodeURIComponent(location.origin) : '');
+      frame.title = 'Background video';
+      frame.setAttribute('tabindex', '-1');
+      frame.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+      frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      frame.addEventListener('load', function () {
+        // Ask the player to report its state, so the video only fades in once it's really playing
+        frame.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: id, channel: 'widget' }), '*');
+      });
+      layer.appendChild(frame);
+    }
+    window.addEventListener('message', function (e) {
+      if (!frame || e.source !== frame.contentWindow) return;
+      var d;
+      try { d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data; } catch (x) { return; }
+      if (!d) return;
+      var state = d.event === 'onStateChange' ? d.info : (d.info && d.info.playerState);
+      if (state === 1) {
+        playing = true;
+        row.classList.add('is-playing');
+        if (!wanted || !inView) send('pauseVideo');
+      } else if (state === 2 || state === 0) {
+        playing = false;
+      }
+    });
+
+    btn.addEventListener('click', function () {
+      wanted = !wanted;
+      if (!wanted) send('pauseVideo');
+      else if (!frame) load();
+      else send('playVideo');
+      render();
+    });
+
+    // Pause while the hero is off screen
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        if (!frame) return;
+        if (!inView) send('pauseVideo');
+        else if (wanted) send('playVideo');
+      }, { threshold: 0.05 }).observe(row);
+    }
+    if (reduce.addEventListener) reduce.addEventListener('change', function () {
+      if (reduce.matches && wanted) { wanted = false; send('pauseVideo'); render(); }
+    });
+
+    if (reduce.matches || lowData()) { wanted = false; render(); return; }
+    render();
+    // Start after the page has loaded, so the photo and text appear first
+    var start = function () { setTimeout(load, 300); };
+    if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
+  }
+
+  function setup() { document.querySelectorAll('.shg-video-hero').forEach(hero); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup); else setup();
+})();
+</script>
