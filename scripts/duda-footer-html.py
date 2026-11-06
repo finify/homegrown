@@ -44,7 +44,7 @@ def link_list(items):
 LEAVES = 'https://finify.github.io/homegrown/duda/footer-leaves.svg'
 LOTTERY = 'https://irp.cdn-website.com/0432dc74/dms3rep/multi/LOTTERY-COMMUNITY-FUND-LOGO.jpg'
 YIF = 'https://irp.cdn-website.com/0432dc74/dms3rep/multi/Youth-Investment-Fund-YIF-e1659353410541.png'
-link_col = lambda title, items: col('large-2 medium-4 small-6', 'shg-footer__col',
+link_col = lambda title, items: col('large-2 medium-4 small-12', 'shg-footer__col',
                                     text('shg-footer__heading', title), text('shg-footer__links', link_list(items)))
 
 html = f'''<!-- *** ADD OR EDIT HTML INSIDE OF THE dmRespCol DIVS, SEE DOCUMENTATION FOR GUIDELINES *** -->

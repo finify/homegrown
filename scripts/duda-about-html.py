@@ -80,7 +80,7 @@ team_head = row('shg-about__team-head',
         text('shg-about__h2', 'The team', 'h2'),
         text('shg-about__lead', 'Our health mentors and horticultural trainer work alongside everyone who comes here.')))
 team = row('shg-about__team',
-    col('large-3 medium-4 small-6', 'shg-about__person',
+    col('large-12 medium-12 small-12', 'shg-about__person',
         image('shg-leaf shg-about__portrait', C + 'Sunderland_Homegrown_Mainlogo+circle+colour.jpg', 'Sunderland Home Grown logo (replace with a photo of Gary)'),
         text('shg-about__person-name', 'Gary Hillery'),
         text('shg-about__person-role', 'Manager and Director')))
