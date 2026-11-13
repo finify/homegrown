@@ -50,7 +50,7 @@ const videoCss = video.match(/<style>([\s\S]*?)<\/style>/)[1]
 const videoJs = video.match(/<script>([\s\S]*?)<\/script>/)[1]
 
 out('base.css', banner('base styles (colours, type, buttons, leaf photos)') +
-  [sections['1'], sections['2'], sections['3'], sections['5'], sections['7'], '/* ===== Photo lightbox (site.js) ===== */\n' + lightboxCss, '/* ===== Video background hero (site.js) ===== */\n' + videoCss, '/* ===== Blog: landing page, post lists and single posts ===== */\n' + read('blog/after/blog.css')].join('\n'))
+  [sections['1'], sections['2'], sections['3'], sections['5'], sections['7'], '/* ===== Photo lightbox (site.js) ===== */\n' + lightboxCss, '/* ===== Video background hero (site.js) ===== */\n' + videoCss, '/* ===== Blog: landing page, post lists and single posts ===== */\n' + read('blog/after/blog.css'), '/* ===== Gallery page ===== */\n' + read('gallery/after/gallery.css')].join('\n'))
 
 out('header.css', banner('header and menus') + [
   sections['4'],

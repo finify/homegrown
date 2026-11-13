@@ -7,7 +7,9 @@
   Which photos:
          - the About us gallery (the row with class shg-about__gallery), automatically;
          - any other row or section: in Developer Mode add the class  shg-lightbox  to the row
-           (the outer <div class="dmRespRow ...">). Every photo inside it becomes one gallery.
+           (the outer <div class="dmRespRow ...">). Every photo inside it becomes one gallery;
+         - every Duda Photo Gallery widget (the Gallery page), automatically, including the photos
+           "View more" reveals. Its caption title and text are shown under the photo.
   Captions come from the text widget under each photo (any class with "caption" in it),
   otherwise from the photo's alt text. The full-size photo is used, not the thumbnail.
 -->
@@ -171,22 +173,93 @@
     }
   }
 
-  function open(gallery, img) {
+  function openItems(list, start) {
     if (!box) build();
-    var imgs = [].slice.call(gallery.querySelectorAll('.imageWidget img, img'))
-      .filter(function (im, k, all) { return all.indexOf(im) === k && im.offsetParent !== null; });
-    items = imgs.map(function (im) {
-      return { src: fullSize(im), fallback: im.currentSrc || im.src, alt: im.getAttribute('alt') || '', caption: captionFor(im) };
-    });
+    items = list;
     if (items.length < 2) box.setAttribute('data-single', ''); else box.removeAttribute('data-single');
     opener = document.activeElement;
     lockScroll(true);
     box.classList.add('is-on');
-    show(Math.max(0, imgs.indexOf(img)));
+    show(Math.max(0, start));
     void box.offsetWidth;
     box.classList.add('is-open');
     box.querySelector('.shg-lb__close').focus();
   }
+  function open(gallery, img) {
+    var imgs = [].slice.call(gallery.querySelectorAll('.imageWidget img, img'))
+      .filter(function (im, k, all) { return all.indexOf(im) === k && im.offsetParent !== null; });
+    openItems(imgs.map(function (im) {
+      return { src: fullSize(im), fallback: im.currentSrc || im.src, alt: im.getAttribute('alt') || '', caption: captionFor(im) };
+    }), imgs.indexOf(img));
+  }
+
+  /* Duda's Photo Gallery widget (the Gallery page). Duda builds its photos with its own script and
+     rebuilds them on resize and "View more", so these handlers listen on the page, not on each photo. */
+  var DUDA_THUMB = '.dmPhotoGallery .photoGalleryThumbs .image-container > a[data-image-url]';
+  function clean(t) { return (t || '').replace(/\s+/g, ' ').trim(); }
+  function linksElsewhere(a) {
+    // A photo the editor linked to a page keeps its link
+    var h = a.getAttribute('href');
+    return !!h && !/\.(jpe?g|png|gif|webp|avif)(\?|$)/i.test(h) && !/cdn-website|multiscreensite/.test(h);
+  }
+  function dudaThumbs(gallery) {
+    return [].slice.call(gallery.querySelectorAll('.photoGalleryThumbs'))
+      .filter(function (li) { return li.offsetParent !== null && li.querySelector('a[data-image-url]'); })
+      .sort(function (a, b) { return (+a.getAttribute('data-index') || 0) - (+b.getAttribute('data-index') || 0); });
+  }
+  function dudaItem(li) {
+    var a = li.querySelector('a[data-image-url]'), img = a.querySelector('img');
+    var title = clean((li.querySelector('.caption-title') || {}).textContent);
+    var text = clean((li.querySelector('.caption-text') || {}).textContent);
+    var bg = /url\(["']?([^"')]+)/.exec(a.style.backgroundImage || '');
+    return {
+      src: a.getAttribute('data-image-url'),
+      fallback: (img && (img.getAttribute('data-src') || img.currentSrc || img.src)) || (bg && bg[1]) || a.getAttribute('data-image-url'),
+      alt: (img && img.getAttribute('alt')) || title,
+      caption: [title, text].filter(Boolean).join(' – ')
+    };
+  }
+  function openDuda(a) {
+    var gallery = a.closest('.dmPhotoGallery'), li = a.closest('.photoGalleryThumbs');
+    var thumbs = dudaThumbs(gallery);
+    openItems(thumbs.map(dudaItem), thumbs.indexOf(li));
+  }
+  function decorateDuda() {
+    document.querySelectorAll('.dmPhotoGallery').forEach(function (g) {
+      var thumbs = dudaThumbs(g);
+      thumbs.forEach(function (li, i) {
+        var a = li.querySelector('a[data-image-url]');
+        if (linksElsewhere(a)) return;
+        a.classList.add('shg-lb-thumb');
+        a.setAttribute('role', 'button');
+        a.setAttribute('tabindex', '0');
+        var it = dudaItem(li);
+        a.setAttribute('aria-label', 'Open photo ' + (i + 1) + ' of ' + thumbs.length + (it.caption ? ': ' + it.caption : ''));
+      });
+      var more = g.querySelector('.photoGalleryViewAll');
+      if (more && !more.hasAttribute('role')) { more.setAttribute('role', 'button'); more.setAttribute('tabindex', '0'); }
+      if (!g.getAttribute('data-shg-lb')) {
+        g.setAttribute('data-shg-lb', '1');
+        var t;
+        new MutationObserver(function () { clearTimeout(t); t = setTimeout(decorateDuda, 60); })
+          .observe(g, { childList: true, subtree: true });
+      }
+    });
+  }
+  // Capture phase, so Duda's own click handling doesn't also run
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest(DUDA_THUMB);
+    if (!a || linksElsewhere(a)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    openDuda(a);
+  }, true);
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var t = e.target;
+    if (t.matches && t.matches(DUDA_THUMB) && !linksElsewhere(t)) { e.preventDefault(); openDuda(t); }
+    else if (t.matches && t.matches('.dmPhotoGallery .photoGalleryViewAll')) { e.preventDefault(); t.click(); }
+  }, true);
 
   function close() {
     if (!box || !box.classList.contains('is-on')) return;
@@ -217,7 +290,8 @@
       });
     });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup); else setup();
-  window.addEventListener('load', setup);
+  function setupAll() { setup(); decorateDuda(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupAll); else setupAll();
+  window.addEventListener('load', setupAll);
 })();
 </script>

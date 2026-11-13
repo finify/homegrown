@@ -1,0 +1,247 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: GALLERY PAGE
+   Built into base.css (already linked site-wide), so there's no extra link to add.
+
+   - The page is recognised by its header row (shg-gallery__hero, from
+     duda/gallery/after/gallery-header-row.html), so nothing in Duda's gallery widget changes.
+   - The photo styles below apply to Duda's Photo Gallery widget on that page.
+   - Clicking a photo opens the site's lightbox (site.js), with its caption.
+   ===================================================================== */
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) {
+  --shg-gal-pad: 40px;
+  background: var(--shg-ground) !important;
+  font-family: var(--shg-font) !important;
+  padding-bottom: 120px !important;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) > .dmRespRow {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 max(var(--shg-gal-pad), calc((100% - 88rem) / 2 + var(--shg-gal-pad))) !important;
+  background: transparent !important;
+  background-image: none !important;
+  text-align: left !important;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) > .dmRespRow::before { display: none !important; }
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) > .dmRespRow .dmRespColsWrapper { display: block !important; width: 100% !important; max-width: none !important; margin: 0 !important; }
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) > .dmRespRow .dmRespCol { display: block !important; float: none !important; width: 100% !important; max-width: none !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; }
+
+/* ---------- Header ---------- */
+html body #dm .shg-gallery__hero.shg-gallery__hero { padding-top: 88px !important; padding-bottom: 56px !important; }
+html body #dm .shg-gallery__hero .dmNewParagraph {
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  color: var(--shg-ink) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  background: transparent !important;
+}
+html body #dm .shg-gallery__hero .dmNewParagraph * {
+  color: inherit !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: none !important;
+  text-align: inherit !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline;
+}
+html body #dm .shg-gallery__hero .dmNewParagraph.shg-gallery__eyebrow {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px !important;
+  color: var(--shg-forest) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+html body #dm .shg-gallery__hero .dmNewParagraph.shg-gallery__eyebrow::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: var(--shg-leaf);
+  border-radius: 0 100% 0 100%;
+}
+html body #dm .shg-gallery__hero .dmNewParagraph.shg-gallery__title {
+  display: block !important;
+  color: var(--shg-forest) !important;
+  font-size: clamp(2.75rem, 6.4vw, 6rem) !important;
+  font-weight: 700 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.035em !important;
+}
+html body #dm .shg-gallery__hero .dmNewParagraph.shg-gallery__lead {
+  display: block !important;
+  margin-top: 24px !important;
+  max-width: 44ch !important;
+  color: var(--shg-soft) !important;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem) !important;
+  line-height: 1.5 !important;
+}
+
+/* ---------- Duda's Photo Gallery widget ---------- */
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery {
+  display: block !important;
+  float: none !important;
+  width: calc(100% + 16px) !important;
+  max-width: none !important;
+  margin: 0 -8px !important;
+  padding: 0 !important;
+}
+/* Even 16px gaps between photos */
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryThumbs {
+  padding: 8px !important;
+  margin: 0 !important;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .thumbnailInnerWrapper {
+  position: relative !important;
+  height: 100% !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  background: var(--shg-stone) !important;
+  box-shadow: 0 1px 2px rgba(23, 58, 34, 0.06), 0 12px 32px -18px rgba(23, 58, 34, 0.45);
+  transition: box-shadow .35s ease, transform .35s ease;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .image-container {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .image-container > a {
+  border-radius: 0 !important;
+  background-size: cover !important;
+  background-position: center !important;
+  transform: none !important;
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1) !important;
+}
+/* Hover: lift the card and zoom the photo a little (Duda's own zoom-out effect is replaced) */
+@media (hover: hover) {
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryThumbs:hover .thumbnailInnerWrapper {
+    transform: translateY(-3px);
+    box-shadow: 0 2px 4px rgba(23, 58, 34, 0.08), 0 22px 44px -20px rgba(23, 58, 34, 0.55);
+  }
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryThumbs:hover .image-container > a {
+    transform: scale(1.05) !important;
+  }
+}
+/* Keyboard focus: a clear ring round the whole photo */
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .image-container > a:focus-visible { outline: none !important; }
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .thumbnailInnerWrapper:has(a:focus-visible) {
+  outline: 3px solid var(--shg-forest) !important;
+  outline-offset: 3px;
+  overflow: visible !important;
+}
+
+/* Captions (when a photo has a title or text in the editor): white text on a soft shade */
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-container {
+  position: absolute !important;
+  left: 0 !important; right: 0 !important; bottom: 0 !important; top: auto !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 72px 22px 20px !important;
+  border-radius: 0 0 20px 20px !important;
+  background: linear-gradient(to top, rgba(12, 30, 18, 0.88), rgba(12, 30, 18, 0.55) 55%, rgba(12, 30, 18, 0)) !important;
+  text-align: left !important;
+  pointer-events: none;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-inner {
+  display: block !important;
+  position: static !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  background: transparent !important;
+  text-align: left !important;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-title,
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-title * {
+  margin: 0 !important;
+  color: #fff !important;
+  font-family: var(--shg-font) !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em !important;
+  text-align: left !important;
+  text-shadow: none !important;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-text,
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-text * {
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+  text-align: left !important;
+  text-shadow: none !important;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-title:not(:empty) + .caption-text { margin-top: 6px !important; }
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-container:not(:has(.caption-title:not(:empty), .caption-text:not(:empty))) { display: none !important; }
+
+/* "View more" / "View less": a gold button */
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryViewAll {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content !important;
+  min-height: 52px;
+  margin: 40px auto 0 !important;
+  padding: 0 28px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: var(--shg-gold) !important;
+  color: var(--shg-forest) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: background-color .2s ease, transform .15s ease;
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryViewAll::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  margin-top: -4px;
+  border-right: 2.5px solid currentColor;
+  border-bottom: 2.5px solid currentColor;
+  transform: rotate(45deg);
+}
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryViewAll[data-viewless]:not([isall="true"])::after,
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryViewAll.shg-less::after { transform: rotate(-135deg); margin-top: 4px; }
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryViewAll:hover { background: #F2C94C !important; }
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryViewAll:active { transform: scale(0.97); }
+html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryViewAll:focus-visible { outline: 3px solid var(--shg-forest) !important; outline-offset: 3px; }
+
+/* Photos that move in: keep them still for people who've asked for less motion */
+@media (prefers-reduced-motion: reduce) {
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryThumbs { animation: none !important; opacity: 1 !important; }
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery :is(.thumbnailInnerWrapper, .image-container > a) { transition: none !important; transform: none !important; }
+}
+
+/* ---------- Tablet ---------- */
+@media screen and (max-width: 1024px) {
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) { --shg-gal-pad: 32px; padding-bottom: 96px !important; }
+  html body #dm .shg-gallery__hero.shg-gallery__hero { padding-top: 64px !important; padding-bottom: 40px !important; }
+}
+
+/* ---------- Phones ---------- */
+@media screen and (max-width: 767px) {
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) { --shg-gal-pad: 16px; padding-bottom: 72px !important; }
+  html body #dm .shg-gallery__hero.shg-gallery__hero { padding-top: 40px !important; padding-bottom: 24px !important; }
+  html body #dm .shg-gallery__hero .dmNewParagraph.shg-gallery__title { font-size: 48px !important; }
+  html body #dm .shg-gallery__hero .dmNewParagraph.shg-gallery__lead { font-size: 18px !important; margin-top: 16px !important; }
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery { width: calc(100% + 12px) !important; margin: 0 -6px !important; }
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryThumbs { padding: 6px !important; }
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery :is(.thumbnailInnerWrapper, .image-container) { border-radius: 16px !important; }
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-container { padding: 56px 18px 16px !important; border-radius: 0 0 16px 16px !important; }
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .caption-title { font-size: 19px !important; }
+  html body #dm .dmRespRowsWrapper:has(> .shg-gallery__hero) .dmPhotoGallery .photoGalleryViewAll { width: 100% !important; margin-top: 28px !important; }
+}
