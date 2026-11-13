@@ -125,6 +125,13 @@
   // Settings: change these if the page address or phone number changes.
   var LOGO = 'https://irp-cdn.multiscreensite.com/0432dc74/dms3rep/multi/Sunderland_Homegrown_Lozenge_1000x285_RGB-dee94023-f0dd5d88-c6017153.png';
   var ENQUIRY = '/contact';
+  // In Duda's preview the site lives under /site/<id>/ with ?preview=... on the end;
+  // add that to our own links so they work there too (no change on the live site).
+  var siteUrl = function (path) {
+    var m = /^\/site\/[^\/]+/.exec(location.pathname);
+    if (!m) return path;
+    return m[0] + (path === '/' ? '/' : path) + location.search;
+  };
   var PHONE = { href: 'tel:+441915499444', label: 'Call 0191 549 9444' };
 
   // MENU LINKS come from Duda itself: the Pages panel decides which pages appear, in which
@@ -154,7 +161,7 @@
     };
 
     var bar = el('div', { class: 'shg-m-bar', role: 'banner' });
-    var logo = el('a', { class: 'shg-m-logo', href: '/' });
+    var logo = el('a', { class: 'shg-m-logo', href: siteUrl('/') });
     logo.appendChild(el('img', { src: LOGO, alt: 'Sunderland Home Grown, home page', width: '148', height: '42' }));
     var toggle = el('button', { class: 'shg-m-toggle', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'shg-m-panel' },
       '<span class="shg-m-icon" aria-hidden="true"><span></span><span></span><span></span></span><span class="shg-m-label">Menu</span>');
@@ -247,7 +254,7 @@
     nav.appendChild(list);
     panel.appendChild(nav);
     var actions = el('div', { class: 'shg-m-actions' });
-    actions.appendChild(el('a', { class: 'shg-m-btn shg-m-btn--gold', href: ENQUIRY }, 'Make an enquiry'));
+    actions.appendChild(el('a', { class: 'shg-m-btn shg-m-btn--gold', href: siteUrl(ENQUIRY) }, 'Make an enquiry'));
     actions.appendChild(el('a', { class: 'shg-m-btn shg-m-btn--white', href: PHONE.href }, PHONE.label));
     panel.appendChild(actions);
 
