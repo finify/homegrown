@@ -62,7 +62,7 @@ html = f'''<!-- *** ADD OR EDIT HTML INSIDE OF THE dmRespCol DIVS, SEE DOCUMENTA
      col('large-4 medium-4 small-12', 'shg-footer__col shg-footer__mark', image('shg-footer__leaves', LEAVES, '')))}
 {row('shg-footer__nav',
      link_col('Visit', [('Garden centre', '/garden-centre'), ("What's on", '/whats-on'), ('Shop &amp; book workshops', '/store'), ('Contact &amp; find us', '/contact')]),
-     link_col('Take part', [('Day opportunities', '/day-opportunities'), ('Make a referral', '/day-opportunities#register'), ('Community groups', '/community'), ('Free membership', 'http://eepurl.com/icXnHv')]),
+     link_col('Take part', [('Day opportunities', '/day-opportunities'), ('Make a referral', '/contact'), ('Community groups', '/community'), ('Free membership', 'http://eepurl.com/icXnHv')]),
      link_col('About', [('Our story', '/about'), ('News &amp; growing tips', '/blog'), ('Gallery', '/gallery'), ('Supporters', '/thanks-to')]),
      col('large-3 medium-6 small-12', 'shg-footer__col',
          text('shg-footer__heading', 'Opening times'),
