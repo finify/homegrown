@@ -1,0 +1,34 @@
+<!--
+  SUNDERLAND HOME GROWN REDESIGN: "#register" LINKS (Day opportunities page)
+  Where: already included in site.js.
+  What:  links ending in #register (for example "Book a free trial visit") scroll to the register
+         form at the bottom of the Day opportunities page (the row with class shg-day__register),
+         and put the cursor in its first box. It also works when arriving from another page with
+         /day-opportunities#register. Duda can't give a row a name, so this finds it by its class.
+-->
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function target() { return document.querySelector('.shg-day__register'); }
+  function go(smooth) {
+    var t = target();
+    if (!t) return false;
+    t.scrollIntoView({ block: 'start', behavior: smooth && !reduce ? 'smooth' : 'auto' });
+    var first = t.querySelector('form input:not([type="hidden"]), form select, form textarea');
+    if (first) setTimeout(function () { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, smooth && !reduce ? 600 : 0);
+    return true;
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (!/#register$/.test(href)) return;
+    var path = href.split('#')[0];
+    // Same page (or just "#register"): scroll instead of reloading
+    if (path && path.replace(/\/+$/, '') !== location.pathname.replace(/\/+$/, '') && !/^\?/.test(path)) return;
+    if (go(true)) e.preventDefault();
+  });
+  function onArrive() { if (location.hash === '#register') setTimeout(function () { go(false); }, 300); }
+  if (document.readyState === 'complete') onArrive(); else window.addEventListener('load', onArrive);
+})();
+</script>

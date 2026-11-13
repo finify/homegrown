@@ -86,10 +86,10 @@ routes_head = row('shg-home__routes-head',
 routes = row('shg-home__routes',
     route('leaf', 'IMG_20211201_114040-40d4b2e3-30ddf696.jpg', 'A smiling woman in a Home Grown fleece giving a thumbs up in the potting shed.', 'For individuals and families',
           'Supported days of gardening, training and work experience in a relaxed, friendly place.',
-          '<a href="/contact">Ask about a place</a>'),
+          '<a href="/day-opportunities">Ask about a place</a>'),
     route('gold', 'IMG_4422.jpeg', '', 'For professionals and referrers',
           'Places for young people and adults with learning disabilities and mental health challenges.',
-          '<a href="/contact">Talk to us about a referral</a>'),
+          '<a href="/day-opportunities#register">Make a referral</a>'),
     route('berry', 'IMG_20220322_084417-10f6db23-7603fe64.jpg', '', 'For gardeners and visitors',
           'Bedding, hanging baskets and perennials, grown here. Open seven days a week.',
           '<a href="/store">Visit the shop</a>'))
@@ -183,6 +183,10 @@ contact = row('shg-home__contact',
         text('shg-home__call', f'<a href="{TEL}">Call {PHONE}</a>')),
     col('large-7 medium-12 small-12', 'shg-home__contact-form', form))
 
+# ---------- Day opportunities call to action (made by scripts/duda-day-html.py) ----------
+_cta_file = pathlib.Path(__file__).resolve().parent.parent / 'duda/home/after/day-cta-row.html'
+day_cta = re.sub(r'^<!--[\s\S]*?-->\n', '', _cta_file.read_text()).strip() if _cta_file.exists() else ''
+
 html = f'''<div dm:templateorder="170" class="dmHomeRespTmpl mainBorder dmRespRowsWrapper dmFullRowRespTmpl shg-home" id="1716942098">
 <!--
   SUNDERLAND HOME GROWN REDESIGN: HOME PAGE
@@ -190,6 +194,7 @@ html = f'''<div dm:templateorder="170" class="dmHomeRespTmpl mainBorder dmRespRo
   The hero video comes from site.js: change the "Watch our film" link to change the video.
 -->
 {hero}
+{day_cta}
 {intro}
 {routes_head}
 {routes}
