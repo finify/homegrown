@@ -34,3 +34,30 @@ Tested by simulating Duda's editor rewrite on every text widget: inner classes s
   - **"What is your enquiry about?"**: a drop-down with Garden centre, Trade and wholesale, Day opportunities, Workshops, Hire us, Volunteering, Something else. This helps route messages.
   - **A consent tick box (required):** "I agree to Sunderland Home Grown storing these details to respond to my enquiry", with a link to the privacy policy.
 - **Check who receives the form's messages.** The form's email subject is now "Website enquiry".
+
+## Update: two places, map and Street View ("Getting here" row only)
+Replace **only** the "Getting here" row, not the whole page:
+1. Open the Contact page in Developer Mode.
+2. Find the row that starts `<div class="dmRespRow shg-contact__find" id="1805414639">`. It's the last row on the page and holds "Getting here" and Duda's map widget.
+3. Select from that line down to its closing `</div>` (just before the page's last two `</div>` lines), and paste `after/getting-here-row.html` in its place.
+4. Save, preview, publish. The styles are in `contact.css` and the script in `site.js`, both already linked.
+
+(`after/contact.html` has the same row, for anyone pasting the whole page later.)
+
+**What it does**
+- **Two cards**, one per place, each with its own colour and icon: **Garden centre** (green, leaf) and **The store** (berry red, shopfront). The chosen card gets a coloured border.
+- **Show on map / Street View** open that place in the panel beside the cards (below them on phones, which scroll down to it). A Map | Street View switch sits above it, and the panel's border and label take the place's colour.
+- **Get directions** (gold) opens Google Maps directions to that exact spot.
+- **Lighter page:** Duda's map widget (Mapbox) is gone. Nothing map-related loads until someone scrolls near the panel; then it's a single Google Maps frame with no API key. Tested: no map requests at all on page load.
+- **Without JavaScript** every link still opens Google Maps in a new tab.
+
+**Locations** come from your two links:
+- Garden centre: the "Sunderland Home Grown CIC" Google listing, 54.9230549, -1.3907195.
+- The store: your pin, 54.922892, -1.395702, at the Carley Road and Thompson Road corner of the park.
+
+They're about 320 metres apart. To move a pin, change the numbers in that place's three links in the editor.
+
+**Please check**
+- **The store's address:** I wrote "Thompson Park, Carley Road side, Southwick, Sunderland" from where the pin sits. Add the real street address and postcode if it has one.
+- **The name "The store":** change it in the editor if it's called something else.
+- **Street View** opens on the nearest Google photo to each pin (for the store, from Carley Road). If it faces the wrong way, use "Open Street View in Google Maps" to find a better spot, then update the store's Street View link.

@@ -364,6 +364,186 @@ html #dm .shg-contact.shg-contact .shg-contact__map-col :is(.inlineMap, .u_17917
   background-color: var(--shg-stone);
 }
 
+/* ---------- Getting here: two places, map and Street View (site.js builds the map panel) ---------- */
+html #dm .shg-contact.shg-contact .shg-places .dmRespColsWrapper { align-items: stretch; }
+html #dm .shg-contact.shg-contact .shg-places .shg-contact__getting-here .dmNewParagraph + .dmNewParagraph { margin-top: 16px !important; }
+html #dm .shg-contact.shg-contact .shg-places .dmNewParagraph.shg-contact__note { margin-bottom: 8px !important; }
+
+/* Each place: a white card with its own colour and icon (leaf = garden centre, shopfront = store) */
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place {
+  --shg-place: var(--shg-leaf);
+  --shg-place-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3Cpath d='M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12'/%3E%3C/svg%3E");
+  position: relative;
+  padding: 20px 20px 20px 80px !important;
+  border: 2px solid transparent !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  box-shadow: 0 1px 2px rgba(23, 58, 34, 0.06), 0 12px 32px -24px rgba(23, 58, 34, 0.5);
+  color: var(--shg-soft) !important;
+  font-size: 17px !important;
+  line-height: 1.5 !important;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place--store {
+  --shg-place: var(--shg-berry);
+  --shg-place-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l1.5-5h15L21 9'/%3E%3Cpath d='M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0Z'/%3E%3Cpath d='M5 13v8h14v-8'/%3E%3Cpath d='M10 21v-5h4v5'/%3E%3C/svg%3E");
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px 4px;
+  background: var(--shg-place) var(--shg-place-icon) center / 24px no-repeat;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place.is-active {
+  border-color: var(--shg-place) !important;
+  box-shadow: 0 1px 2px rgba(23, 58, 34, 0.06), 0 18px 40px -24px rgba(23, 58, 34, 0.6);
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place :is(b, strong) {
+  display: inline-block;
+  margin-bottom: 2px !important;
+  color: var(--shg-forest) !important;
+  font-size: 21px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+}
+/* The three links become buttons */
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place a {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin: 12px 8px 0 0 !important;
+  padding: 0 16px !important;
+  border-radius: 999px !important;
+  background: var(--shg-stone) !important;
+  color: var(--shg-forest) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .18s ease;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place a:hover { background: var(--shg-leaf-pale) !important; }
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place a[aria-pressed="true"] {
+  background: var(--shg-forest) !important;
+  color: #fff !important;
+}
+/* "Get directions" (the last link) stands out */
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place a:last-of-type {
+  background: var(--shg-gold) !important;
+  color: var(--shg-forest) !important;
+}
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place a:last-of-type:hover { background: var(--shg-gold-hover) !important; }
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place a:last-of-type::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: 2px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+/* The map panel */
+html #dm .shg-contact.shg-contact .shg-places .shg-contact__map-col { display: flex !important; flex-direction: column; }
+html #dm .shg-contact.shg-contact .shg-pmap {
+  --shg-place: var(--shg-leaf);
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: 12px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(23, 58, 34, 0.06), 0 16px 40px -28px rgba(23, 58, 34, 0.55);
+  font-family: var(--shg-font);
+}
+html #dm .shg-contact.shg-contact .shg-pmap[data-kind="store"] { --shg-place: var(--shg-berry); }
+html #dm .shg-contact.shg-contact .shg-pmap__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 4px 4px 12px;
+}
+html #dm .shg-contact.shg-contact .shg-pmap__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--shg-forest);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+html #dm .shg-contact.shg-contact .shg-pmap__dot { width: 14px; height: 14px; flex: none; border-radius: 0 100% 0 100%; background: var(--shg-place); }
+html #dm .shg-contact.shg-contact .shg-pmap__modes { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--shg-stone); }
+html #dm .shg-contact.shg-contact .shg-pmap__modes button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--shg-forest);
+  font: 700 15px/1 var(--shg-font);
+  cursor: pointer;
+}
+html #dm .shg-contact.shg-contact .shg-pmap__modes button[aria-pressed="true"] { background: var(--shg-forest); color: #fff; }
+html #dm .shg-contact.shg-contact .shg-pmap__modes button:focus-visible,
+html #dm .shg-contact.shg-contact .shg-pmap__open:focus-visible { outline: 3px solid var(--shg-forest); outline-offset: 2px; }
+html #dm .shg-contact.shg-contact .shg-pmap__frame {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 440px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--shg-stone);
+  box-shadow: inset 0 0 0 3px var(--shg-place);
+}
+html #dm .shg-contact.shg-contact .shg-pmap__frame iframe {
+  position: absolute;
+  inset: 3px;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  border: 0;
+  border-radius: 13px;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+html #dm .shg-contact.shg-contact .shg-pmap.is-loaded .shg-pmap__frame iframe { opacity: 1; }
+html #dm .shg-contact.shg-contact .shg-pmap__wait {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--shg-soft);
+  font-size: 16px;
+  font-weight: 700;
+}
+html #dm .shg-contact.shg-contact .shg-pmap__open {
+  align-self: flex-start;
+  margin: 12px 4px 4px;
+  color: var(--shg-forest);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--shg-leaf);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+/* The hint under the map is for when the script can't run; hide it once the panel is there */
+html #dm .shg-contact.shg-contact .shg-pmap ~ .dmNewParagraph.shg-places__map-note { display: none !important; }
+html #dm .shg-contact.shg-contact .dmNewParagraph.shg-places__map-note { color: var(--shg-soft) !important; }
+@media (prefers-reduced-motion: reduce) {
+  html #dm .shg-contact.shg-contact :is(.shg-pmap__frame iframe, .dmNewParagraph.shg-place, .dmNewParagraph.shg-place a) { transition: none !important; }
+}
+
 /* =====================================================================
    TABLET (1024px and narrower): one column, photos two across
    ===================================================================== */
@@ -385,6 +565,7 @@ html #dm .shg-contact.shg-contact .shg-contact__map-col :is(.inlineMap, .u_17917
     height: 380px !important;
     min-height: 380px !important;
   }
+  html #dm .shg-contact.shg-contact .shg-pmap__frame { min-height: 380px; }
 }
 
 /* =====================================================================
@@ -408,6 +589,13 @@ html #dm .shg-contact.shg-contact .shg-contact__map-col :is(.inlineMap, .u_17917
     height: 300px !important;
     min-height: 300px !important;
   }
+  html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place { padding: 72px 16px 16px !important; }
+  html #dm .shg-contact.shg-contact .dmNewParagraph.shg-place::before { left: 16px; top: 16px; }
+  html #dm .shg-contact.shg-contact .shg-pmap { padding: 8px; border-radius: 20px; }
+  html #dm .shg-contact.shg-contact .shg-pmap__bar { padding: 4px 4px 10px; }
+  html #dm .shg-contact.shg-contact .shg-pmap__modes { width: 100%; }
+  html #dm .shg-contact.shg-contact .shg-pmap__modes button { flex: 1 1 0; }
+  html #dm .shg-contact.shg-contact .shg-pmap__frame { min-height: 340px; }
 }
 /* Duda's phone pages, whatever the reported width */
 html body.dmMobileBody #dm .shg-contact.shg-contact .innerPageTmplBox { padding: 0 16px 72px !important; }

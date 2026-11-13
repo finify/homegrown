@@ -1,0 +1,150 @@
+<!--
+  SUNDERLAND HOME GROWN REDESIGN: "GETTING HERE" PLACES AND MAP (Contact page)
+  Where: already included in site.js (the styles are in contact.css).
+  What:  the "Getting here" row (class shg-places) lists places, each ONE text widget with the class
+         shg-place (shg-place--garden or shg-place--store) holding three links:
+           Show on map    (a Google Maps link with ?query=LAT,LNG)
+           Street View    (a Google Maps link with viewpoint=LAT,LNG)
+           Get directions (a Google Maps link with destination=LAT,LNG)
+         This script adds a map panel to the right-hand column. "Show on map" and "Street View" open
+         that place in the panel instead of a new tab; "Get directions" stays a normal link.
+         - Light: nothing loads until the panel is scrolled near; then one Google Maps frame, no API key.
+         - Without JavaScript every link still opens Google Maps.
+         - To move a pin, change the numbers in that place's links in the editor.
+-->
+<script>
+(function () {
+  var URL_FOR = {
+    map: function (ll) { return 'https://maps.google.com/maps?q=' + ll + '&z=17&output=embed'; },
+    street: function (ll) { return 'https://maps.google.com/maps?layer=c&cbll=' + ll + '&cbp=11,0,0,0,0&output=svembed'; }
+  };
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function coords(a) {
+    var h = '';
+    try { h = decodeURIComponent(a.getAttribute('href') || ''); } catch (e) { h = a.getAttribute('href') || ''; }
+    var m = /(?:query|destination|viewpoint|q|cbll)=(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/.exec(h);
+    return m ? m[1] + ',' + m[2] : null;
+  }
+  function kindOf(a) {
+    var h = a.getAttribute('href') || '', t = a.textContent.toLowerCase();
+    if (/\/dir\//.test(h) || /direction/.test(t)) return 'dir';
+    if (/pano|layer=c/.test(h) || /street/.test(t)) return 'street';
+    return 'map';
+  }
+
+  function setup(row) {
+    if (row.getAttribute('data-shg-places')) return;
+    var places = [].slice.call(row.querySelectorAll('.shg-place')).map(function (card) {
+      var p = { card: card, ll: null, links: {} };
+      [].forEach.call(card.querySelectorAll('a[href]'), function (a) {
+        p.ll = p.ll || coords(a);
+        var k = kindOf(a);
+        if (!p.links[k]) p.links[k] = a;
+      });
+      var b = card.querySelector('b, strong');
+      p.name = (b ? b.textContent : card.textContent.split('\n')[0]).replace(/\s+/g, ' ').trim();
+      p.kind = card.classList.contains('shg-place--store') ? 'store' : 'garden';
+      return p;
+    }).filter(function (p) { return p.ll; });
+    if (!places.length) return;
+    row.setAttribute('data-shg-places', '1');
+
+    var cols = row.querySelectorAll('.dmRespCol');
+    var col = row.querySelector('.shg-contact__map-col') || cols[cols.length - 1];
+    var panel = document.createElement('div');
+    panel.className = 'shg-pmap';
+    panel.innerHTML =
+      '<div class="shg-pmap__bar">' +
+        '<p class="shg-pmap__label" aria-live="polite"></p>' +
+        '<div class="shg-pmap__modes" role="group" aria-label="Map or Street View">' +
+          '<button type="button" data-mode="map">Map</button>' +
+          '<button type="button" data-mode="street">Street View</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="shg-pmap__frame"><span class="shg-pmap__wait">Loading map…</span></div>' +
+      '<a class="shg-pmap__open" target="_blank" rel="noopener">Open in Google Maps</a>';
+    col.insertBefore(panel, col.querySelector('.dmNewParagraph, .shg-places__map-note'));
+    var label = panel.querySelector('.shg-pmap__label');
+    var wrap = panel.querySelector('.shg-pmap__frame');
+    var open = panel.querySelector('.shg-pmap__open');
+    var modeBtns = panel.querySelectorAll('[data-mode]');
+    var cur = 0, mode = 'map', frame = null;
+
+    function render(load) {
+      var p = places[cur];
+      panel.setAttribute('data-kind', p.kind);
+      label.innerHTML = '';
+      var dot = document.createElement('span'); dot.className = 'shg-pmap__dot'; dot.setAttribute('aria-hidden', 'true');
+      label.appendChild(dot);
+      label.appendChild(document.createTextNode(p.name + (mode === 'street' ? ': Street View' : ': map')));
+      [].forEach.call(modeBtns, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === mode)); });
+      places.forEach(function (q, i) {
+        q.card.classList.toggle('is-active', i === cur);
+        ['map', 'street'].forEach(function (k) {
+          if (q.links[k]) q.links[k].setAttribute('aria-pressed', String(i === cur && mode === k));
+        });
+      });
+      var src = (mode === 'street' ? p.links.street : p.links.map) || p.links.map || p.links.dir;
+      if (src) open.href = src.getAttribute('href');
+      open.textContent = mode === 'street' ? 'Open Street View in Google Maps' : 'Open in Google Maps';
+      if (!load && !frame) return;
+      if (!frame) {
+        frame = document.createElement('iframe');
+        frame.setAttribute('allowfullscreen', '');
+        frame.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        frame.addEventListener('load', function () { panel.classList.add('is-loaded'); });
+        wrap.appendChild(frame);
+      }
+      panel.classList.remove('is-loaded');
+      frame.title = p.name + (mode === 'street' ? ', Street View' : ', map');
+      frame.src = URL_FOR[mode](p.ll);
+    }
+    function choose(i, m, fromClick) {
+      cur = i; mode = m;
+      render(true);
+      if (fromClick) {
+        var r = panel.getBoundingClientRect();
+        if (r.top < 0 || r.bottom > (window.innerHeight || 0)) panel.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+      }
+    }
+
+    places.forEach(function (p, i) {
+      ['map', 'street'].forEach(function (k) {
+        var a = p.links[k];
+        if (!a) return;
+        a.setAttribute('role', 'button');
+        a.setAttribute('aria-label', (k === 'street' ? 'Street View of ' : 'Show on the map: ') + p.name);
+        a.removeAttribute('target');
+        a.addEventListener('click', function (e) {
+          if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return; // new tab still works
+          e.preventDefault();
+          choose(i, k, true);
+        });
+        a.addEventListener('keydown', function (e) {
+          if (e.key === ' ') { e.preventDefault(); choose(i, k, true); }
+        });
+      });
+      if (p.links.dir) p.links.dir.setAttribute('aria-label', 'Get directions to ' + p.name + ' (opens Google Maps)');
+    });
+    [].forEach.call(modeBtns, function (b) {
+      b.addEventListener('click', function () { choose(cur, b.getAttribute('data-mode'), false); });
+    });
+
+    render(false);
+    // Load the map only when someone gets near it
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (en) { return en.isIntersecting; })) { io.disconnect(); if (!frame) render(true); }
+      }, { rootMargin: '300px 0px' });
+      io.observe(panel);
+    } else {
+      render(true);
+    }
+  }
+
+  function init() { document.querySelectorAll('.shg-places').forEach(setup); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.addEventListener('load', init);
+})();
+</script>
