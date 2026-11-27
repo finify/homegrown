@@ -243,3 +243,5 @@ html #dm .shg-wo.shg-wo .shg-wo__cta a:focus-visible { outline-color: var(--shg-
 }
 /* The button fills the card between its side margins (not 100% plus the margins) */
 html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) > :is([data-element-type="dButtonLinkId"], .dmButtonLink) { width: auto !important; align-self: stretch !important; box-sizing: border-box !important; }
+/* A button that goes to another website (link_type "External") gets a small ↗ (marked by site.js) */
+html #dm .shg-wo.shg-wo .shg-wo__list a[data-shg-ext]::after { content: "\2197"; margin-left: 8px; font-weight: 700; }

@@ -1,0 +1,37 @@
+<!--
+  SUNDERLAND HOME GROWN REDESIGN: EXTERNAL WORKSHOP LINKS (What's On list)
+  Where: already included in site.js (the ↗ is in base.css).
+  What:  in the What's On workshop list (.shg-wo__list), a button that goes to another website
+         (link_type "External" in the Workshops collection) opens in a new tab, gets a small ↗,
+         and tells screen readers it opens in a new tab. Shop and other pages on this site
+         (link_type "Internal") open normally. Worked out from the link itself.
+-->
+<script>
+(function () {
+  function isExternal(a) {
+    try {
+      var u = new URL(a.getAttribute('href') || '', location.href);
+      if (!/^https?:$/.test(u.protocol)) return false;
+      var h = u.hostname.replace(/^www\./, '');
+      return h !== location.hostname.replace(/^www\./, '') && !/sunderlandhomegrown\.co\.uk$/.test(h) && !/123-reg\.co\.uk$/.test(h);
+    } catch (e) { return false; }
+  }
+  function mark() {
+    document.querySelectorAll('.shg-wo__list a[href]').forEach(function (a) {
+      if (a.getAttribute('data-shg-ext') || !isExternal(a)) return;
+      a.setAttribute('data-shg-ext', '1');
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener');
+      var label = (a.getAttribute('aria-label') || a.textContent || '').replace(/\s+/g, ' ').trim();
+      if (label) a.setAttribute('aria-label', label + ' (opens in a new tab)');
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mark); else mark();
+  window.addEventListener('load', mark);
+  // The repeater may add cards later (Load More / pagination)
+  if ('MutationObserver' in window) {
+    var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(mark, 100); })
+      .observe(document.documentElement, { childList: true, subtree: true });
+  }
+})();
+</script>

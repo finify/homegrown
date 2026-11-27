@@ -15,7 +15,8 @@ Easiest: **Import** `workshops-collection.csv` (12 workshops and courses from th
 | `date_label` | Text | When, as you want it shown, e.g. "Sat 5 Dec 2026, 1pm" |
 | `price_label` | Text | e.g. "£25", "Free", "Ask us" |
 | `description` | Text | One or two sentences |
-| `link` | Link | **Shop product page** (copy the address from the product in your shop, e.g. `https://www.sunderlandhomegrown.co.uk/store/...`) **or any external website** |
+| `link_type` | Text (or a dropdown/selection field, if the editor offers one, with the options **Internal** and **External**) | **Internal** = a page on this site, such as a shop product. **External** = another website (e.g. a partner's booking page) |
+| `link` | Link | **Internal:** copy the address of the product from your shop, e.g. `https://www.sunderlandhomegrown.co.uk/store/...`. **External:** paste the full address of the other website (`https://…`) |
 | `link_text` | Text | The button words: "Book a place", "Find out more", "Sold out: see the shop" |
 | `status` | Text | Available, Sold out or Past (for your own reference, or to filter) |
 | `show_on_site` | Yes/No | Untick to hide a workshop without deleting it |
@@ -47,7 +48,8 @@ Under "Upcoming workshops" there's a dashed box saying "Our next workshops will 
 
 ## Adding, changing or hiding a workshop
 - **Add:** Content → Collections → Workshops → add a row. Fill in the photo, title, date, description and link, and tick `show_on_site`.
-- **Link to the shop:** open the product in your shop and copy its address. **Link elsewhere:** paste any full web address (https://…).
+- **Link to the shop:** set `link_type` to **Internal**, open the product in your shop and copy its address into `link`.
+- **Link to another website:** set `link_type` to **External** and paste the full address (https://…) into `link`. On the page, external links open in a new tab and their button gets a small ↗ (worked out from the address, so it works even if `link_type` is left blank; the field is there to make the list clear to whoever edits it).
 - **Sold out:** change `link_text` to "Sold out: see the shop" (the shop shows it as sold out), or untick `show_on_site`.
 - **When it's over:** untick `show_on_site` (or delete the row).
 
@@ -58,5 +60,5 @@ Under "Upcoming workshops" there's a dashed box saying "Our next workshops will 
 
 ## Files
 - `after/whats-on.html`: the page. `after/wo.css`: its styles (built into `base.css`).
-- `workshops-collection.csv`: the lean Workshops collection (made by `scripts/duda-workshops-csv.py`).
+- `workshops-collection.csv`: the lean Workshops collection (made by `scripts/duda-workshops-csv.py`). All 12 current rows are **Internal** (they link to the shop).
 - `whats-on-collection.csv`, `whats-on-collection-TEST.csv`, `template-original.csv`: the earlier, fuller version (includes the regular groups), kept for reference.
