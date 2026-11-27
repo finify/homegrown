@@ -53,3 +53,15 @@ On the live preview (another page with this HTML swapped in, and the Home page w
 - "Book a free trial visit" scrolls to the form and puts the cursor in the name box.
 
 It hasn't been submitted for real: do the test entry in step 1.4.
+
+## Update: "How to join, in four steps" (a plant grows as you scroll)
+Paste `../grow/after/grow-rows.html` (two rows) on the Day opportunities page, **just above** the row that starts `<div class="dmRespRow shg-day__register"`, the "Ready to start your journey?" form. Nothing else is needed: the styles are in `base.css` and the plant is drawn by `site.js`.
+
+- **What it is:** on the left, a pot with a seed. As the four steps scroll past on the right, the seed sprouts, the stem grows, two leaves open, and the three roundel leaves (green, gold, berry) unfold. The step in view turns deep green, and a label under the pot says "Step 2 of 4".
+- **The steps** (flyer wording only): Get in touch → Book a free trial visit → Agree your support → Start growing, then a **Book a free trial visit** button.
+- **On phones** the plant stays at the top under the menu bar while the steps slide up beneath it.
+- **Light:** one small drawing, no extra library (the prototype's 3D version would have added several hundred KB). It only runs while the section is on screen.
+- **Reduce motion:** people who've asked their device for less motion see the finished plant and no highlighting.
+- **Editing:** each step is one text widget, with the bold first line as its title.
+
+`after/day-opportunities.html` now includes these rows too, for anyone pasting the whole page.

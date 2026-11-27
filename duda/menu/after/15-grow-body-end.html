@@ -1,0 +1,103 @@
+<!--
+  SUNDERLAND HOME GROWN REDESIGN: "HOW TO JOIN" PLANT THAT GROWS AS YOU SCROLL
+  Where: already included in site.js (styles in base.css).
+  What:  in a row with the class shg-grow, draws a pot in the left column (shg-grow__art). As the
+         steps (shg-grow__step) scroll past, a seed sprouts, the stem grows, two leaves open and
+         the three roundel leaves (green, gold, berry) unfold at the top. The step in view is
+         highlighted. Light: one small inline drawing, no library, runs only while the row is on screen.
+         People who ask their device for less motion see the finished plant and no highlighting.
+-->
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  var LEAF = 'M0 0C-17-14-21-42 0-66C21-42 17-14 0 0Z';
+  var ART =
+    '<svg class="shg-plant" viewBox="0 0 240 300" aria-hidden="true" focusable="false">' +
+      '<circle class="shg-plant__sun" cx="120" cy="138" r="104"/>' +
+      '<path class="shg-plant__stem" d="M120 212C116 182 126 160 121 134S117 100 120 86" pathLength="1"/>' +
+      '<g class="shg-plant__leaf shg-plant__leaf--l1" style="--x:119px;--y:176px;--r:-62deg"><path d="' + LEAF + '" transform="scale(.48)"/></g>' +
+      '<g class="shg-plant__leaf shg-plant__leaf--l2" style="--x:122px;--y:142px;--r:60deg"><path d="' + LEAF + '" transform="scale(.52)"/></g>' +
+      '<g class="shg-plant__leaf shg-plant__leaf--a" style="--x:120px;--y:88px;--r:-42deg"><path d="' + LEAF + '"/></g>' +
+      '<g class="shg-plant__leaf shg-plant__leaf--c" style="--x:120px;--y:88px;--r:42deg"><path d="' + LEAF + '"/></g>' +
+      '<g class="shg-plant__leaf shg-plant__leaf--b" style="--x:120px;--y:88px;--r:0deg"><path d="' + LEAF + '" transform="scale(1.12)"/></g>' +
+      '<ellipse class="shg-plant__seed" cx="120" cy="207" rx="7" ry="5"/>' +
+      '<ellipse class="shg-plant__soil" cx="120" cy="212" rx="54" ry="8"/>' +
+      '<path class="shg-plant__pot" d="M70 222H170L159 288Q158 294 152 294H88Q82 294 81 288Z"/>' +
+      '<rect class="shg-plant__rim" x="60" y="206" width="120" height="20" rx="6"/>' +
+    '</svg>' +
+    '<p class="shg-plant__count" aria-hidden="true"></p>';
+
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function seg(p, a, b) { return clamp((p - a) / (b - a)); }
+
+  function setup(row) {
+    if (row.getAttribute('data-shg-grow')) return;
+    var art = row.querySelector('.shg-grow__art');
+    var stepsCol = row.querySelector('.shg-grow__steps');
+    var steps = [].slice.call(row.querySelectorAll('.shg-grow__step'));
+    if (!art || !stepsCol || !steps.length) return;
+    row.setAttribute('data-shg-grow', '1');
+
+    var stage = document.createElement('div');
+    stage.className = 'shg-grow__stage';
+    stage.innerHTML = ART;
+    art.insertBefore(stage, art.firstChild);
+    var svg = stage.querySelector('svg');
+    var count = stage.querySelector('.shg-plant__count');
+    var stem = svg.querySelector('.shg-plant__stem');
+    var seed = svg.querySelector('.shg-plant__seed');
+    var leaves = [
+      [svg.querySelector('.shg-plant__leaf--l1'), 0.22, 0.38],
+      [svg.querySelector('.shg-plant__leaf--l2'), 0.44, 0.6],
+      [svg.querySelector('.shg-plant__leaf--b'), 0.66, 0.8],
+      [svg.querySelector('.shg-plant__leaf--a'), 0.72, 0.88],
+      [svg.querySelector('.shg-plant__leaf--c'), 0.78, 0.94]
+    ];
+    var last = -1, active = -1, onScreen = true, queued = false;
+
+    function draw(p) {
+      if (Math.abs(p - last) < 0.002) return;
+      last = p;
+      stem.style.strokeDashoffset = String(1 - seg(p, 0.04, 0.7));
+      seed.style.opacity = String(1 - seg(p, 0.02, 0.12));
+      leaves.forEach(function (l) {
+        var s = seg(p, l[1], l[2]);
+        s = 1 - Math.pow(1 - s, 3); // ease out
+        l[0].style.setProperty('--s', s.toFixed(3));
+      });
+      row.classList.toggle('is-grown', p > 0.95);
+    }
+    function setActive(i) {
+      if (i === active) return;
+      active = i;
+      steps.forEach(function (el, k) { el.classList.toggle('is-active', k === i); el.classList.toggle('is-done', k < i); });
+      count.textContent = i < 0 ? '' : 'Step ' + (i + 1) + ' of ' + steps.length;
+    }
+    function update() {
+      queued = false;
+      if (reduce && reduce.matches) { draw(1); setActive(-1); count.textContent = ''; return; }
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var r = stepsCol.getBoundingClientRect();
+      draw(clamp((vh * 0.72 - r.top) / Math.max(1, r.height - vh * 0.25)));
+      var i = -1;
+      steps.forEach(function (el, k) { if (el.getBoundingClientRect().top < vh * 0.62) i = k; });
+      setActive(i);
+    }
+    function queue() { if (onScreen && !queued) { queued = true; requestAnimationFrame(update); } }
+
+    // Duda's phone layout scrolls inside #iscrollBody, so listen to every scroll (capture)
+    document.addEventListener('scroll', queue, { passive: true, capture: true });
+    window.addEventListener('resize', queue);
+    if (reduce && reduce.addEventListener) reduce.addEventListener('change', function () { last = -1; update(); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; if (onScreen) queue(); }, { rootMargin: '200px 0px' }).observe(row);
+    }
+    update();
+  }
+
+  function init() { document.querySelectorAll('.shg-grow').forEach(setup); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.addEventListener('load', init);
+})();
+</script>

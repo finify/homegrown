@@ -182,6 +182,9 @@ register = row('shg-day__register',
         form,
         text('shg-day__form-note', 'We only use these details to reply to you about day opportunities.')))
 
+_grow_file = ROOT / 'duda/grow/after/grow-rows.html'
+grow = re.sub(r'^<!--[\s\S]*?-->\n', '', _grow_file.read_text()).strip() if _grow_file.exists() else ''
+
 page = f'''<!-- *** ADD OR EDIT HTML INSIDE OF THE dmRespCol DIVS, SEE DOCUMENTATION FOR GUIDELINES *** -->
 <!--
   Sunderland Home Grown redesign: DAY OPPORTUNITIES page (for service users, families and referrers)
@@ -201,6 +204,7 @@ page = f'''<!-- *** ADD OR EDIT HTML INSIDE OF THE dmRespCol DIVS, SEE DOCUMENTA
 {quotes}
 {why}
 {support}
+{grow}
 {register}
 </div>
 '''

@@ -1,0 +1,21 @@
+<!--
+  SUNDERLAND HOME GROWN REDESIGN: SIDEWAYS-SWIPE ROWS ON PHONES
+  Where: already included in site.js.
+  Why:   on Duda's phone layout the page sits inside a drawer (Snap.js) that grabs sideways
+         swipes, so rows of cards that scroll sideways ("What a day here looks like" on the Home
+         page, the photo strip on Day opportunities) wouldn't move. Snap.js leaves alone anything
+         marked data-snap-ignore, so this marks every row that scrolls sideways.
+-->
+<script>
+(function () {
+  function mark() {
+    document.querySelectorAll('.dmRespRowsWrapper .dmRespColsWrapper, [data-shg-swipe]').forEach(function (el) {
+      var ox = getComputedStyle(el).overflowX;
+      if ((ox === 'auto' || ox === 'scroll') && el.scrollWidth > el.clientWidth + 4) el.setAttribute('data-snap-ignore', 'true');
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mark); else mark();
+  window.addEventListener('load', mark);
+  var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(mark, 200); });
+})();
+</script>
