@@ -90,14 +90,20 @@
       btn.innerHTML = (wanted ? ICON.pause : ICON.play) + '<span>' + (wanted ? 'Pause video' : 'Play video') + '</span>';
       btn.setAttribute('aria-label', wanted ? 'Pause background video' : 'Play background video');
     }
-    function send(func) {
-      if (frame && frame.contentWindow) frame.contentWindow.postMessage(JSON.stringify({ event: 'command', func: func, args: [] }), '*');
+    function send(func, args) {
+      if (frame && frame.contentWindow) frame.contentWindow.postMessage(JSON.stringify({ event: 'command', func: func, args: args || [] }), '*');
+    }
+    // No subtitles on a background video: YouTube can switch its auto-generated captions on by itself
+    function noCaptions() {
+      send('unloadModule', ['captions']);
+      send('unloadModule', ['cc']);
+      send('setOption', ['captions', 'track', {}]);
     }
     function load() {
       if (frame) return;
       frame = document.createElement('iframe');
       frame.src = 'https://www.youtube-nocookie.com/embed/' + id +
-        '?autoplay=1&mute=1&loop=1&playlist=' + id +
+        '?autoplay=1&mute=1&loop=1&playlist=' + id + '&cc_load_policy=0' +
         '&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1' +
         (location.origin && location.origin !== 'null' ? '&origin=' + encodeURIComponent(location.origin) : '');
       frame.title = 'Background video';
@@ -116,7 +122,9 @@
       try { d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data; } catch (x) { return; }
       if (!d) return;
       var state = d.event === 'onStateChange' ? d.info : (d.info && d.info.playerState);
+      if (d.event === 'onReady' || d.event === 'initialDelivery') noCaptions();
       if (state === 1) {
+        if (!playing) noCaptions();
         playing = true;
         row.classList.add('is-playing');
         if (!wanted || !inView) send('pauseVideo');
