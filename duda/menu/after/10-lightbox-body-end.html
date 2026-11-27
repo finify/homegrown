@@ -226,6 +226,7 @@
   }
   function decorateDuda() {
     document.querySelectorAll('.dmPhotoGallery').forEach(function (g) {
+      if (g.closest('.shg-wo__list')) return; // What's On workshop cards: their photos link to the workshop instead
       var thumbs = dudaThumbs(g);
       thumbs.forEach(function (li, i) {
         var a = li.querySelector('a[data-image-url]');
@@ -249,7 +250,7 @@
   // Capture phase, so Duda's own click handling doesn't also run
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest(DUDA_THUMB);
-    if (!a || linksElsewhere(a)) return;
+    if (!a || linksElsewhere(a) || a.closest('.shg-wo__list')) return;
     e.preventDefault();
     e.stopPropagation();
     openDuda(a);
@@ -257,7 +258,7 @@
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Enter' && e.key !== ' ') return;
     var t = e.target;
-    if (t.matches && t.matches(DUDA_THUMB) && !linksElsewhere(t)) { e.preventDefault(); openDuda(t); }
+    if (t.matches && t.matches(DUDA_THUMB) && !linksElsewhere(t) && !t.closest('.shg-wo__list')) { e.preventDefault(); openDuda(t); }
     else if (t.matches && t.matches('.dmPhotoGallery .photoGalleryViewAll')) { e.preventDefault(); t.click(); }
   }, true);
 

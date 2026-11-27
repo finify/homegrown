@@ -21,6 +21,7 @@ The fields:
 | `date_label` | Text | When, as you want it shown, e.g. "Sat 5 Dec 2026, 1pm" |
 | `price_label` | Text | e.g. "£25", "Free", "Ask us" |
 | `description` | Text | One or two sentences |
+| `summary` | Text | Date, price and description together, for the gallery's text line |
 | `link_type` | Text (or a dropdown/selection field, if the editor offers one, with the options **Internal** and **External**) | **Internal** = a page on this site, such as a shop product. **External** = another website (e.g. a partner's booking page) |
 | `link` | Link | **Internal:** copy the address of the product from your shop, e.g. `https://www.sunderlandhomegrown.co.uk/store/...`. **External:** paste the full address of the other website (`https://…`) |
 | `link_text` | Text | The button words: "Book a place", "Find out more", "Sold out: see the shop" |
@@ -35,22 +36,36 @@ The page has: a header with "Visit the shop", an **Upcoming workshops** heading,
 
 Under "Upcoming workshops" there's a dashed box saying "Our next workshops will be listed here soon…". It hides itself once the repeater is there, so if the list is ever empty visitors see a phone number instead of a gap.
 
-## 3. Add the Dynamic Repeater (the list)
-1. In **Widgets**, find **Dynamic Repeater** (search "repeater") and drag it into the dashed box under "Upcoming workshops".
-2. Connect it to the **Workshops** collection.
-3. Design **one** card in the repeater, with these widgets **in this order** (the styling relies on the order):
-   1. **Image** → connect to `image` (and its alt text to `image_alt`, if offered)
-   2. **Text** → connect to `item` (the title)
-   3. **Text** → connect to `date_label`. Insert `price_label` in the same text too, if you like, e.g. "Sat 5 Dec 2026, 1pm · £25"
-   4. **Text** → connect to `description`
-   5. **Button** → link connected to `link`, button text connected to `link_text`
+## 3. Add the list: a Photo Gallery connected to the collection
+(123-reg's editor doesn't offer Duda's Dynamic Repeater, but its **Photo Gallery** widget can connect to a collection. Each gallery item has a photo, a title, a text and a button, which is everything a workshop card needs.)
 
-   To connect a widget, select it and use its **Connect to data** option, then pick the field. You don't need to style anything: fonts, colours, the rounded white card, the date label, the photo shape and the gold full-width button all come from `base.css`.
-4. In the repeater's settings:
-   - **Layout → Items per row:** 3 (2 on tablet and 1 on phones, if it lets you set them per device).
-   - **Navigation:** Load More (or Pagination), showing 9 at a time.
-   - **Filter & Sort:** filter where `show_on_site` is on (true), and sort by `sort_order`, lowest first.
-5. Preview on desktop, tablet and phone, then **Publish**. If a collection change doesn't show on the live site, publish again.
+1. From **Widgets**, drag a **Photo Gallery** into the dashed box under "Upcoming workshops". The box's note hides itself once the gallery is there.
+2. In the gallery's content settings, choose to take its items from a collection (**Connect to data / Collection**) and pick **Workshops**.
+3. Match the gallery's parts to the fields:
+
+   | Gallery part | Field |
+   |---|---|
+   | Image | `image` (alt text: `image_alt`, if offered) |
+   | Title | `item` |
+   | Text / description | `summary` (date, price and description in one line, e.g. "Sat 5 Dec 2026, 1pm · £25. Make your own Christmas wreath to take home.") |
+   | Button text | `link_text` |
+   | Button link | `link` |
+
+4. In the gallery's settings:
+   - **Show captions/text** on, with the **button** switched on.
+   - **Filter:** `show_on_site` is on. **Sort:** `sort_order`, if offered.
+   - **Rows to show:** 3 (it then shows "View more").
+   - **Hover effect:** none.
+
+   Layout, columns and text position don't matter: the site CSS turns each item into a card (photo on top, title, summary, gold button) and lays them out 3 across on desktop, 2 on tablet and 1 on phones, in the collection's order.
+5. Preview, then **Publish**.
+
+**On the page:**
+- The photo goes to the same place as the button, not the photo viewer.
+- A link to another website opens in a new tab with a small ↗.
+- Each card has one link for keyboard and screen-reader users: the button.
+
+**If your editor does have the Dynamic Repeater:** use it instead, with the widgets in this order: Image, Text (`item`), Text (`date_label`), Text (`description`), Button (`link`, `link_text`). Those cards are styled too.
 
 ## Adding, changing or hiding a workshop
 - **Add:** Content → Collections → Workshops → add a row. Fill in the photo, title, date, description and link, and tick `show_on_site`.
@@ -62,7 +77,7 @@ Under "Upcoming workshops" there's a dashed box saying "Our next workshops will 
 ## Please check
 - The **Junior Joiners** course ran 9 to 30 November, so it's probably no longer bookable. Untick it if so.
 - The dates and sold-out status were copied from the shop on 5 November. Check them against the shop before publishing.
-- The Dynamic Repeater couldn't be added from here, so the list was tested with a stand-in built from Duda's own widgets in the same order. Check the real one on the preview; if anything looks off, send me a screenshot.
+- The list was tested with a copy of the HTML Duda renders for a Photo Gallery (taken from the live Gallery page), filled with workshop rows. Check the real connected gallery on the preview; if anything looks off, send me a screenshot.
 
 ## Files
 - `after/whats-on.html`: the page. `after/wo.css`: its styles (built into `base.css`).

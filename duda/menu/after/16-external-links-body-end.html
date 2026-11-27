@@ -1,10 +1,13 @@
 <!--
-  SUNDERLAND HOME GROWN REDESIGN: EXTERNAL WORKSHOP LINKS (What's On list)
+  SUNDERLAND HOME GROWN REDESIGN: WORKSHOP CARD LINKS (What's On list)
   Where: already included in site.js (the ↗ is in base.css).
   What:  in the What's On workshop list (.shg-wo__list), a button that goes to another website
          (link_type "External" in the Workshops collection) opens in a new tab, gets a small ↗,
          and tells screen readers it opens in a new tab. Shop and other pages on this site
          (link_type "Internal") open normally. Worked out from the link itself.
+         When the list is a Photo Gallery connected to the Workshops collection, each card's photo
+         goes where its button goes (instead of opening the photo viewer), and is hidden from
+         keyboard and screen readers so the button is the one link per card.
 -->
 <script>
 (function () {
@@ -16,7 +19,27 @@
       return h !== location.hostname.replace(/^www\./, '') && !/sunderlandhomegrown\.co\.uk$/.test(h) && !/123-reg\.co\.uk$/.test(h);
     } catch (e) { return false; }
   }
+  function linkPhotos() {
+    document.querySelectorAll('.shg-wo__list .photoGalleryThumbs').forEach(function (li) {
+      // Keep the collection's order in the grid (Duda builds the gallery column by column)
+      var idx = li.getAttribute('data-index');
+      if (idx !== null && li.style.order !== idx) li.style.order = idx;
+      // Duda loads gallery photos lazily: make sure the <img> has its address
+      var img = li.querySelector('.image-container img');
+      if (img && !img.getAttribute('src') && img.getAttribute('data-src')) img.setAttribute('src', img.getAttribute('data-src'));
+      var btn = li.querySelector('a.caption-button[href], .caption-button a[href]');
+      var pic = li.querySelector('.image-container > a');
+      if (!btn || !pic) return;
+      pic.setAttribute('data-shg-card', '1');
+      if (pic.getAttribute('href') !== btn.getAttribute('href')) pic.setAttribute('href', btn.getAttribute('href'));
+      if (pic.getAttribute('tabindex') !== '-1') pic.setAttribute('tabindex', '-1');
+      pic.setAttribute('aria-hidden', 'true');
+      pic.removeAttribute('role');
+      li.classList.add('shg-wo__card-linked');
+    });
+  }
   function mark() {
+    linkPhotos();
     document.querySelectorAll('.shg-wo__list a[href]').forEach(function (a) {
       if (a.getAttribute('data-shg-ext') || !isExternal(a)) return;
       a.setAttribute('data-shg-ext', '1');
@@ -26,6 +49,16 @@
       if (label) a.setAttribute('aria-label', label + ' (opens in a new tab)');
     });
   }
+  // Duda's gallery script cancels clicks on its photos, so handle card photos first (capture phase)
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('.shg-wo__list .image-container > a[data-shg-card][href]');
+    if (!a) return;
+    e.preventDefault();
+    e.stopPropagation();
+    var href = a.getAttribute('href');
+    if (a.getAttribute('target') === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) window.open(href, '_blank', 'noopener');
+    else window.location.href = href;
+  }, true);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mark); else mark();
   window.addEventListener('load', mark);
   // The repeater may add cards later (Load More / pagination)

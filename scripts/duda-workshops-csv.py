@@ -33,6 +33,7 @@ for r in src:
         'date_label': date,
         'price_label': r['price_label'],
         'description': r['short_description'],
+        'summary': ' · '.join(x for x in [date, r['price_label']] if x) + '. ' + r['short_description'],
         'link_type': link_type(r['booking_url']),
         'link': r['booking_url'],
         'link_text': 'Sold out: see the shop' if r['status'] == 'Sold out' else (r['booking_button_text'] or 'Find out more'),
