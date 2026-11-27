@@ -55,7 +55,7 @@ const growJs = read('menu/after/15-grow-body-end.html').match(/<script>([\s\S]*?
 
 out('base.css', `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap');\n` + banner('base styles (colours, type, buttons, leaf photos)') +
   `/* Font: Inter. html:root outranks the :root copy pasted into Duda's CSS panel, so no re-paste is needed. */\nhtml:root { --shg-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif !important; }\n` +
-  [sections['1'], sections['2'], sections['3'], sections['5'], sections['7'], '/* ===== Photo lightbox (site.js) ===== */\n' + lightboxCss, '/* ===== Video background hero (site.js) ===== */\n' + videoCss, '/* ===== Blog: landing page, post lists and single posts ===== */\n' + read('blog/after/blog.css'), '/* ===== Gallery page ===== */\n' + read('gallery/after/gallery.css'), '/* ===== Special thanks page ===== */\n' + read('thanks/after/thanks.css'), '/* ===== How to join: plant grows as you scroll ===== */\n' + read('grow/after/grow.css')].join('\n'))
+  [sections['1'], sections['2'], sections['3'], sections['5'], sections['7'], '/* ===== Photo lightbox (site.js) ===== */\n' + lightboxCss, '/* ===== Video background hero (site.js) ===== */\n' + videoCss, '/* ===== Blog: landing page, post lists and single posts ===== */\n' + read('blog/after/blog.css'), '/* ===== Gallery page ===== */\n' + read('gallery/after/gallery.css'), '/* ===== Special thanks page ===== */\n' + read('thanks/after/thanks.css'), '/* ===== How to join: plant grows as you scroll ===== */\n' + read('grow/after/grow.css'), '/* ===== Youth Investment Fund page ===== */\n' + read('youth-investment-fund/after/yif.css')].join('\n'))
 
 out('header.css', banner('header and menus') + [
   sections['4'],
