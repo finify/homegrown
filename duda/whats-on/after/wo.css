@@ -1,0 +1,245 @@
+/* =====================================================================
+   SUNDERLAND HOME GROWN REDESIGN: WHAT'S ON page (/whats-on)
+   Built into base.css. Page root: class shg-wo.
+   The workshop list is a Duda Dynamic Repeater placed in the row .shg-wo__list. Its cards are styled
+   without relying on Duda's internal class names: a "card" is the innermost box holding an image and
+   a text widget. Inside a card: 1st text = title, 2nd text = date, other text = description,
+   the button = the link.
+   ===================================================================== */
+html #dm .shg-wo.shg-wo {
+  --shg-wo-pad: 40px;
+  background-color: var(--shg-ground) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--shg-ink);
+  font-family: var(--shg-font) !important;
+  text-align: left !important;
+  padding-bottom: 112px !important;
+}
+html #dm .shg-wo.shg-wo > .dmRespRow {
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 max(var(--shg-wo-pad), calc((100% - 88rem) / 2 + var(--shg-wo-pad))) !important;
+  text-align: left !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+html #dm .shg-wo.shg-wo > .dmRespRow::before { display: none !important; }
+html #dm .shg-wo.shg-wo > .dmRespRow > .dmRespColsWrapper { display: grid !important; width: 100% !important; max-width: none !important; margin: 0 !important; }
+html #dm .shg-wo.shg-wo > .dmRespRow > .dmRespColsWrapper > .dmRespCol { float: none !important; width: auto !important; max-width: none !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; }
+
+/* Text widgets, and whatever the editor puts inside them */
+html #dm .shg-wo.shg-wo .dmNewParagraph {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  text-align: left !important;
+  color: var(--shg-ink) !important;
+  font-family: var(--shg-font) !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  background: transparent !important;
+}
+html #dm .shg-wo.shg-wo .dmNewParagraph * {
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: none !important;
+  text-align: inherit !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html #dm .shg-wo.shg-wo .dmNewParagraph :is(b, strong) { font-weight: 700 !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph a { color: var(--shg-forest) !important; font-weight: 700 !important; text-decoration: underline !important; text-decoration-color: var(--shg-leaf) !important; text-decoration-thickness: 2px !important; text-underline-offset: 4px !important; }
+html #dm .shg-wo.shg-wo a:focus-visible { outline: 3px solid var(--shg-forest) !important; outline-offset: 3px !important; border-radius: 4px; }
+html #dm .shg-wo.shg-wo > .dmRespRow > .dmRespColsWrapper > .dmRespCol > .dmNewParagraph + .dmNewParagraph { margin-top: 20px !important; }
+
+/* Type */
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__eyebrow { display: inline-flex !important; align-items: center; gap: 10px; color: var(--shg-forest) !important; font-size: 16px !important; font-weight: 700 !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__eyebrow::before { content: ""; width: 12px; height: 12px; flex: none; background: var(--shg-leaf); border-radius: 0 100% 0 100%; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__title { display: block !important; color: var(--shg-forest) !important; font-size: clamp(2.6rem, 5.6vw, 5.25rem) !important; font-weight: 800 !important; line-height: 1 !important; letter-spacing: -0.035em !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__h2 { display: block !important; color: var(--shg-forest) !important; font-size: clamp(2rem, 3.6vw, 3.25rem) !important; font-weight: 800 !important; line-height: 1.05 !important; letter-spacing: -0.025em !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__lead { max-width: 36ch !important; color: var(--shg-soft) !important; font-size: clamp(1.2rem, 1.8vw, 1.45rem) !important; line-height: 1.45 !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__lead-dark { max-width: 42ch !important; color: var(--shg-soft) !important; font-size: clamp(1.05rem, 1.4vw, 1.25rem) !important; line-height: 1.5 !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__lead-light { max-width: 40ch !important; color: rgba(255, 255, 255, 0.88) !important; font-size: clamp(1.05rem, 1.4vw, 1.25rem) !important; line-height: 1.5 !important; }
+html #dm .shg-wo.shg-wo .dmRespCol > .dmNewParagraph.shg-wo__eyebrow + .dmNewParagraph { margin-top: 16px !important; }
+
+/* Buttons (a text widget holding one link) */
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__button a {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 28px !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background-color: var(--shg-gold) !important;
+  color: var(--shg-forest) !important;
+  font-size: 17px !important;
+  text-decoration: none !important;
+  transition: transform .18s ease, background-color .18s ease;
+}
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__button a:hover { background-color: var(--shg-gold-hover) !important; transform: translateY(-2px); }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__button--light a { background-color: transparent !important; color: #fff !important; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.75); }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__button--light a:hover { background-color: rgba(255, 255, 255, 0.1) !important; }
+
+/* Photos */
+html #dm .shg-wo.shg-wo .imageWidget { width: 100% !important; max-width: none !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
+html #dm .shg-wo.shg-wo .imageWidget :is(a, img) { display: block !important; width: 100% !important; }
+html #dm .shg-wo.shg-wo .imageWidget img { height: auto !important; object-fit: cover; }
+
+/* ---------- Hero ---------- */
+html #dm .shg-wo.shg-wo > .shg-wo__hero { padding-top: 72px !important; }
+html #dm .shg-wo.shg-wo .shg-wo__hero > .dmRespColsWrapper { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px 64px; align-items: center; }
+html #dm .shg-wo.shg-wo .shg-wo__hero-text > .dmNewParagraph.shg-wo__button { margin-top: 32px !important; }
+html #dm .shg-wo.shg-wo .shg-wo__hero-img img { aspect-ratio: 5 / 4; border-radius: 3rem 0.5rem !important; }
+
+/* ---------- Section headings ---------- */
+html #dm .shg-wo.shg-wo > .shg-wo__head { margin-top: 112px !important; margin-bottom: 36px !important; }
+html #dm .shg-wo.shg-wo .shg-wo__head > .dmRespColsWrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 72px; align-items: end; }
+
+/* ---------- The workshop list (Dynamic Repeater) ---------- */
+html #dm .shg-wo.shg-wo .shg-wo__list .dmRespCol.shg-wo__list-col { min-height: 0 !important; }
+/* The note: only while nothing else is in the column */
+html #dm .shg-wo.shg-wo .shg-wo__list .shg-wo__list-col:has(> :not(.shg-wo__placeholder):not(style):not(script)) > .dmNewParagraph.shg-wo__placeholder { display: none !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__placeholder {
+  padding: 40px !important;
+  border: 2px dashed rgba(23, 58, 34, 0.2) !important;
+  border-radius: 1.75rem 0.375rem !important;
+  color: var(--shg-soft) !important;
+  text-align: center !important;
+}
+/* Each card */
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  padding: 0 0 24px !important;
+  border: 0 !important;
+  border-radius: 1.75rem 0.375rem !important;
+  background: #fff !important;
+  box-shadow: 0 1px 2px rgba(23, 58, 34, 0.06), 0 16px 40px -28px rgba(23, 58, 34, 0.55) !important;
+  text-align: left !important;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+@media (hover: hover) {
+  html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph):hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgba(23, 58, 34, 0.08), 0 24px 48px -28px rgba(23, 58, 34, 0.65) !important; }
+}
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) > * { margin-left: 24px !important; margin-right: 24px !important; width: auto !important; max-width: none !important; }
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) .imageWidget { margin: 0 0 20px !important; width: 100% !important; border-radius: 0 !important; overflow: hidden; }
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) > .imageWidget { margin: 0 0 20px !important; }
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) .imageWidget img { aspect-ratio: 4 / 3 !important; width: 100% !important; height: auto !important; object-fit: cover !important; border-radius: 0 !important; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+@media (hover: hover) { html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph):hover .imageWidget img { transform: scale(1.04); } }
+/* 1st text: the title */
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) .dmNewParagraph:nth-child(1 of .dmNewParagraph) { order: 1; color: var(--shg-forest) !important; font-size: 21px !important; font-weight: 700 !important; line-height: 1.25 !important; letter-spacing: -0.01em !important; }
+/* 2nd text: the date (a small label) */
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) .dmNewParagraph:nth-child(2 of .dmNewParagraph) {
+  order: 0;
+  align-self: flex-start;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px !important;
+  padding: 6px 12px 6px 10px !important;
+  border-radius: 999px !important;
+  background: var(--shg-leaf-pale) !important;
+  color: var(--shg-forest) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) .dmNewParagraph:nth-child(2 of .dmNewParagraph)::before { content: ""; width: 10px; height: 10px; flex: none; background: var(--shg-leaf); border-radius: 0 100% 0 100%; }
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) > .imageWidget { order: -1; }
+/* Other text: the description */
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) .dmNewParagraph:nth-child(n+3 of .dmNewParagraph) { order: 2; margin-top: 8px !important; color: var(--shg-soft) !important; font-size: 16px !important; line-height: 1.55 !important; }
+/* The button: the link to book or find out more, at the bottom of the card */
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) :is([data-element-type="dButtonLinkId"], .dmButtonLink) { order: 3; margin-top: auto !important; padding-top: 20px !important; }
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) :is([data-element-type="dButtonLinkId"], .dmButtonLink) { background: transparent !important; border: 0 !important; box-shadow: none !important; }
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) a:is([data-element-type="dButtonLinkId"], .dmButtonLink),
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) :is([data-element-type="dButtonLinkId"], .dmButtonLink) a {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: auto !important;
+  align-self: stretch !important;
+  box-sizing: border-box !important;
+  min-height: 52px !important;
+  height: auto !important;
+  padding: 0 20px !important;
+  border: 0 !important;
+  border-radius: var(--shg-leaf-corner) !important;
+  background: var(--shg-gold) !important;
+  color: var(--shg-forest) !important;
+  font: 700 16px/1.2 var(--shg-font) !important;
+  text-decoration: none !important;
+  text-align: center !important;
+}
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) :is([data-element-type="dButtonLinkId"], .dmButtonLink) * { color: var(--shg-forest) !important; font: inherit !important; background: transparent !important; }
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) :is([data-element-type="dButtonLinkId"], .dmButtonLink):hover,
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) :is([data-element-type="dButtonLinkId"], .dmButtonLink) a:hover { background: var(--shg-gold-hover) !important; }
+@media (prefers-reduced-motion: reduce) {
+  html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph), html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) .imageWidget img { transition: none !important; transform: none !important; }
+}
+
+/* ---------- Regular groups ---------- */
+html #dm .shg-wo.shg-wo .shg-wo__groups > .dmRespColsWrapper { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+html #dm .shg-wo.shg-wo .dmRespCol.shg-wo__group {
+  display: flex !important;
+  flex-direction: column;
+  padding: 28px !important;
+  border-radius: 1.75rem 0.375rem !important;
+  background: var(--shg-leaf-pale) !important;
+}
+html #dm .shg-wo.shg-wo .shg-wo__group > .dmNewParagraph + .dmNewParagraph { margin-top: 10px !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__group-when { color: #2F7D32 !important; font-size: 14px !important; font-weight: 700 !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__group-title { display: block !important; color: var(--shg-forest) !important; font-size: 22px !important; font-weight: 700 !important; line-height: 1.25 !important; }
+html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__group-text { color: var(--shg-soft) !important; font-size: 16px !important; }
+html #dm .shg-wo.shg-wo .shg-wo__group > .dmNewParagraph.shg-wo__group-link { margin-top: auto !important; padding-top: 18px !important; font-size: 16px !important; }
+
+/* ---------- Closing panel ---------- */
+html #dm .shg-wo.shg-wo > .shg-wo__cta { margin-top: 112px !important; }
+html #dm .shg-wo.shg-wo .shg-wo__cta > .dmRespColsWrapper { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 64px; align-items: center; padding: 64px !important; border-radius: 3rem 0.5rem !important; background: var(--shg-forest) !important; }
+html #dm .shg-wo.shg-wo .shg-wo__cta .dmNewParagraph.shg-wo__h2 { color: #fff !important; }
+html #dm .shg-wo.shg-wo .dmRespCol.shg-wo__cta-actions { display: flex !important; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
+html #dm .shg-wo.shg-wo .shg-wo__cta-actions > .dmNewParagraph + .dmNewParagraph { margin-top: 0 !important; }
+html #dm .shg-wo.shg-wo .shg-wo__cta a:focus-visible { outline-color: var(--shg-gold) !important; }
+
+@media (prefers-reduced-motion: reduce) { html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__button a { transition: none; transform: none !important; } }
+
+/* ---------- Tablet ---------- */
+@media screen and (max-width: 1024px) {
+  html #dm .shg-wo.shg-wo { --shg-wo-pad: 32px; padding-bottom: 88px !important; }
+  html #dm .shg-wo.shg-wo :is(.shg-wo__hero, .shg-wo__head, .shg-wo__cta) > .dmRespColsWrapper { grid-template-columns: minmax(0, 1fr); }
+  html #dm .shg-wo.shg-wo > .shg-wo__hero { padding-top: 48px !important; }
+  html #dm .shg-wo.shg-wo .shg-wo__hero-img img { aspect-ratio: 16 / 10; border-radius: 2.5rem 0.5rem !important; }
+  html #dm .shg-wo.shg-wo :is(> .shg-wo__head, > .shg-wo__cta) { margin-top: 88px !important; }
+  html #dm .shg-wo.shg-wo .shg-wo__groups > .dmRespColsWrapper { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  html #dm .shg-wo.shg-wo .shg-wo__cta > .dmRespColsWrapper { padding: 48px !important; }
+  html #dm .shg-wo.shg-wo .dmRespCol.shg-wo__cta-actions { justify-content: flex-start; }
+}
+
+/* ---------- Phones ---------- */
+@media screen and (max-width: 767px) {
+  html #dm .shg-wo.shg-wo { --shg-wo-pad: 16px; padding-bottom: 64px !important; }
+  html #dm .shg-wo.shg-wo > .shg-wo__hero { padding-top: 32px !important; }
+  html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__title { font-size: 44px !important; }
+  html #dm .shg-wo.shg-wo .dmNewParagraph.shg-wo__button a { width: 100% !important; }
+  html #dm .shg-wo.shg-wo .shg-wo__hero-img img { aspect-ratio: 4 / 3; border-radius: 2rem 0.375rem !important; }
+  html #dm .shg-wo.shg-wo :is(> .shg-wo__head, > .shg-wo__cta) { margin-top: 64px !important; }
+  html #dm .shg-wo.shg-wo > .shg-wo__head { margin-bottom: 24px !important; }
+  html #dm .shg-wo.shg-wo .dmRespCol.shg-wo__group { padding: 22px !important; }
+  html #dm .shg-wo.shg-wo .shg-wo__cta > .dmRespColsWrapper { padding: 32px 20px !important; border-radius: 2rem 0.375rem !important; gap: 24px; }
+  html #dm .shg-wo.shg-wo .shg-wo__cta-actions > .dmNewParagraph { flex: 1 0 100%; }
+  html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) > * { margin-left: 18px !important; margin-right: 18px !important; }
+}
+/* The button fills the card between its side margins (not 100% plus the margins) */
+html #dm .shg-wo.shg-wo .shg-wo__list :is(div, li, article):has(> .imageWidget):has(> .dmNewParagraph) > :is([data-element-type="dButtonLinkId"], .dmButtonLink) { width: auto !important; align-self: stretch !important; box-sizing: border-box !important; }
