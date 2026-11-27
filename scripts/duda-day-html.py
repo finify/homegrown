@@ -210,7 +210,12 @@ page = f'''<!-- *** ADD OR EDIT HTML INSIDE OF THE dmRespCol DIVS, SEE DOCUMENTA
 '''
 out = ROOT / 'duda/day-opportunities/after/day-opportunities.html'
 out.parent.mkdir(parents=True, exist_ok=True)
-out.write_text(page)
+import sys
+if out.exists() and '--force' not in sys.argv:
+    print(f'{out.name} already exists (and is live): not overwritten, so its ids stay the same. Use --force to rebuild it.')
+    page = out.read_text()
+else:
+    out.write_text(page)
 ids = re.findall(r'\bid="(\d+)"', page)
 print(f'{out.name}: {len(ids)} ids, unique={len(ids) == len(set(ids))}, text widgets={page.count("dmNewParagraph")}, images={page.count(chr(34)+"image"+chr(34))}')
 
@@ -228,7 +233,9 @@ cta = row('shg-home__day-cta',
               'Two women smiling under a striped parasol, one holding up a pot of white flowers she has planted.')))
 cta_ids = re.findall(r'\bid="(\d+)"', cta)
 assert not set(cta_ids) & set(ids)
-(ROOT / 'duda/home/after/day-cta-row.html').write_text(
+_cta = ROOT / 'duda/home/after/day-cta-row.html'
+if not _cta.exists():  # keep ids stable once the row has been pasted into the Home page
+  _cta.write_text(
     '<!--\n  SUNDERLAND HOME GROWN REDESIGN: HOME PAGE, DAY OPPORTUNITIES CALL TO ACTION (one row)\n'
     '  Paste just below the hero row of the Home page (see duda/day-opportunities/README.md).\n'
     '  Styled by home.css. Links go to the Day opportunities page (/day-opportunities).\n-->\n' + cta + '\n')
