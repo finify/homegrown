@@ -48,7 +48,7 @@ for (const [file, comp, key, title, desc, og] of pages) {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#173A22" />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <link rel="preload" href="fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <script type="speculationrules">${JSON.stringify(speculation)}</script>
 ${file === 'index' ? `    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n` : ''}  </head>
   <body>

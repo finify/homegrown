@@ -23,7 +23,7 @@ const sections = [
         </section>
         <section id="accessibility" class="scroll-mt-24 rounded-leaf-lg bg-leaf-pale p-8">
           <h2 class="text-lead font-bold">Accessibility</h2>
-          <p class="mt-3 max-w-[65ch]">We aim to meet WCAG 2.2 AA. Text is set in Atkinson Hyperlegible, designed for readers with low vision. Every page works with a keyboard and a screen reader, colours meet contrast guidelines, and moving effects switch off if your device asks for reduced motion. Our day opportunities page has an Easy Read version.</p>
+          <p class="mt-3 max-w-[65ch]">We aim to meet WCAG 2.2 AA. Text is set in Inter, a clear and highly legible typeface. Every page works with a keyboard and a screen reader, colours meet contrast guidelines, and moving effects switch off if your device asks for reduced motion. Our day opportunities page has an Easy Read version.</p>
           <p class="mt-3">Something not working? Call <a href="tel:+441915499444" class="link">0191 549 9444</a> and we will help.</p>
         </section>
       </div>

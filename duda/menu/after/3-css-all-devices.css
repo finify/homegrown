@@ -19,7 +19,7 @@
   --shg-ink: #14231A;
   --shg-soft: #3F4A42;
   --shg-leaf-corner: 1.5rem 0.25rem;
-  --shg-font: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --shg-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
 /* ---------- 2. Page, type and links ---------- */

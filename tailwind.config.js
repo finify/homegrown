@@ -25,7 +25,7 @@ export default {
         hand: '#C5AB86',
       },
       fontFamily: {
-        sans: ['"Atkinson Hyperlegible Next"', '"Atkinson Hyperlegible"', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         // Five steps only: small, body, lead, title, display
