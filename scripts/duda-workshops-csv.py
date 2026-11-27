@@ -11,6 +11,9 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 TODAY = datetime.date(2026, 11, 27)
 src = list(csv.DictReader(open(ROOT / 'duda/whats-on/whats-on-collection.csv', encoding='utf-8')))
 rows = []
+# The test row in the Workshops collection export (duda/whats-on/workshops-template-export.csv):
+# reusing its uuid makes the import update that row instead of leaving "1" behind.
+TEMPLATE_UUID = next(csv.DictReader(open(ROOT / 'duda/whats-on/workshops-template-export.csv', encoding='utf-8-sig')))['uuid']
 
 def link_type(url):
     """Internal = a page on our own site (shop product pages included); External = any other website."""
@@ -23,6 +26,7 @@ for r in src:
     past = bool(end) and datetime.date.fromisoformat(end) < TODAY
     date = r['date_label'] + (f", {r['time_label']}" if r['time_label'] else '')
     rows.append({
+        'uuid': TEMPLATE_UUID if not rows else '',
         'item': r['item'],
         'image': r['image'],
         'image_alt': r['image_alt'],

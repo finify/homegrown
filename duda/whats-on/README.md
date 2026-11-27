@@ -5,7 +5,13 @@ The page: `after/whats-on.html`. The workshop list comes from a **collection** (
 ## 1. Create the collection: Workshops
 In the editor: **Content** (left panel) → **Collections** → **New collection** → name it **Workshops**.
 
-Easiest: **Import** `workshops-collection.csv` (12 workshops and courses from the shop; the two dates already past are hidden). Or create these fields and add rows by hand:
+**Create the fields first.** The import won't create fields: a CSV column with no matching field fails with "CSV contains fields that are not present in the collection".
+1. In the collection, add each field below with **exactly** this name (lower case, underscores) and type. Rename the empty `New field` to one of them, for example `image`.
+2. Import `workshops-collection-TEST.csv` (2 rows) first. Its first row reuses the uuid of your test row "1", so that row is updated rather than left behind.
+3. If that works, import `workshops-collection.csv` (all 12; the two dates already past have `show_on_site` = false). Use the same uuid trick: the full file's first row is the same Junior Joiners row.
+4. If one field rejects its values (most likely `image`, `link` or `show_on_site`), change that field to **Text** and import again. Or fill one row in by hand, export it, and send me the export: I'll match the CSV to its exact format.
+
+The fields:
 
 | Field | Type | What goes in it |
 |---|---|---|
